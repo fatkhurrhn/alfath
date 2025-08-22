@@ -5,7 +5,7 @@ import PrayerTimeManager from '../components/PrayerTimeManager'
 
 export default function Home() {
   useEffect(() => {
-    document.title = "Home - Fatkhurrhn";
+    document.title = "Home - Islamic";
   }, []);
   
   return (

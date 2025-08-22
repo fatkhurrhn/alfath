@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ScrollToTop from '../../components/ScrollToTop';
-import Navbar from '../../components/TopNavbar';
-import Footer from '../../components/Footer';
-import FullscreenToggle from '../../components/FullscreenToggle';
+import ScrollToTop from '../../../components/ScrollToTop';
 
 export default function DzikirPagiSugro() {
   const [dzikirData, setDzikirData] = useState([]);
@@ -24,20 +21,6 @@ export default function DzikirPagiSugro() {
     };
   }, []);
 
-  const handleToggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().then(() => {
-        setIsFullscreen(true);
-      }).catch(err => {
-        console.error("Fullscreen request failed:", err);
-      });
-    } else {
-      document.exitFullscreen().then(() => {
-        setIsFullscreen(false);
-      });
-    }
-  };
-
   if (dzikirData.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -51,17 +34,11 @@ export default function DzikirPagiSugro() {
 
   return (
     <div className="min-h-screen bg-white py-8 px-3">
-      {!isFullscreen && <Navbar />}
       
-      <FullscreenToggle 
-        isFullscreen={isFullscreen} 
-        onToggle={handleToggleFullscreen} 
-      />
-
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className="text-center mb-8 pt-10">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Dzikir Pagi</h1>
+        <div className="text-center mb-8 pt-1">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">Al-Ma'surat</h1>
           <div className="flex justify-center items-center text-sm text-gray-600">
             <i className="ri-sun-line mr-1"></i>
             <span>Dzikir Pagi Sugro</span>
@@ -88,7 +65,6 @@ export default function DzikirPagiSugro() {
         </div>
       </div>
 
-      {!isFullscreen && <Footer />}
       {!isFullscreen && <ScrollToTop />}
     </div>
   );

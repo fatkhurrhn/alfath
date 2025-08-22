@@ -99,7 +99,7 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
                         </div>
                     </div>
                     <div className="text-right">
-                        <p className="text-sm font-semibold text-gray-800">{nextPrayer} - {nextPrayerTime}</p>
+                        <p className="text-sm font-semibold text-gray-800">{nextPrayer} | {nextPrayerTime}</p>
                         <p className="text-xs text-gray-600">- {countdown}</p>
                     </div>
                 </div>

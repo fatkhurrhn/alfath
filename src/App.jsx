@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Dzikir from "./pages/dzikir/Dzikir";
-import DzikirPagiSugro from "./pages/dzikir/DzikirPagiSugro";
-import DzikirSoreSugro from "./pages/dzikir/DzikirSoreSugro";
+import DzikirPagiSugro from "./pages/dzikir/almasurat/PagiSugro";
+import DzikirPetangSugro from "./pages/dzikir/almasurat/PetangSugro";
 import JadwalSholat from "./pages/JadwalSholat";
 import NotFound from "./pages/NotFound";
+import Almasurat from "./pages/dzikir/almasurat/Almasurat";
 
 function App() {
   return (
@@ -12,8 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dzikir" element={<Dzikir />} />
-        <Route path="/dzikir/pagi-sugro" element={<DzikirPagiSugro />} />
-        <Route path="/dzikir/sore-sugro" element={<DzikirSoreSugro />} />
+        <Route path="/dzikir/almasurat" element={<Almasurat />} />
+        <Route path="/dzikir/almasurat/pagi" element={<DzikirPagiSugro />} />
+        <Route path="/dzikir/almasurat/petang" element={<DzikirPetangSugro />} />
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}

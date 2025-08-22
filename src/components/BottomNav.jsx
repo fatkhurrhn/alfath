@@ -16,7 +16,10 @@ const BottomNav = () => {
     <div className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white shadow-lg border-t border-gray-200">
       <div className="grid grid-cols-5 h-14">
         {navItems.map((item) => {
-          const isActive = location.pathname === item.path;
+          const isActive =
+            location.pathname === item.path ||
+            (item.path !== "/" && location.pathname.startsWith(item.path));
+
           return (
             <Link
               key={item.path}

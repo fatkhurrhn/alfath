@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import BottomNav from '../../components/BottomNav';
 import NavbarWaktuSholat from '../../components/NavWaktuSholat';
 import PrayerTimeManager from '../../components/PrayerTimeManager';
-import ScrollToTop from '../../components/ScrollToTop';
 
 export default function Home() {
   useEffect(() => {
@@ -43,8 +42,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-20 bg-gray-50">
-      <ScrollToTop />
-
       <PrayerTimeManager>
         {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect }) => (
           <>
@@ -86,7 +83,7 @@ export default function Home() {
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Dzikir Harian</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   <Link
-                    to="/dzikir/pagi-petang"
+                    to="/dzikir/almasurat"
                     className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
                   >
                     <div className="text-3xl text-purple-500 mb-3">
