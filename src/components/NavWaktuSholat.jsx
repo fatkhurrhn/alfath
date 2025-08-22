@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown, selectedCity }) => {
     const [isVisible, setIsVisible] = useState(true);
@@ -78,12 +79,14 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
 
     return (
         <>
-            <div className={`fixed top-0 left-0 w-full bg-white text-gray-800 py-3 px-5 border-b border-gray-200 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
-                <div className="flex justify-between items-center">
+            <div className={`fixed top-0 left-0 w-full bg-white text-gray-800 py-3 px-4 border-b border-gray-200 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
+                <div className="max-w-5xl mx-auto flex justify-between items-center">
                     <div className="flex items-center">
-                        <div className="bg-gray-100 p-2 rounded-lg">
-                            <span className="text-xl">🕌</span>
-                        </div>
+                        <Link to="/">
+                            <div className="bg-gray-100 p-2 rounded-lg">
+                                <span className="text-xl">🕌</span>
+                            </div>
+                        </Link>
                         <div className="ml-3">
                             <h2 className="text-sm font-semibold">Waktu Sholat</h2>
                             <button
@@ -146,8 +149,8 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
                                         <button
                                             key={city.id}
                                             className={`w-full p-3 text-left transition-colors ${selectedCity === city.lokasi
-                                                    ? 'bg-gray-100 text-gray-900 font-medium'
-                                                    : 'text-gray-700 hover:bg-gray-50'
+                                                ? 'bg-gray-100 text-gray-900 font-medium'
+                                                : 'text-gray-700 hover:bg-gray-50'
                                                 } pl-6 `}
                                             onClick={() => handleCityChange(city.lokasi, city.id)}
                                         >

@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import BottomNav from '../components/BottomNav'
+import Footer from '../components/Footer';
 import NavbarWaktuSholat from '../components/NavWaktuSholat'
 
 export default function JadwalSholat() {
+    useEffect(() => {
+        document.title = "Jadwal Sholat - Islamic";
+      }, []);
+
   const [prayerTimes, setPrayerTimes] = useState({
     Subuh: "--:--",
     Dzuhur: "--:--",
@@ -211,6 +216,7 @@ export default function JadwalSholat() {
       </div>
       
       <BottomNav />
+      <Footer/>
     </div>
   );
 }

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BottomNav from '../../components/BottomNav';
-import Footer from '../../components/Footer';
 import NavbarWaktuSholat from '../../components/NavWaktuSholat';
 import PrayerTimeManager from '../../components/PrayerTimeManager';
 import ScrollToTop from '../../components/ScrollToTop';
 
 export default function Home() {
+  useEffect(() => {
+    document.title = "Dzikir - Islamic";
+  }, []);
+
   // Ambil jam sekarang
   const now = new Date();
   const hour = now.getHours();
@@ -58,7 +61,7 @@ export default function Home() {
 
               {/* === REKOMENDASI DZIKIR HARIAN === */}
               <section className="py-8 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl mb-10">
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-5xl mx-auto">
                   <h2 className="text-xl font-semibold text-gray-800 mb-4">✨ Rekomendasi Waktu Ini</h2>
                   <Link
                     to={recommended.to}
@@ -79,7 +82,7 @@ export default function Home() {
               </section>
 
               {/* === MENU DZIKIR === */}
-              <section className="mb-10">
+              <section className="mb-0 max-w-5xl mx-auto">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Dzikir Harian</h2>
                 <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
                   <Link
@@ -159,9 +162,7 @@ export default function Home() {
           </>
         )}
       </PrayerTimeManager>
-
       <BottomNav />
-      <Footer />
     </div>
   );
 }
