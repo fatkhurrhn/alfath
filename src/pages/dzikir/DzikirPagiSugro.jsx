@@ -60,7 +60,7 @@ export default function DzikirPagiSugro() {
 
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-8 pt-10">
           <h1 className="text-3xl font-bold text-gray-800 mb-2">Dzikir Pagi</h1>
           <div className="flex justify-center items-center text-sm text-gray-600">
             <i className="ri-sun-line mr-1"></i>
