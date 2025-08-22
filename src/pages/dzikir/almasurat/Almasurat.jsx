@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import BottomNav from '../../../components/BottomNav'
 import NavbarWaktuSholat from '../../../components/NavWaktuSholat'
 import PrayerTimeManager from '../../../components/PrayerTimeManager'
+import Donate from '../../../components/Donate'
 import { Link } from 'react-router-dom';
 
 export default function Almasurat() {
@@ -44,6 +45,7 @@ export default function Almasurat() {
                                     </div>
                                 </Link>
                             </div>
+                            <Donate/>
                         </div>
                     </>
                 )}

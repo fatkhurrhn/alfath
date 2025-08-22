@@ -6,6 +6,7 @@ import DzikirPetangSugro from "./pages/dzikir/almasurat/PetangSugro";
 import JadwalSholat from "./pages/JadwalSholat";
 import NotFound from "./pages/NotFound";
 import Almasurat from "./pages/dzikir/almasurat/Almasurat";
+import Donate from "./pages/Donate";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/dzikir/almasurat/pagi" element={<DzikirPagiSugro />} />
         <Route path="/dzikir/almasurat/petang" element={<DzikirPetangSugro />} />
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
+        <Route path="/donate" element={<Donate />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />

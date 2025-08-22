@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import BottomNav from '../../components/BottomNav';
 import NavbarWaktuSholat from '../../components/NavWaktuSholat';
 import PrayerTimeManager from '../../components/PrayerTimeManager';
+import Donate from '../../components/Donate';
 
 export default function Home() {
   useEffect(() => {
@@ -152,8 +153,8 @@ export default function Home() {
                     <h3 className="text-base font-medium text-gray-800 mb-1">Istighfar & Taubat</h3>
                     <p className="text-gray-500 text-xs">Memohon ampunan Allah</p>
                   </Link>
-
                 </div>
+                <Donate/>
               </section>
             </div>
           </>

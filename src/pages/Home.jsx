@@ -2,10 +2,11 @@ import React, { useEffect } from 'react'
 import BottomNav from '../components/BottomNav'
 import NavbarWaktuSholat from '../components/NavWaktuSholat'
 import PrayerTimeManager from '../components/PrayerTimeManager'
+import Donate from '../components/Donate'
 
 export default function Home() {
   useEffect(() => {
-    document.title = "Home - Islamic";
+    document.title = "Jadwal Sholat - Islamic";
   }, []);
 
   return (
@@ -24,6 +25,7 @@ export default function Home() {
             {/* tempat isi kontennya */}
             <div className="container mx-auto max-w-5xl mx-auto px-5 pt-24">
               <h1>ini untuk halalaman</h1>
+              <Donate/>
             </div>
           </>
         )}

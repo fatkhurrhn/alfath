@@ -32,3 +32,5 @@ export default function Home() {
     </div>
   )
 }
+
+// untuk icon gunain cdn yg udh aku taro di index.html (  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" /> )dan penggunaannya kaya gini <i class="ri-music-2-line"></i> dst... dan untuk style warna pake perpaduan whith dan gray
