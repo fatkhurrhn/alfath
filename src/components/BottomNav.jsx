@@ -6,13 +6,15 @@ const BottomNav = () => {
 
   const navItems = [
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
-    { path: "/frontdev/blogs", icon: "ri-news-line", activeIcon: "ri-news-fill", label: "Blogs" },
+    { path: "/dzikir", icon: "ri-heart-pulse-line", activeIcon: "ri-heart-pulse-fill", label: "Dzikir" },
+    { path: "/alquran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
+    { path: "/frontdev/others", icon: "ri-calendar-todo-line", activeIcon: "ri-calendar-todo-fill", label: "Jadwal" },
     { path: "/frontdev/others", icon: "ri-apps-line", activeIcon: "ri-apps-fill", label: "Others" },
   ];
 
   return (
     <div className="fixed bottom-0 left-0 right-0 md:hidden z-50 bg-white shadow-lg border-t border-gray-100">
-      <div className="grid grid-cols-3 h-14">
+      <div className="grid grid-cols-5 h-14">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
