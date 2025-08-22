@@ -22,35 +22,19 @@ export default function Home() {
   const [showTranslation, setShowTranslation] = useState(false);
   const [greeting, setGreeting] = useState("");
 
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000); // update tiap 1 detik
-
-    return () => clearInterval(timer); // cleanup
-  }, []);
-  
-  const hours = currentTime.getHours().toString().padStart(2, "0");
-  const minutes = currentTime.getMinutes().toString().padStart(2, "0");
-  const seconds = currentTime.getSeconds().toString().padStart(2, "0");
-
-  const formattedTime = `${hours}:${minutes}:${seconds}`;
-
   // Set greeting based on time of day
   useEffect(() => {
-  const hour = currentTime.getHours();
-
-  if (hour >= 1 && hour < 11) {
-    setGreeting("Selamat Pagi");
-  } else if (hour >= 11 && hour < 16) {
-    setGreeting("Selamat Siang");
-  } else if (hour >= 16 && hour < 18) {
-    setGreeting("Selamat Sore");
-  } else {
-    setGreeting("Selamat Malam");
-  }
-}, [currentTime]);
+    const hour = currentTime.getHours();
+    if (hour >= 5 && hour < 12) {
+      setGreeting("Selamat Pagi");
+    } else if (hour >= 12 && hour < 15) {
+      setGreeting("Selamat Siang");
+    } else if (hour >= 15 && hour < 19) {
+      setGreeting("Selamat Sore");
+    } else {
+      setGreeting("Selamat Malam");
+    }
+  }, [currentTime]);
 
   // Memoized function to fetch random ayah
   const getRandomAyah = useCallback(async () => {
@@ -98,14 +82,26 @@ export default function Home() {
     day: "numeric",
   });
 
+  const formattedTime = currentTime.toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
   return (
     <div className="min-h-screen pb-20 bg-white">
       <PrayerTimeManager>
-        {({ nextPrayer, selectedCity, prayerTimes }) => (
+        {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect, prayerTimes }) => (
           <>
+            <NavbarWaktuSholat
+              onCitySelect={handleCitySelect}
+              nextPrayer={nextPrayer}
+              nextPrayerTime={nextPrayerTime}
+              countdown={countdown}
+              selectedCity={selectedCity}
+            />
 
             {/* Konten utama */}
-            <div className="container mx-auto max-w-5xl px-4 pt-7 pb-16">
+            <div className="container mx-auto max-w-5xl px-4 pt-20 pb-16">
               {/* Header dengan Salam dan Waktu */}
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold text-gray-800">{greeting}</h1>
@@ -117,15 +113,14 @@ export default function Home() {
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 mb-6 shadow-sm">
                 <p className="text-2xl text-center text-gray-800 font-uthmani leading-loose">{randomAyah.arabicText}</p>
                 <div className="text-xs text-center text-gray-600 mt-3">
-                  {randomAyah.surahName} : {randomAyah.ayahNumber} |
                   <span 
-                    className="cursor-pointer hover:text-blue-600 mx-1"
+                    className="cursor-pointer hover:text-blue-600 mx-1 px-2 py-1 bg-white rounded-full shadow-sm"
                     onClick={() => setShowTafsir(true)}
                   >
-                   Tafsir
-                  </span> -
+                    {randomAyah.surahName} : {randomAyah.ayahNumber} | Tafsir
+                  </span>
                   <span 
-                    className="cursor-pointer hover:text-blue-600 mx-1"
+                    className="cursor-pointer hover:text-blue-600 mx-1 px-2 py-1 bg-white rounded-full shadow-sm"
                     onClick={() => setShowTranslation(true)}
                   >
                     Terjemah
@@ -183,6 +178,12 @@ export default function Home() {
                         </span>
                       </div>
                     ))}
+                  </div>
+                  
+                  {/* Countdown to next prayer */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 text-center">
+                    <p className="text-xs text-gray-600">Menuju {nextPrayer}</p>
+                    <p className="text-sm font-semibold text-blue-600">{countdown}</p>
                   </div>
                 </div>
               </div>
