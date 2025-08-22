@@ -78,17 +78,17 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
 
   return (
     <>
-      <div className={`fixed top-0 left-0 w-full bg-gradient-to-r from-green-600 to-emerald-700 text-white py-3 px-5 shadow-lg transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
+      <div className={`fixed top-0 left-0 w-full bg-white text-gray-800 py-3 px-5 shadow-md transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <div className="bg-white bg-opacity-20 p-2 rounded-lg">
+            <div className="bg-gray-100 p-2 rounded-lg">
               <span className="text-xl">🕌</span>
             </div>
             <div className="ml-3">
               <h2 className="text-sm font-semibold">Waktu Sholat</h2>
               <button 
                 onClick={() => setShowCityModal(true)}
-                className="text-xs flex items-center mt-1 bg-white bg-opacity-0 hover:bg-opacity-10 transition-all rounded px-2 py-1"
+                className="text-xs flex items-center mt-1 text-gray-700"
                 disabled={isLoading}
               >
                 {selectedCity || "Pilih Kota"} ▼
@@ -96,15 +96,15 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
             </div>
           </div>
           <div className="text-right">
-            <p className="text-sm font-semibold">{nextPrayer} - {nextPrayerTime}</p>
-            <p className="text-xs opacity-90">{countdown}</p>
+            <p className="text-sm font-semibold text-gray-800">{nextPrayer} - {nextPrayerTime}</p>
+            <p className="text-xs text-gray-600">- {countdown}</p>
           </div>
         </div>
       </div>
 
       {/* Modal Pilih Kota */}
       {showCityModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl w-full max-w-md p-4 max-h-96 overflow-hidden flex flex-col">
             <h3 className="text-lg font-bold mb-4 text-center text-gray-800">Pilih Kota</h3>
             
@@ -115,7 +115,7 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
                 placeholder="Cari kota..."
                 value={searchQuery}
                 onChange={handleSearchChange}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
               />
               <span className="absolute right-3 top-3 text-gray-400">🔍</span>
             </div>
@@ -131,7 +131,7 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
                       key={city.id}
                       className={`w-full p-3 rounded-lg text-left ${
                         selectedCity === city.lokasi 
-                          ? 'bg-emerald-500 text-white' 
+                          ? 'bg-gray-700 text-white' 
                           : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
                       }`}
                       onClick={() => handleCityChange(city.lokasi, city.id)}

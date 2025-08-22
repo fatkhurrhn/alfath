@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollToTop from '../../components/ScrollToTop';
-import Navbar from '../../components/TopNavbar';
+import Navbar from '../../components/NavWaktuSholat';
 import Footer from '../../components/Footer';
 import BottomNav from '../../components/BottomNav';
 
