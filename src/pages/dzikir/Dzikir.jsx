@@ -107,7 +107,7 @@ export default function Dzikir() {
             className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
           >
             <div className="text-3xl text-purple-500 mb-3">
-              <i class="ri-time-line"></i>
+              <i className="ri-time-line"></i>
             </div>
             <h3 className="text-base font-medium text-gray-800 mb-1">Pagi & Petang</h3>
             <p className="text-gray-500 text-xs">Waktu penuh berkah</p>

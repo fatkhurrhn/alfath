@@ -8,8 +8,8 @@ const BottomNav = () => {
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
     { path: "/dzikir", icon: "ri-heart-pulse-line", activeIcon: "ri-heart-pulse-fill", label: "Dzikir" },
     { path: "/alquran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
-    { path: "/frontdev/others", icon: "ri-calendar-todo-line", activeIcon: "ri-calendar-todo-fill", label: "Jadwal" },
-    { path: "/frontdev/others", icon: "ri-apps-line", activeIcon: "ri-apps-fill", label: "Others" },
+    { path: "/jadwal-sholat", icon: "ri-calendar-todo-line", activeIcon: "ri-calendar-todo-fill", label: "Jadwal" },
+    { path: "/others", icon: "ri-apps-line", activeIcon: "ri-apps-fill", label: "Others" },
   ];
 
   return (
