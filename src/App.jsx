@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Dzikir from "./pages/dzikir/Dzikir";
 import DzikirPagiSugro from "./pages/dzikir/DzikirPagiSugro";
+import DzikirSoreSugro from "./pages/dzikir/DzikirSoreSugro";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/dzikir" element={<Dzikir />} />
         <Route path="/dzikir/pagi-sugro" element={<DzikirPagiSugro />} />
+        <Route path="/dzikir/sore-sugro" element={<DzikirSoreSugro />} />
       </Routes>
     </Router>
   );
