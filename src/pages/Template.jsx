@@ -20,7 +20,7 @@ export default function Home() {
 
             {/* tempat isi kontennya */}
             <div className="container mx-auto px-4 pt-24">
-              <h1>ini untuk halalaman</h1>
+              <h1>ini untuk isi halalaman</h1>
             </div>
           </>
         )}

@@ -6,12 +6,12 @@ export default function Footer() {
     <footer className="border-t border-t-gray-200 py-3 mt-4">
       <div className="px-4 sm:mx-auto text-gray-800 max-w-4xl flex justify-between items-center">
         <p className="text-sm">
-          © {new Date().getFullYear()} Fatkhurrhn, All right reserved.
+          © {new Date().getFullYear()} Islamic- F, All right reserved.
         </p>
         {/* Container untuk icon */}
         <div className="flex space-x-3 sm:space-x-4 ml-auto text-gray-800 items-center justify-center sm:justify-start">
         <Link
-            to="https://github.com/fatkhurrhn"
+            to="https://github.com/fatkhurrhn/islamic-fatkhurrhn"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xl"
@@ -19,7 +19,7 @@ export default function Footer() {
             <i className="ri-github-fill"></i>
           </Link>
           <Link
-            to="https://tiktok.com/@fatkhurrhnn"
+            to="https://tiktok.com/@storythurr"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xl"

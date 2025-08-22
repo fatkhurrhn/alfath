@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import BottomNav from '../components/BottomNav'
-import NavbarWaktuSholat from '../components/NavWaktuSholat'
 
-export default function Home() {
-  const [, setPrayerTimes] = useState({
+const PrayerTimeManager = ({ children }) => {
+  const [prayerTimes, setPrayerTimes] = useState({
     Subuh: "--:--",
     Dzuhur: "--:--",
     Ashar: "--:--",
@@ -27,7 +25,7 @@ export default function Home() {
     }
   }, []);
 
-  // Handle pemilihan kota dari navbar
+  // Handle pemilihan kota
   const handleCitySelect = (cityId, cityName) => {
     setSelectedCityId(cityId);
     setSelectedCity(cityName);
@@ -153,25 +151,14 @@ export default function Home() {
     return () => clearInterval(countdownInterval);
   };
 
-  return (
-    <div className="min-h-screen pb-20">
-      <NavbarWaktuSholat
-        onCitySelect={handleCitySelect}
-        nextPrayer={nextPrayer}
-        nextPrayerTime={nextPrayerTime}
-        countdown={countdown}
-        selectedCity={selectedCity}
-      />
-
-      {/* Konten Jadwal Sholat Lengkap */}
-      <div className="container mx-auto px-4 pt-24">
-        <h1> ini isi halamannya</h1>
-      </div>
-
-      <BottomNav />
-    </div>
-  );
+  return children({
+    prayerTimes,
+    nextPrayer,
+    nextPrayerTime,
+    countdown,
+    selectedCity,
+    handleCitySelect
+  });
 }
 
-
-
+export default PrayerTimeManager;
