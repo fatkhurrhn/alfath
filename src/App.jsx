@@ -1,13 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Almasurat from "./pages/Almasurat";
+import Dzikir from "./pages/dzikir/Dzikir";
+import DzikirPagiSugro from "./pages/dzikir/DzikirPagiSugro";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/almasurat" element={<Almasurat />} />
+        <Route path="/dzikir" element={<Dzikir />} />
+        <Route path="/dzikir/pagi-sugro" element={<DzikirPagiSugro />} />
       </Routes>
     </Router>
   );

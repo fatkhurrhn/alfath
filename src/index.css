@@ -1,3 +1,65 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Import font-face */
+@font-face {
+  font-family: 'UthmaniFont';
+  src: url('/fonts/UthmaniFont.woff') format('woff');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'LPMQ IsepMisbah';
+  src: url('/fonts/LPMQ IsepMisbah.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: url('/fonts/Nunito.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Handlee';
+  src: url('/fonts/Handlee.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'EduQLDHand';
+  src: url('/fonts/EduQLDHand.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ShadowsIntoLight';
+  src: url('/fonts/ShadowsIntoLight.ttf') format('truetype');
+  font-display: swap;
+}
+
+/* Kelas utilitas untuk font */
+.font-uthmani {
+  font-family: 'UthmaniFont', 'Traditional Arabic', serif;
+}
+
+.font-lpmq {
+  font-family: 'LPMQ IsepMisbah', 'Traditional Arabic', serif;
+}
+
+.font-nunito {
+  font-family: 'Nunito', sans-serif;
+}
+
+.font-handlee {
+  font-family: 'Handlee', cursive;
+}
+
+.font-eduhand {
+  font-family: 'EduQLDHand', cursive;
+}
+
+.font-shadows {
+  font-family: 'ShadowsIntoLight', cursive;
+}

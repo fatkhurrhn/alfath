@@ -5,7 +5,14 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'uthmani': ['UthmaniFont', 'sans-serif'],
+        'nunito': ['Nunito', 'sans-serif'],
+        'handlee': ['Handlee', 'cursive'],
+        'lpmq': ['LPMQ IsepMisbah', 'serif'],
+      },
+    },
   },
   plugins: [],
 }

@@ -96,28 +96,12 @@
         "terjemah" : "(1) Katakanlah: “Aku berlindung kepada Tuhan (yang memelihara dan menguasai) manusia. (2) Raja manusia. (3) Sembahan manusia. (4) dari kejahatan (bisikan) syaithan yang biasa bersembunyi,(5) yang membisikkan (kejahatan) ke dalam dada manusia. (6) dari (golongan) jin dan manusia."
     },
     {
-        "id" : 13,
-        "title" : "Do'a Al-Matsurat Pagi",
-        "repeat" : 3, 
-        "core" : "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّهَِ وَلْحَمْدُ لِلّهَِ لاَ شَرِيكَ لَهُ لَا إِلَهَ إِلَّاهُوَ وَإِلَيْهِ النُّشُوْرُ",
-        "latin" : "Ash-bahnaa wa ash-bahal mulku lillaahi walhamdu lillaahi la syariika lahu laa ilaaha ilaa huwa wa ilaihi-nusyuur",
-        "terjemah" : "Kami berpagi hari dan berpagi hari pula kerjaan milik Allah. Segala puji bagi Allah, tiada sekutu bagi-Nya, tiada Tuhan melainkan Dia dan kepada-Nya tempat kembali."
-    },
-    {
         "id" : 14,
         "title" : "Do'a Al-Matsurat Sore",
         "repeat" : 3, 
         "core" : "أَمْسَيْنَا وَ أَمْسَ الْمُلْكُ لِلَّهِ وَلْحَمْدُ لِلهِ لَا شَرِيْكَ لَهُ لَا إِلَهَ إِلَّاهُوَ وَإِلَيْهِ الْمَصِيْرُ",
         "latin" : "amsainaa wa amsa mulku lillaahi walhamdu lillaahi la syariika lahu laa ilaaha ilaa huwa wa ilaihil-mashiir",
         "terjemah" : "Kami bersore hari dan bersore hari pula kerajaan milik Allah. Segala puji bagi Allah, tiada sekutu bagi-Nya, tiada Tuhan melainkan Dia dan kepada-Nya tempat kembali."
-    },
-    {
-        "id" : 15,
-        "title" : "Do'a Al-Matsurat Pagi",
-        "repeat" : 3, 
-        "core" : "أَصْبَحْنَا عَلَى فِطْرَةِ اْلإِسْلاَمِ وَعَلَى كَلِمَةِ اْلإِخْلاَصِ وَعَلَى دِيْنِ نَبِيِّنَا مُحَمَّدٍ صَلَّى اللَّهُ عَلَيْهِ وَسَلَّمَ وَعَلَى مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ",
-        "latin" : "Ash-bahnaa ‘alaa fithrotil islaami wakalimatil ikhlaashi wa ‘alaa diini nabiyyinaa muhammadin shollallohu ‘alaihi wa sallama wa ‘alaa millati abiinaa ibroohiima haniifaw wa maa kaana minal musyrikiin",
-        "terjemah" : "Di waktu pagi kami memegang agama Islam, kalimat ikhlas, agama Nabi kita Muhammad shallallahu ‘alaihi wa sallam, dan agama ayah kami Ibrahim, yang berdiri di atas jalan yang lurus, muslim dan tidak tergolong orang-orang musyrik."
     },
     {
         "id" : 16,
@@ -128,28 +112,12 @@
         "terjemah" : "Di waktu sore kami memegang agama Islam, kalimat ikhlas, agama Nabi kita Muhammad shallallahu ‘alaihi wa sallam, dan agama ayah kami Ibrahim, yang berdiri di atas jalan yang lurus, muslim dan tidak tergolong orang-orang musyrik."
     },
     {
-        "id" : 17,
-        "title" : "Do'a Al-Matsurat Pagi",
-        "repeat" : 3, 
-        "core" : "اللَّهُمَّ إِنِّي أَصْبَحْتُ مِنْكَ فِي نِعْمَةٍ وَعَافِيَةٍ وَسِتْر فَأَتِمَّ عَلَيَّ نِعْمَتَكَ وَعَافِيَتَكَ وَسِتْرَكَ فِي الدُّنْيَا وَالآخِرَة",
-        "latin" : "Alloohumma innii ash-bahtu minka fii ni’matin wa ‘aafiyatin wa sitrin, fa atimma ‘alayya ni’mataka wa ‘aafiyataka wa sitroka fid-dunyaa wal- aakhiroh",
-        "terjemah" : "Ya Allah, sesungguhnya aku berpagi hari dari-Mu dalam kenikmatan, kesehatan dan perlindungan. Maka sempurnakannlah untukku kenikmatan, kesehatan dan perlindungan-Mu itu di dunia dan akhirat."
-    },
-    {
         "id" : 18,
         "title" : "Do'a Al-Matsurat Sore",
         "repeat" : 3, 
         "core" : "اللَّهُمَّ إِنِّي أَمْسَيتُ مِنْكَ فِي نِعْمَةٍ وَعَافِيَةٍ وَسِتْر فَأَتِمَّ عَلَيَّ نِعْمَتَكَ وَعَافِيَتَكَ وَسِتْرَكَ فِي الدُّنْيَا وَالآخِرَة",
         "latin" : "Alloohumma innii amsaitu minka fii ni’matin wa ‘aafiyatin wa sitrin, fa atimma ‘alayya ni’mataka wa ‘aafiyataka wa sitroka fid-dunyaa wal- aakhiroh",
         "terjemah" : "Ya Allah, sesungguhnya aku bersore hari dari-Mu dalam kenikmatan, kesehatan dan perlindungan. Maka sempurnakannlah untukku kenikmatan, kesehatan dan perlindungan-Mu itu di dunia dan akhirat."
-    },
-    {
-        "id" : 19,
-        "title" : "Do'a Al-Matsurat Pagi",
-        "repeat" : 3, 
-        "core" : "اللَّهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لاَ شَرِيْكَ لَكَ فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ",
-        "latin" : "Alloohumma maa ashbaha bii min ni’matin aw bi ahadin min kholqika faminka wahdaka laa syariika laka falakal-hamdu walakasy-syukr",
-        "terjemah" : "Ya Allah, kenikmatan yang aku atau salah seorang dari makhluk-Mu berpagi hari dengannya adalah dari-Mu semata; tiada sekutu bagi-Mu. Maka bagi-Mu segala puji dan rasa syukur."
     },
     {
         "id" : 20,
