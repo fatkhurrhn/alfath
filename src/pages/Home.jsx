@@ -84,7 +84,7 @@ export default function Home() {
               {/* Ayah Card */}
               <div className="grid grid-cols-1">
                 <div className="p-4">
-                  <p className="text-xl text-center text-gray-800 font-uthmani">{randomAyah.arabicText}</p>
+                  <p className="text-2xl text-center text-gray-800 font-uthmani">{randomAyah.arabicText}</p>
                   <div className="text-[11px] text-center text-gray-600 mt-2">
                     <span 
                       className="cursor-pointer hover:text-blue-600 mx-1"
