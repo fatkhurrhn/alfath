@@ -9,7 +9,7 @@ const BottomNav = () => {
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
     { path: "/dzikir", icon: "ri-heart-pulse-line", activeIcon: "ri-heart-pulse-fill", label: "Dzikir" },
     { path: "/alquran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
-    { path: "/jadwal-sholat", icon: "ri-calendar-todo-line", activeIcon: "ri-calendar-todo-fill", label: "Jadwal" },
+    { path: "/kalender", icon: "ri-calendar-line", activeIcon: "ri-calendar-fill", label: "Kalender" },
     { path: "/more", icon: "ri-apps-line", activeIcon: "ri-apps-fill", label: "More" },
   ];
 
@@ -30,11 +30,10 @@ const BottomNav = () => {
 
   // Menu tambahan untuk More
   const moreMenus = [
-    { path: "/kalender-hijriah", label: "Kalender Hijriah", icon: "ri-calendar-2-line" },
+    { path: "/jadwal-sholat", label: "Jadwal Sholat", icon: "ri-calendar-todo-line" },
     { path: "/sholawat", label: "Sholawat", icon: "ri-music-2-line" },
     { path: "/asmaul-husna", label: "Asmaul Husna", icon: "ri-star-smile-line" },
     { path: "/adab-tidur", label: "Adab Tidur", icon: "ri-hotel-bed-line" },
-    { path: "/doa-harian", label: "Doa Harian", icon: "ri-moon-cloudy-line" },
     { path: "/kisah-nabi", label: "Kisah Nabi", icon: "ri-book-read-line" },
     { path: "/hadits", label: "Hadits", icon: "ri-book-2-line" },
     { path: "/tasbih-digital", label: "Tasbih Digital", icon: "ri-donut-chart-line" },

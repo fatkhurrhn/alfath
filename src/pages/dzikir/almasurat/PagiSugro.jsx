@@ -6,7 +6,7 @@ export default function DzikirPagiSugro() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    fetch('/data/dzikir-sugro-pagi.json')
+    fetch('/data/dzikir/dzikir-sugro-pagi.json')
       .then((response) => response.json())
       .then((data) => setDzikirData(data))
       .catch((error) => console.error('Error fetching data:', error));

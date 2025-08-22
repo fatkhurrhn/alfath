@@ -6,7 +6,7 @@ export default function DzikirSoreSugro() {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
-    fetch('/data/dzikir-sugro-sore.json')
+    fetch('/data/dzikir/dzikir-sugro-sore.json')
       .then((response) => response.json())
       .then((data) => setDzikirData(data))
       .catch((error) => console.error('Error fetching data:', error));
