@@ -1,6 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const JuzList = ({ juzList, isJuzLoading, searchQuery }) => {
+  const navigate = useNavigate();
+  
   // Fungsi untuk mengambil dua kata pertama dari teks Arab
   const getFirstTwoWords = (arabicText) => {
     const cleanText = arabicText.replace(/[^\u0600-\u06FF\s]/g, '');
@@ -17,6 +20,11 @@ const JuzList = ({ juzList, isJuzLoading, searchQuery }) => {
     );
   });
 
+  // Fungsi untuk menangani klik pada item juz
+  const handleJuzClick = (juzNumber) => {
+    navigate(`/quran/juz/${juzNumber}`);
+  };
+
   if (isJuzLoading) {
     return <div className="p-4 text-center text-gray-500">Memuat data juz...</div>;
   }
@@ -28,7 +36,11 @@ const JuzList = ({ juzList, isJuzLoading, searchQuery }) => {
   return (
     <div className="divide-y divide-gray-100">
       {filteredJuz.map((juz, index) => (
-        <div key={index} className="p-4 hover:bg-gray-50 cursor-pointer">
+        <div 
+          key={index} 
+          className="p-4 hover:bg-gray-50 cursor-pointer"
+          onClick={() => handleJuzClick(juz.juz)}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <div className="w-8 h-8 flex items-center justify-center bg-green-100 text-green-700 rounded-[6px] mr-3">
@@ -42,7 +54,7 @@ const JuzList = ({ juzList, isJuzLoading, searchQuery }) => {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-gray-500 font-uthmani text-[16px] mb-1">
+              <p className="text-gray-500 font-mushaf text-[16px] mb-1">
                 {juz.verses && juz.verses.length > 0 
                   ? getFirstTwoWords(juz.verses[0].text.arab) 
                   : '...'

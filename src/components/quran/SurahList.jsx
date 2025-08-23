@@ -20,7 +20,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
   }
 
   return (
-    <div className="divide-y divide-gray-100">
+    <div className="divide-y divide-gray-100 px-2">
       {filteredSurahs.map((surah, index) => (
         <Link to={`/quran/surah/${surah.number}`} key={index} className="p-4 hover:bg-gray-50 cursor-pointer">
           <div className="flex items-center justify-between">
@@ -36,7 +36,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-gray-500 font-uthmani text-[22px]">{surah.name.short}</p>
+              <p className="text-gray-500 font-mushaf text-[22px]">{surah.name.short}</p>
             </div>
           </div>
         </Link>
