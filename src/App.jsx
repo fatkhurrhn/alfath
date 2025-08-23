@@ -10,11 +10,13 @@ import Donate from "./pages/Donate";
 import AutoToTop from "./components/AutoToTop";
 import Tes from "./pages/Tes";
 import Kalender from "./pages/Kalender";
+import ALQuran from "./pages/alquran/HomeQuran";
+import DetailSurah from "./pages/alquran/DetailSurah";
 
 function App() {
   return (
     <Router>
-      <AutoToTop/>
+      <AutoToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dzikir" element={<Dzikir />} />
@@ -25,6 +27,9 @@ function App() {
         <Route path="/donate" element={<Donate />} />
         <Route path="/tes" element={<Tes />} />
         <Route path="/kalender" element={<Kalender />} />
+        <Route path="/quran" element={<ALQuran />} />
+        <Route path="/quran/surah/:id" element={<DetailSurah />} />
+        {/* <Route path="/quran/surah/:id/:id" element={<DetailSurah />} /> */}
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />

@@ -39,6 +39,15 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: Mushaf;
+  src: url('/fonts/mushaf.ttf');
+}
+
+.font-mushaf {
+  font-family: Mushaf;
+}
+
 /* Kelas utilitas untuk font */
 .font-uthmani {
   font-family: 'UthmaniFont', 'Traditional Arabic', serif;

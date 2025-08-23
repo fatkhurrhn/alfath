@@ -8,7 +8,7 @@ const BottomNav = () => {
   const navItems = [
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
     { path: "/dzikir", icon: "ri-heart-pulse-line", activeIcon: "ri-heart-pulse-fill", label: "Dzikir" },
-    { path: "/alquran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
+    { path: "/quran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
     { path: "/kalender", icon: "ri-calendar-line", activeIcon: "ri-calendar-fill", label: "Kalender" },
     { path: "/more", icon: "ri-apps-line", activeIcon: "ri-apps-fill", label: "More" },
   ];
