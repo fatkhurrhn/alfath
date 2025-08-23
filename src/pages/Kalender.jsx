@@ -7,6 +7,8 @@ export default function HybridCalendar() {
   const [loading, setLoading] = useState(false);
   const [specialDates, setSpecialDates] = useState({});
   const [monthEvents, setMonthEvents] = useState([]);
+  const [hijriMonthRange, setHijriMonthRange] = useState('');
+  const [calendarDays, setCalendarDays] = useState([]);
 
   // Fungsi untuk mendapatkan jumlah hari dalam bulan
   const getDaysInMonth = (year, month) => {
@@ -26,23 +28,38 @@ export default function HybridCalendar() {
     setSelectedDate(null);
   };
 
-  // Fungsi untuk mendapatkan data Hijriyah untuk tanggal tertentu
-  const fetchHijriDate = async (gregorianDate) => {
-    const formattedDate = `${gregorianDate.getDate().toString().padStart(2, '0')}-${(gregorianDate.getMonth() + 1).toString().padStart(2, '0')}-${gregorianDate.getFullYear()}`;
-    
+  // Fungsi untuk mendapatkan data Hijriyah untuk semua tanggal dalam bulan
+  const fetchHijriMonthData = async (year, month) => {
     try {
       setLoading(true);
-      const response = await fetch(`https://api.aladhan.com/v1/gToH/${formattedDate}?calendarMethod=UAQ`);
-      const data = await response.json();
+      const daysInMonth = getDaysInMonth(year, month);
+      const newHijriData = { ...hijriData };
       
-      if (data.code === 200) {
-        setHijriData(prev => ({
-          ...prev,
-          [formattedDate]: data.data.hijri
-        }));
+      // Fetch data untuk semua tanggal dalam bulan
+      for (let day = 1; day <= daysInMonth; day++) {
+        const formattedDate = `${day.toString().padStart(2, '0')}-${(month + 1).toString().padStart(2, '0')}-${year}`;
+        
+        // Skip jika data sudah ada
+        if (newHijriData[formattedDate]) continue;
+        
+        try {
+          const response = await fetch(`https://api.aladhan.com/v1/gToH/${formattedDate}?calendarMethod=UAQ`);
+          const data = await response.json();
+          
+          if (data.code === 200) {
+            newHijriData[formattedDate] = data.data.hijri;
+          }
+        } catch (error) {
+          console.error(`Error fetching hijri date for ${formattedDate}:`, error);
+        }
+        
+        // Tambahkan delay kecil untuk menghindari rate limiting
+        await new Promise(resolve => setTimeout(resolve, 30));
       }
+      
+      setHijriData(newHijriData);
     } catch (error) {
-      console.error('Error fetching hijri date:', error);
+      console.error('Error fetching hijri month data:', error);
     } finally {
       setLoading(false);
     }
@@ -94,14 +111,6 @@ export default function HybridCalendar() {
   // Fungsi untuk menangani klik tanggal
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    
-    // Format tanggal untuk kunci
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
-    
-    // Jika data Hijriyah belum ada, fetch dari API
-    if (!hijriData[formattedDate]) {
-      fetchHijriDate(date);
-    }
   };
 
   // Fungsi untuk menentukan event berdasarkan hari dan tanggal Hijriyah
@@ -159,28 +168,81 @@ export default function HybridCalendar() {
       '17-08-2025': 'Hari Kemerdekaan RI ke-80',
       '01-01-2024': 'Tahun Baru Masehi',
       '01-05-2024': 'Hari Buruh Internasional',
-      '25-12-2024': 'Hari Raya Natal'
+      '25-12-2024': 'Hari Raya Natal',
+      '10-04-2024': 'Hari Raya Idul Fitri 1445 H',
+      '16-06-2024': 'Hari Raya Idul Adha 1445 H'
     });
-    
-    // Ambil data tanggal hari ini
-    const today = new Date();
-    const formattedToday = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getFullYear()}`;
-    
-    if (!hijriData[formattedToday]) {
-      fetchHijriDate(today);
-    }
   }, []);
 
-  // Effect untuk mengupdate event bulanan ketika bulan atau data berubah
+  // Effect untuk mengambil data Hijriyah ketika bulan berubah
+  useEffect(() => {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    fetchHijriMonthData(year, month);
+  }, [currentDate]);
+
+  // Effect untuk menggenerate hari kalender
+  useEffect(() => {
+    const generateCalendarDays = () => {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const daysInMonth = getDaysInMonth(year, month);
+      const firstDayOfMonth = getFirstDayOfMonth(year, month);
+      const days = [];
+      
+      // Tambahkan hari dari bulan sebelumnya
+      const prevMonth = month === 0 ? 11 : month - 1;
+      const prevMonthYear = month === 0 ? year - 1 : year;
+      const daysInPrevMonth = getDaysInMonth(prevMonthYear, prevMonth);
+      
+      for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+        const day = daysInPrevMonth - i;
+        const date = new Date(prevMonthYear, prevMonth, day);
+        days.push({
+          date,
+          isCurrentMonth: false,
+          isOtherMonth: true
+        });
+      }
+      
+      // Tambahkan hari dalam bulan saat ini
+      for (let i = 1; i <= daysInMonth; i++) {
+        const date = new Date(year, month, i);
+        days.push({
+          date,
+          isCurrentMonth: true,
+          isOtherMonth: false
+        });
+      }
+      
+      // Tambahkan hari dari bulan berikutnya
+      const nextMonth = month === 11 ? 0 : month + 1;
+      const nextMonthYear = month === 11 ? year + 1 : year;
+      const daysToAdd = 42 - days.length; // 6 minggu x 7 hari = 42
+      
+      for (let i = 1; i <= daysToAdd; i++) {
+        const date = new Date(nextMonthYear, nextMonth, i);
+        days.push({
+          date,
+          isCurrentMonth: false,
+          isOtherMonth: true
+        });
+      }
+      
+      setCalendarDays(days);
+    };
+    
+    generateCalendarDays();
+  }, [currentDate]);
+
+  // Effect untuk mengupdate event bulanan ketika data berubah
   useEffect(() => {
     const generateMonthEvents = () => {
       const year = currentDate.getFullYear();
       const month = currentDate.getMonth();
       const daysInMonth = getDaysInMonth(year, month);
       const events = [];
-      
-      // Cari range bulan Hijriyah untuk judul
-      let hijriMonths = new Set();
+      const hijriMonths = new Set();
       
       for (let i = 1; i <= daysInMonth; i++) {
         const date = new Date(year, month, i);
@@ -211,28 +273,9 @@ export default function HybridCalendar() {
     setMonthEvents(generateMonthEvents());
   }, [currentDate, hijriData]);
 
-  // State untuk range bulan Hijriyah
-  const [hijriMonthRange, setHijriMonthRange] = useState('');
-
-  // Generate kalender
+  // Dapatkan data Hijriyah untuk bulan dan tahun saat ini
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
-  const daysInMonth = getDaysInMonth(year, month);
-  const firstDayOfMonth = getFirstDayOfMonth(year, month);
-  
-  const days = [];
-  
-  // Tambahkan hari kosong untuk minggu sebelumnya
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    days.push(null);
-  }
-  
-  // Tambahkan hari dalam bulan
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push(new Date(year, month, i));
-  }
-
-  // Dapatkan data Hijriyah untuk bulan dan tahun saat ini
   const currentMonthYear = `${getIndonesianMonthName(month)} ${year}`;
 
   return (
@@ -266,6 +309,10 @@ export default function HybridCalendar() {
         </button>
       </div>
       
+      {loading && (
+        <div className="text-center text-sm text-gray-500 mb-2">Memuat data hijriyah...</div>
+      )}
+      
       <div className="grid grid-cols-7 gap-2 text-center mb-4">
         {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map(day => (
           <div key={day} className="text-xs font-medium text-gray-500 py-1">
@@ -273,35 +320,30 @@ export default function HybridCalendar() {
           </div>
         ))}
         
-        {days.map((date, index) => {
-          if (!date) {
-            return <div key={`empty-${index}`} className="h-12"></div>;
-          }
-          
-          const day = date.getDate();
-          const formattedDate = `${day.toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+        {calendarDays.map((dayObj, index) => {
+          const date = dayObj.date;
+          const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
           const isToday = new Date().toDateString() === date.toDateString();
           const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
-          const events = getEventsForDate(date, hijriData[formattedDate]);
+          const hijriInfo = hijriData[formattedDate];
+          const events = getEventsForDate(date, hijriInfo);
           
           return (
             <div 
-              key={formattedDate}
-              onClick={() => handleDateClick(date)}
-              className={`h-12 flex items-center justify-center rounded-lg cursor-pointer transition-all relative ${
-                isToday 
-                  ? "bg-blue-100 border border-blue-300" 
-                  : isSelected 
-                    ? "bg-blue-500 text-white" 
-                    : "hover:bg-gray-100"
+              key={index}
+              onClick={() => dayObj.isCurrentMonth && handleDateClick(date)}
+              className={`h-12 flex items-center justify-center rounded-lg transition-all relative ${
+                dayObj.isCurrentMonth 
+                  ? `cursor-pointer ${isToday ? "bg-blue-100 border border-blue-300" : isSelected ? "bg-blue-500 text-white" : "hover:bg-gray-100"}`
+                  : "text-gray-400"
               }`}
             >
-              <span className={`text-sm font-medium ${isSelected ? "text-white" : "text-gray-800"}`}>
-                {day}
+              <span className={`text-sm font-medium ${isSelected ? "text-white" : dayObj.isCurrentMonth ? "text-gray-800" : "text-gray-400"}`}>
+                {date.getDate()}
               </span>
               
               {/* Penanda event */}
-              {events.length > 0 && (
+              {dayObj.isCurrentMonth && events.length > 0 && (
                 <div className="absolute bottom-1 flex space-x-1">
                   {events.map((event, i) => (
                     <div 
@@ -359,7 +401,7 @@ export default function HybridCalendar() {
         </div>
       )}
       
-      {/* Daftar event bulanan */}
+      {/* Daftar event bulanan - Tampilkan info Hijriyah untuk semua event */}
       {monthEvents.length > 0 && (
         <div className="mt-4">
           <h3 className="font-semibold text-gray-800 mb-3">Event Bulan {getIndonesianMonthName(month)} {year}</h3>
@@ -383,6 +425,11 @@ export default function HybridCalendar() {
                             <div key={j} className="flex items-center mb-1">
                               <span className="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
                               {e.title}
+                              {event.hijriInfo && (
+                                <span className="text-gray-500 text-xs ml-2">
+                                  ({event.hijriInfo.day} {getHijriMonthName(event.hijriInfo.month.number)} {event.hijriInfo.year} H)
+                                </span>
+                              )}
                             </div>
                           ))}
                       </div>
