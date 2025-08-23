@@ -6,11 +6,11 @@ import HybridCalendar from '../components/HybridCalendar'
 
 export default function Home() {
   useEffect(() => {
-    document.title = "Home - Islamic";
+    document.title = "Kalender - Islamic";
   }, []);
   
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen">
       <PrayerTimeManager>
         {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect }) => (
           <>
@@ -23,7 +23,7 @@ export default function Home() {
             />
 
             {/* tempat isi kontennya */}
-            <div className="container mx-auto max-w-xl mx-auto px-5 pt-24">
+            <div className="container mx-auto max-w-xl px-4 md:mb-0 pt-20 mb-[70px] border-x border-gray-200">
               <HybridCalendar/>
             </div>
           </>

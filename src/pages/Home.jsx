@@ -21,7 +21,7 @@ import NewsSection from '../components/home/NewsSection'
 export default function Home() {
   // Set judul halaman
   useEffect(() => {
-    document.title = "Home - Islamic";
+    document.title = "Islamic App";
   }, []);
 
   return (

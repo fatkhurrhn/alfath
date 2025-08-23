@@ -10,6 +10,7 @@ export default function HybridCalendar() {
   const [hijriMonthRange, setHijriMonthRange] = useState('');
   const [calendarDays, setCalendarDays] = useState([]);
   const [autoShowDate, setAutoShowDate] = useState(null);
+  const [eventsLoading, setEventsLoading] = useState(false); // State untuk loading events
 
   // Fungsi untuk mendapatkan jumlah hari dalam bulan
   const getDaysInMonth = (year, month) => {
@@ -28,12 +29,14 @@ export default function HybridCalendar() {
     setCurrentDate(newDate);
     setSelectedDate(null);
     setAutoShowDate(null);
+    setEventsLoading(true); // Set loading events ketika bulan berubah
   };
 
   // Fungsi untuk mendapatkan data Hijriyah untuk semua tanggal dalam bulan
   const fetchHijriMonthData = async (year, month) => {
     try {
       setLoading(true);
+      setEventsLoading(true); // Set loading events
       const daysInMonth = getDaysInMonth(year, month);
       const newHijriData = { ...hijriData };
 
@@ -273,7 +276,10 @@ export default function HybridCalendar() {
       return events;
     };
 
-    setMonthEvents(generateMonthEvents());
+    if (Object.keys(hijriData).length > 0) {
+      setMonthEvents(generateMonthEvents());
+      setEventsLoading(false); // Matikan loading events setelah data siap
+    }
   }, [currentDate, hijriData]);
 
   // Effect untuk otomatis menampilkan info tanggal penting saat data siap
@@ -353,8 +359,8 @@ export default function HybridCalendar() {
             <div
               key={index}
               onClick={() => dayObj.isCurrentMonth && handleDateClick(date)}
-              className={`h-12 flex items-center justify-center rounded-lg transition-all relative ${dayObj.isCurrentMonth
-                ? `cursor-pointer ${isToday ? "bg-blue-100 border border-blue-300" : isSelected || isAutoShown ? "bg-blue-500 text-gray-800" : "hover:bg-gray-100"}`
+              className={`h-10 w-10 flex items-center justify-center rounded-lg transition-all relative ${dayObj.isCurrentMonth
+                ? `cursor-pointer ${isToday ? "bg-blue-100 border border-blue-300" : isSelected || isAutoShown ? "bg-gray-200 text-gray-800" : "hover:bg-gray-100"}`
                 : "text-gray-400"
                 }`}
             >
@@ -368,7 +374,7 @@ export default function HybridCalendar() {
                   {events.map((event, i) => (
                     <div
                       key={i}
-                      className={`w-2 h-2 rounded-full ${event.color === 'blue' ? 'bg-blue-500' :
+                      className={`w-1 h-1 rounded-full ${event.color === 'blue' ? 'bg-blue-500' :
                         event.color === 'yellow' ? 'bg-yellow-400' :
                           event.color === 'green' ? 'bg-green-500' :
                             'bg-red-500'
@@ -400,12 +406,16 @@ export default function HybridCalendar() {
       )}
 
       {/* Daftar event bulanan - Tampilkan info Hijriyah untuk semua event */}
-      {monthEvents.length > 0 ? (
+      {eventsLoading ? (
+        <div className="text-left text-sm text-gray-500 py-2">
+          Memuat data event...
+        </div>
+      ) : monthEvents.length > 0 ? (
         <div className="mt-4">
           {/* Hari Besar & Libur Nasional */}
           {monthEvents.some(event => event.events.some(e => e.category === 'Hari Besar & Libur Nasional')) && (
             <div className="mb-4">
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Hari Besar & Libur Nasional</h4>
+              <h4 className="text-md font-medium text-gray-700 mb-2">Hari Besar & Libur Nasional</h4>
               <div className="space-y-2">
                 {monthEvents
                   .filter(event => event.events.some(e => e.category === 'Hari Besar & Libur Nasional'))
@@ -418,7 +428,7 @@ export default function HybridCalendar() {
                             <div className="flex items-start text-sm">
                               {/* Box untuk tanggal dengan warna merah */}
                               <div className="flex flex-col items-center justify-center w-12 h-12 bg-red-100 rounded-md mr-3">
-                                <div className="text-xs font-semibold text-red-800 uppercase">
+                                <div className="text-xs font-semibold text-red-800 uppercase -mb-1.5">
                                   {getIndonesianMonthShortName(event.date.getMonth())}
                                 </div>
                                 <div className="text-lg font-bold text-red-800">
@@ -455,7 +465,7 @@ export default function HybridCalendar() {
           {/* Puasa Sunnah */}
           {monthEvents.some(event => event.events.some(e => e.category === 'Puasa Sunnah')) && (
             <div>
-              <h4 className="text-sm font-medium text-gray-700 mb-2">Puasa Sunnah</h4>
+              <h4 className="text-md font-medium text-gray-700 mb-2">Puasa Sunnah</h4>
               <div className="space-y-2">
                 {monthEvents
                   .filter(event => event.events.some(e => e.category === 'Puasa Sunnah'))
@@ -468,30 +478,30 @@ export default function HybridCalendar() {
                             <div className="flex items-start text-sm">
                               {/* Box untuk tanggal dengan warna sesuai jenis puasa */}
                               <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-md mr-3 ${e.title.includes('Senin')
-                                  ? 'bg-blue-100'
-                                  : e.title.includes('Kamis')
-                                    ? 'bg-yellow-100'
-                                    : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                      ? 'bg-green-100'
-                                      : 'bg-gray-100'
+                                ? 'bg-blue-100'
+                                : e.title.includes('Kamis')
+                                  ? 'bg-yellow-100'
+                                  : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
+                                    ? 'bg-green-100'
+                                    : 'bg-gray-100'
                                 }`}>
-                                <div className={`text-xs font-semibold uppercase ${e.title.includes('Senin')
-                                    ? 'text-blue-800'
-                                    : e.title.includes('Kamis')
-                                      ? 'text-yellow-800'
-                                      : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                        ? 'text-green-800'
-                                        : 'text-gray-800'
+                                <div className={`text-xs font-semibold uppercase -mb-1.5 ${e.title.includes('Senin')
+                                  ? 'text-blue-800'
+                                  : e.title.includes('Kamis')
+                                    ? 'text-yellow-800'
+                                    : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
+                                      ? 'text-green-800'
+                                      : 'text-gray-800'
                                   }`}>
                                   {getIndonesianMonthShortName(event.date.getMonth())}
                                 </div>
                                 <div className={`text-lg font-bold ${e.title.includes('Senin')
-                                    ? 'text-blue-800'
-                                    : e.title.includes('Kamis')
-                                      ? 'text-yellow-800'
-                                      : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                        ? 'text-green-800'
-                                        : 'text-gray-800'
+                                  ? 'text-blue-800'
+                                  : e.title.includes('Kamis')
+                                    ? 'text-yellow-800'
+                                    : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
+                                      ? 'text-green-800'
+                                      : 'text-gray-800'
                                   }`}>
                                   {event.date.getDate()}
                                 </div>
@@ -524,10 +534,11 @@ export default function HybridCalendar() {
           )}
         </div>
       ) : (
-        /* Tampilan loading ketika data belum dimuat */
-        <div className="mt-4 text-center text-gray-500 py-4">
-          Memuat data...
-        </div>
+        !eventsLoading && (
+          <div className="mt-4 text-center text-gray-500 py-4">
+            Tidak ada event pada bulan ini.
+          </div>
+        )
       )}
     </div>
   );

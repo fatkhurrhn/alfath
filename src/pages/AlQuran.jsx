@@ -3,13 +3,13 @@ import BottomNav from '../components/BottomNav'
 import NavbarWaktuSholat from '../components/NavWaktuSholat'
 import PrayerTimeManager from '../components/PrayerTimeManager'
 
-export default function Home() {
+export default function ALQuran() {
   useEffect(() => {
-    document.title = "Home - Islamic";
+    document.title = "Al Quran - Islamic";
   }, []);
   
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen">
       <PrayerTimeManager>
         {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect }) => (
           <>
