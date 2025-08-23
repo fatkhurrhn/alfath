@@ -55,7 +55,7 @@ export default function Home() {
             />
 
             {/* Konten Utama */}
-            <div className="container mx-auto px-4 pt-24">
+<div className="container mx-auto max-w-xl px-4 pt-20 pb-0 border-x border-gray-200">
 
               {/* === REKOMENDASI DZIKIR HARIAN === */}
               <section className="py-8 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl mb-10">

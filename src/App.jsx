@@ -7,10 +7,14 @@ import JadwalSholat from "./pages/JadwalSholat";
 import NotFound from "./pages/NotFound";
 import Almasurat from "./pages/dzikir/almasurat/Almasurat";
 import Donate from "./pages/Donate";
+import AutoToTop from "./components/AutoToTop";
+import Tes from "./pages/Tes";
+import Kalender from "./pages/Kalender";
 
 function App() {
   return (
     <Router>
+      <AutoToTop/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dzikir" element={<Dzikir />} />
@@ -19,6 +23,8 @@ function App() {
         <Route path="/dzikir/almasurat/petang" element={<DzikirPetangSugro />} />
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
         <Route path="/donate" element={<Donate />} />
+        <Route path="/tes" element={<Tes />} />
+        <Route path="/kalender" element={<Kalender />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />

@@ -79,8 +79,8 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
 
     return (
         <>
-            <div className={`fixed top-0 left-0 w-full bg-white text-gray-800 py-3 px-4 border-b border-gray-200 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
-                <div className="max-w-5xl mx-auto flex justify-between items-center">
+            <div className={`fixed top-0 left-0 w-full bg-white ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
+  <div className="max-w-xl mx-auto flex justify-between items-center px-4 py-3 text-gray-800 border border-b border-gray-200">
                     <div className="flex items-center">
                         <Link to="/">
                             <div className="bg-gray-100 p-2 rounded-lg">
