@@ -62,15 +62,17 @@ export default function HybridCalendar() {
   };
 
   // Fungsi untuk menangani klik tanggal
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    
-    // Format tanggal untuk kunci
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
-    
-    // Jika data Hijriyah belum ada, fetch dari API
-    if (!hijriData[formattedDate]) {
-      fetchHijriDate(date);
+  const handleDateClick = (date, isCurrentMonth = true) => {
+    if (isCurrentMonth) {
+      setSelectedDate(date);
+      
+      // Format tanggal untuk kunci
+      const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+      
+      // Jika data Hijriyah belum ada, fetch dari API
+      if (!hijriData[formattedDate]) {
+        fetchHijriDate(date);
+      }
     }
   };
 
@@ -100,25 +102,30 @@ export default function HybridCalendar() {
   
   const days = [];
   
-  // Tambahkan hari kosong untuk minggu sebelumnya
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    days.push(null);
+  // Hitung jumlah hari di bulan sebelumnya
+  const prevMonth = month === 0 ? 11 : month - 1;
+  const prevYear = month === 0 ? year - 1 : year;
+  const daysInPrevMonth = getDaysInMonth(prevYear, prevMonth);
+  
+  // Tambahkan hari dari bulan sebelumnya
+  for (let i = daysInPrevMonth - firstDayOfMonth + 1; i <= daysInPrevMonth; i++) {
+    days.push(new Date(prevYear, prevMonth, i));
   }
   
   // Tambahkan hari dalam bulan
   for (let i = 1; i <= daysInMonth; i++) {
     days.push(new Date(year, month, i));
   }
-
-  // Dapatkan data Hijriyah untuk bulan dan tahun saat ini
-  const currentMonthYear = `${getIndonesianMonthName(month)} ${year}`;
-  let hijriMonthYear = '';
-
-  // Coba dapatkan info bulan Hijriyah dari tanggal pertama
-  const firstDateFormatted = `01-${(month + 1).toString().padStart(2, '0')}-${year}`;
-  if (hijriData[firstDateFormatted]) {
-    const hijri = hijriData[firstDateFormatted];
-    hijriMonthYear = `${hijri.month.en} ${hijri.year}`;
+  
+  // Hitung sisa hari untuk mengisi minggu terakhir
+  const totalCells = 42; // 6 minggu x 7 hari
+  const remainingDays = totalCells - days.length;
+  
+  // Tambahkan hari dari bulan berikutnya
+  const nextMonth = month === 11 ? 0 : month + 1;
+  const nextYear = month === 11 ? year + 1 : year;
+  for (let i = 1; i <= remainingDays; i++) {
+    days.push(new Date(nextYear, nextMonth, i));
   }
 
   return (
@@ -134,8 +141,7 @@ export default function HybridCalendar() {
         </button>
         
         <h2 className="text-lg font-semibold text-gray-800 text-center">
-          {currentMonthYear}
-          {hijriMonthYear && <span className="block text-sm font-normal text-gray-500">{hijriMonthYear}</span>}
+          {getIndonesianMonthName(month)} {year}
         </h2>
         
         <button 
@@ -156,37 +162,29 @@ export default function HybridCalendar() {
         ))}
         
         {days.map((date, index) => {
-          if (!date) {
-            return <div key={`empty-${index}`} className="h-12"></div>;
-          }
-          
+          const isCurrentMonth = date.getMonth() === month;
           const day = date.getDate();
           const formattedDate = `${day.toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
           const isToday = new Date().toDateString() === date.toDateString();
           const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
-          const hijriInfo = hijriData[formattedDate];
-        //   const isSpecial = specialDates[formattedDate];
           
           return (
             <div 
-              key={formattedDate}
-              onClick={() => handleDateClick(date)}
-              className={`h-12 flex flex-col items-center justify-center rounded-lg cursor-pointer transition-all ${
-                isToday 
-                  ? "bg-blue-100 border border-blue-300" 
-                  : isSelected 
-                    ? "bg-blue-500 text-white" 
-                    : "hover:bg-gray-100"
+              key={index}
+              onClick={() => handleDateClick(date, isCurrentMonth)}
+              className={`h-12 flex items-center justify-center rounded-lg cursor-pointer transition-all ${
+                isCurrentMonth
+                  ? isToday 
+                    ? "bg-blue-100 border border-blue-300" 
+                    : isSelected 
+                      ? "bg-blue-500 text-white" 
+                      : "hover:bg-gray-100"
+                  : "text-gray-400 hover:bg-gray-100"
               }`}
             >
-              <span className={`text-sm font-medium ${isSelected ? "text-white" : "text-gray-800"}`}>
+              <span className={`text-sm font-medium ${isSelected ? "text-white" : isCurrentMonth ? "text-gray-800" : "text-gray-400"}`}>
                 {day}
               </span>
-              {hijriInfo && (
-                <span className={`text-xs ${isSelected ? "text-blue-100" : "text-gray-500"}`}>
-                  {hijriInfo.day}
-                </span>
-              )}
             </div>
           );
         })}
@@ -205,7 +203,8 @@ export default function HybridCalendar() {
             <>
               {hijriData[`${selectedDate.getDate().toString().padStart(2, '0')}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getFullYear()}`] ? (
                 <p className="text-sm text-gray-600">
-                  Hijriyah: {hijriData[`${selectedDate.getDate().toString().padStart(2, '0')}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getFullYear()}`].day} {
+                  {selectedDate.getDate()} {getIndonesianMonthName(selectedDate.getMonth())} {selectedDate.getFullYear()} | {
+                  hijriData[`${selectedDate.getDate().toString().padStart(2, '0')}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getFullYear()}`].day} {
                   hijriData[`${selectedDate.getDate().toString().padStart(2, '0')}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getFullYear()}`].month.en
                   } {hijriData[`${selectedDate.getDate().toString().padStart(2, '0')}-${(selectedDate.getMonth() + 1).toString().padStart(2, '0')}-${selectedDate.getFullYear()}`].year} H
                 </p>
@@ -222,16 +221,6 @@ export default function HybridCalendar() {
           )}
         </div>
       )}
-      
-      {/* Informasi bulan */}
-      <div className="mt-3 text-xs text-gray-600">
-        <p className="font-semibold mb-1">Keterangan:</p>
-        <ul className="list-disc list-inside space-y-1">
-          <li>Angka besar: Tanggal Masehi</li>
-          <li>Angka kecil: Tanggal Hijriyah</li>
-          <li>Klik pada tanggal untuk melihat informasi detail</li>
-        </ul>
-      </div>
     </div>
   );
 }
