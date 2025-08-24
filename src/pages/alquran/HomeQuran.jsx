@@ -117,10 +117,27 @@ export default function HomeQuran() {
     <div className="min-h-screen pb-20">
       <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
         {/* Navback */}
-        <div className="fixed top-0 max-w-xl border-b border-gray-200 mx-auto left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
-          <Link to="/" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-            <i className="ri-arrow-left-line"></i> Al-Qur'an
-          </Link>
+        <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-4">
+          <div className="flex items-center justify-between">
+            {/* Kiri: Back */}
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-[15px] font-semibold text-gray-800"
+            >
+              <i className="ri-arrow-left-line"></i>
+              Al-Qur'an
+            </Link>
+
+            {/* Kanan: Settings & Filter */}
+            <div className="flex items-center gap-3">
+              <button className="text-gray-600 hover:text-gray-800">
+                <i className="ri-filter-line text-xl"></i>
+              </button>
+              <button className="text-gray-600 hover:text-gray-800">
+                <i className="ri-settings-5-line text-xl"></i>
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* isi kontennya */}
