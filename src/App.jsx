@@ -10,13 +10,14 @@ import Donate from "./pages/Donate";
 import AutoToTop from "./components/AutoToTop";
 import Tes from "./pages/Tes";
 import Kalender from "./pages/Kalender";
-import ALQuran from "./pages/alquran/HomeQuran";
-import DetailSurah from "./pages/alquran/DetailPerSurah";
+import DetailPerSurah from "./pages/alquran/DetailPerSurah";
 import DetailPerJuz from "./pages/alquran/DetailPerJuz";
 
 
 import QuranPage from './components/QuranPage';
 import Tess from './components/Home';
+import HomeQuran from "./pages/alquran/HomeQuran";
+import TebakAyat from "./pages/alquran/game/TebakAyat";
 
 function App() {
   return (
@@ -34,10 +35,14 @@ function App() {
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
         <Route path="/donate" element={<Donate />} />
         <Route path="/tes" element={<Tes />} />
+        <Route path="/quran/games/tebak-ayat" element={<TebakAyat />} />
         <Route path="/kalender" element={<Kalender />} />
-        <Route path="/quran" element={<ALQuran />} />
-        <Route path="/quran/surah/:id" element={<DetailSurah />} />
+        <Route path="/quran" element={<HomeQuran />} />
+        <Route path="/quran/:tab?" element={<HomeQuran />} />
         <Route path="/quran/juz/:id" element={<DetailPerJuz />} />
+        <Route path="/quran/surah/:id" element={<DetailPerSurah />} />
+        <Route path="/quran/surah/:id/:verseNumber" element={<DetailPerSurah />} />
+
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />

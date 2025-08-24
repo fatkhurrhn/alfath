@@ -17,7 +17,7 @@ const MiniPlayer = ({
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <button
-                        className="w-10 h-10 flex items-center justify-center bg-green-100 text-green-600 rounded-full mr-3"
+                        className="w-10 h-10 flex items-center justify-center bg-gray-400 text-white rounded-full mr-3"
                         onClick={onTogglePlay}
                     >
                         <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
@@ -291,25 +291,25 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
 
                         {isLoadingAudio ? (
                             <div className="flex justify-center items-center py-8">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
                                 <span className="ml-3 text-gray-600">Memuat data audio...</span>
                             </div>
                         ) : surahAudioData ? (
                             <>
                                 <h2 className="text-xl font-bold mb-4 text-center">
-                                    {surahAudioData.nomor}. {surahAudioData.namaLatin}
+                                    {surahAudioData.nomor}. Surah {surahAudioData.namaLatin}
                                 </h2>
 
                                 {/* Daftar Syekh */}
                                 <div className="mb-6">
-                                    <h3 className="font-medium text-gray-700 mb-3">Pilih Qari</h3>
+                                    <h3 className="font-medium text-gray-700 mb-3">Pilih Qari Favoritmu</h3>
                                     <div className="grid grid-cols-1 gap-2">
                                         {surahAudioData.audioFull && Object.entries(surahAudioData.audioFull).map(([key]) => {
                                             const sheikhName = getSheikhName(key);
                                             return (
                                                 <button
                                                     key={key}
-                                                    className={`p-3 rounded-lg text-left ${selectedSheikh === key ? 'bg-green-100 border border-green-500' : 'bg-gray-100 hover:bg-gray-200'}`}
+                                                    className={`p-3 rounded-lg text-left ${selectedSheikh === key ? 'bg-gray-300 border border-gray-500' : 'bg-gray-100'}`}
                                                     onClick={() => handleSheikhSelect(key)}
                                                 >
                                                     <p className="font-medium text-gray-800">{sheikhName}</p>
@@ -360,7 +360,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                             {/* Play / Pause Button */}
                                             <button
                                                 onClick={togglePlayPause}
-                                                className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600"
+                                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-500 text-white hover:bg-gray-600"
                                             >
                                                 <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
                                             </button>
