@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const surahs = [
@@ -132,20 +132,7 @@ const games = [
 const GamesList = () => {
   const [expanded, setExpanded] = useState(null);
   const [search, setSearch] = useState({});
-  const [selectedLetter, setSelectedLetter] = useState(null);
-
-  // Group surahs by initial letter for easier navigation
-  const surahsByLetter = useMemo(() => {
-    const grouped = {};
-    surahs.forEach(surah => {
-      const firstLetter = surah.name[0];
-      if (!grouped[firstLetter]) {
-        grouped[firstLetter] = [];
-      }
-      grouped[firstLetter].push(surah);
-    });
-    return grouped;
-  }, []);
+  const [selectedLetter] = useState(null);
 
   // Pisahkan game dengan mode dan tanpa mode
   const gamesWithModes = games.filter(game => game.modes.length > 0);
@@ -215,26 +202,7 @@ const GamesList = () => {
                         />
                       </div>
 
-                      {/* Alphabet quick navigation */}
-                      <div className="mb-3 overflow-x-auto pb-1">
-                        <div className="flex space-x-1">
-                          {Object.keys(surahsByLetter).map(letter => (
-                            <button
-                              key={letter}
-                              onClick={() => setSelectedLetter(selectedLetter === letter ? null : letter)}
-                              className={`px-2 py-1 text-xs font-medium rounded-md transition ${
-                                selectedLetter === letter 
-                                  ? 'bg-gray-200 text-gray-800' 
-                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                              }`}
-                            >
-                              {letter}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-2 scrollbar-hide">
                         {filteredSurahs
                           .filter(surah => !selectedLetter || surah.name.startsWith(selectedLetter))
                           .map((surah) => (
@@ -243,7 +211,7 @@ const GamesList = () => {
                               to={`/quran/games/${game.slug}/surah/${surah.slug}`}
                               className="p-2.5 text-sm bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 flex flex-col border border-gray-200"
                             >
-                              <span className="font-medium text-gray-800">{surah.number}. {surah.name}</span>
+                              <span className="font-medium text-gray-800 ">{surah.name}</span>
                               <span className="text-xs text-gray-500 mt-1">{surah.verses} ayat</span>
                             </Link>
                           ))
@@ -266,7 +234,7 @@ const GamesList = () => {
                         <i className="ri-file-list-2-line text-gray-500"></i>
                         Pilih Juz
                       </h4>
-                      <div className="grid grid-cols-5 gap-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="grid grid-cols-3 gap-2 max-h-40 overflow-y-auto pr-2 scrollbar-hide">
                         {juzList.map((juz) => (
                           <Link
                             key={juz}
