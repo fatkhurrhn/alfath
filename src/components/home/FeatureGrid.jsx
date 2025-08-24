@@ -11,8 +11,8 @@ const features = [
 
 export default function FeatureGrid() {
   return (
-    <div className="mb-6">
-      <div className="flex overflow-x-auto space-x-3 pb-2 no-scrollbar gap-2 space-x-0 overflow-visible">
+    <div className="mb-2">
+      <div className="flex overflow-x-auto space-x-3 pb-2 no-scrollbar gap-0 space-x-0 overflow-visible">
         {features.map(item => (
           <Link 
             key={item.to} 

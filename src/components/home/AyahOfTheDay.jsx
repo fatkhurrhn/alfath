@@ -49,7 +49,7 @@ export default function AyahOfTheDay() {
 
   return (
     <>
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 mb-6 shadow-sm">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-5 mb-4 shadow-sm">
         <p className="text-2xl text-center text-gray-800 font-uthmani leading-loose">
           {randomAyah.arabicText}
         </p>
