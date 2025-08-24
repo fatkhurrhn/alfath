@@ -18,6 +18,7 @@ import QuickMenu from '../components/home/QuickMenu'
 import IslamicCalendar from '../components/home/IslamicCalendar'
 import Recommendations from '../components/home/Recommendations'
 import NewsSection from '../components/home/NewsSection'
+import FeatureGrid from '../components/home/FeatureGrid'
 
 export default function Home() {
   // Set judul halaman
@@ -45,8 +46,10 @@ export default function Home() {
               {/* Ayat acak */}
               <AyahOfTheDay />
 
+              <FeatureGrid />
+
               {/* Hadits & Quotes */}
-              <HadithSection />
+              {/* <HadithSection /> */}
 
               {/* Pengingat Sholat */}
               <PrayerReminder nextPrayer={nextPrayer} />
