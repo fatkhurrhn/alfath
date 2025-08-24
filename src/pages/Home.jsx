@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import BottomNav from '../components/BottomNav'
 import PrayerTimeManager from '../components/PrayerTimeManager'
 import Donate from '../components/Donate'
+import NavbarWaktuSholat from '../components/NavWaktuSholat'
 
 // Import komponen-komponen home
 import DateDisplay from '../components/home/DateDisplay'
@@ -27,9 +28,17 @@ export default function Home() {
   return (
     <div className="min-h-screen pb-1 bg-gray-50">
       <PrayerTimeManager>
-        {({ nextPrayer, selectedCity, prayerTimes }) => (
+        {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect, prayerTimes }) => (
           <>
-            <div className="container mx-auto max-w-xl px-4 md:mb-0 mb-[70px] border-x border-gray-200">
+            <NavbarWaktuSholat
+              onCitySelect={handleCitySelect}
+              nextPrayer={nextPrayer}
+              nextPrayerTime={nextPrayerTime}
+              countdown={countdown}
+              selectedCity={selectedCity}
+            />
+
+            <div className="container mx-auto max-w-xl px-4 md:mb-0 mb-[70px] border-x border-gray-200 pt-2">
               {/* Salam & waktu */}
               <DateDisplay />
 

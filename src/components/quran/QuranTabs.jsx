@@ -10,10 +10,10 @@ const QuranTabs = ({ activeTab, setActiveTab }) => {
         Surah
       </button>
       <button
-        className={`flex-1 py-3 text-center font-medium ${activeTab === 'juz' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-        onClick={() => setActiveTab('juz')}
+        className={`flex-1 py-3 text-center font-medium ${activeTab === 'games' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
+        onClick={() => setActiveTab('games')}
       >
-        Juz
+        games
       </button>
       <button
         className={`flex-1 py-3 text-center font-medium ${activeTab === 'riwayat' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}

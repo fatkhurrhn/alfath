@@ -17,6 +17,7 @@ import DetailPerJuz from "./pages/alquran/DetailPerJuz";
 
 import QuranPage from './components/QuranPage';
 import Tess from './components/Home';
+
 function App() {
   return (
     <Router>

@@ -7,6 +7,7 @@ const QuranPageFull = () => {
     const [pageData, setPageData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [containerHeight, setContainerHeight] = useState(0);
 
     useEffect(() => {
         const fetchPageData = async () => {
@@ -70,10 +71,10 @@ const QuranPageFull = () => {
     return (
         <div className="min-h-screen py-2 bg-teal-50 flex items-center justify-center">
             <div className="w-full px-2 mx-auto">
-                {/* Container dengan aspect ratio dan tinggi tetap untuk 15 baris */}
-                <div className="bg-white mx-auto rounded-lg shadow-md p-4 quran-container">
+                {/* Container dengan 15 baris */}
+                <div className="bg-white mx-auto rounded-lg shadow-md p-4 quran-container" style={{ height: '85vh' }}>
                     <div className="h-full overflow-hidden">
-                        <div className="quran-text h-full text-justify leading-normal arabic-text">
+                        <div className="quran-text h-full text-justify arabic-text">
                             {pageData.data.map((verse) => (
                                 <span key={verse.id} className="inline">
                                     <span className="verse-text">{verse.arab}</span>
@@ -98,7 +99,6 @@ const QuranPageFull = () => {
                 }
                 .quran-container {
                     width: 95vw;
-                    height: 85vh;
                     max-width: 100%;
                     display: flex;
                     flex-direction: column;

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown, selectedCity }) => {
-    const [isVisible, setIsVisible] = useState(true);
+    const [isVisible, setIsVisible] = useState(false); // Default false agar tersembunyi saat pertama dibuka
     const [lastScrollY, setLastScrollY] = useState(0);
     const [cities, setCities] = useState([]);
     const [filteredCities, setFilteredCities] = useState([]);
@@ -29,7 +29,7 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
         };
 
         fetchCities();
-    }, []); // Empty dependency array untuk eksekusi sekali saja
+    }, []);
 
     // Mencari kota berdasarkan query
     const searchCities = (query) => {
@@ -44,19 +44,24 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
         setFilteredCities(filtered);
     };
 
-    // Handle scroll untuk show/hide navbar
+    // Handle scroll untuk show/hide navbar - DIPERBAIKI
     useEffect(() => {
         const handleScroll = () => {
             const currentScrollY = window.scrollY;
-
+            
+            // Jika di posisi paling atas, sembunyikan navbar
             if (currentScrollY === 0) {
-                setIsVisible(true);
-            } else if (currentScrollY > lastScrollY && currentScrollY > 50) {
                 setIsVisible(false);
-            } else if (currentScrollY < lastScrollY) {
+            } 
+            // Jika scroll ke atas dan bukan di posisi paling atas
+            else if (currentScrollY < lastScrollY) {
                 setIsVisible(true);
+            } 
+            // Jika scroll ke bawah
+            else if (currentScrollY > lastScrollY) {
+                setIsVisible(false);
             }
-
+            
             setLastScrollY(currentScrollY);
         };
 
@@ -79,8 +84,8 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
 
     return (
         <>
-            <div className={`fixed top-0 left-0 w-full bg-white ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
-  <div className="max-w-xl mx-auto flex justify-between items-center px-4 py-3 text-gray-800 border border-b border-gray-200">
+            <div className={`fixed top-0 left-0 w-full bg-white transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"} z-40`}>
+                <div className="max-w-xl mx-auto flex justify-between items-center px-4 py-3 text-gray-800 border border-b border-gray-200">
                     <div className="flex items-center">
                         <Link to="/">
                             <div className="bg-gray-100 p-2 rounded-lg">
@@ -105,7 +110,7 @@ const NavbarWaktuSholat = ({ onCitySelect, nextPrayer, nextPrayerTime, countdown
                 </div>
             </div>
 
-            {/* Modal Pilih Kota - Desain Baru */}
+            {/* Modal Pilih Kota */}
             {showCityModal && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg w-full max-w-md overflow-hidden flex flex-col shadow-xl">
