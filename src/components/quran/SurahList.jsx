@@ -392,9 +392,12 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                 src={selectedSheikh && surahAudioData?.audioFull?.[selectedSheikh]}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={() => setDuration(audioRef.current.duration || 0)}
-                onEnded={() => setIsPlaying(false)}
+                onEnded={() => {
+                    setIsPlaying(false);
+                    +       playNextSurah();   // ➕ Auto-play surah berikutnya
+                }}
                 autoPlay={isPlaying}
-                className="hidden" // Sembunyikan audio element
+                className="hidden"
             />
 
             {/* Mini Player */}

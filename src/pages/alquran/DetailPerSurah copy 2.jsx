@@ -1,8 +1,8 @@
-// src/pages/alquran/DetailPerSurah.jsx
 import React, { useEffect, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
+import ScrollToTop from '../../components/ScrollToTop'
 
-export default function DetailPerSurah() {
+export default function DetailSurah() {
     const { id } = useParams()
     const navigate = useNavigate()
     const [surahData, setSurahData] = useState(null)
@@ -16,56 +16,37 @@ export default function DetailPerSurah() {
                 setIsLoading(true)
                 setError(null)
 
-                // 1. Fetch info surah
-                const surahInfoResponse = await fetch(`https://api.myquran.com/v2/quran/surat/${id}`)
-                const surahInfoResult = await surahInfoResponse.json()
+                // Fetch data surah dan ayat sekaligus dari endpoint equran.id
+                const response = await fetch(`https://equran.id/api/v2/surat/${id}`)
+                const result = await response.json()
 
-                if (!surahInfoResult.status) {
-                    throw new Error('Failed to fetch surah info')
+                if (result.code !== 200) {
+                    throw new Error('Failed to fetch surah data')
                 }
 
                 // Set data surah
-                setSurahData(surahInfoResult.data)
-
-                // 2. Fetch semua ayat dalam surah
-                const numberOfVerses = parseInt(surahInfoResult.data.number_of_verses)
-                const ayatPromises = []
-                
-                for (let i = 1; i <= numberOfVerses; i++) {
-                    ayatPromises.push(
-                        fetch(`https://api.myquran.com/v2/quran/ayat/${id}/${i}`)
-                            .then(response => response.json())
-                    )
-                }
-
-                // Tunggu semua request ayat selesai
-                const ayatResults = await Promise.all(ayatPromises)
-                
-                // Periksa jika ada error dalam pengambilan ayat
-                const failedAyat = ayatResults.find(result => !result.status)
-                if (failedAyat) {
-                    throw new Error('Failed to fetch some verses')
-                }
+                setSurahData(result.data)
 
                 // Transform data ayat ke format yang diharapkan komponen
-                const transformedVerses = ayatResults.map(result => ({
-                    number: {
-                        inSurah: parseInt(result.data[0].ayah)
-                    },
-                    text: {
-                        arab: result.data[0].arab
-                    },
-                    translation: {
-                        id: result.data[0].text
-                    },
-                    latin: result.data[0].latin,
-                    audio: result.data[0].audio
-                }))
-                
-                setVerses(transformedVerses)
+                if (result.data.ayat) {
+                    const transformedVerses = result.data.ayat.map(ayat => ({
+                        number: {
+                            inSurah: ayat.nomorAyat
+                        },
+                        text: {
+                            arab: ayat.teksArab
+                        },
+                        translation: {
+                            id: ayat.teksIndonesia
+                        }
+                    }));
+                    setVerses(transformedVerses)
+                } else {
+                    throw new Error('Verses data not found in response')
+                }
 
                 // Set document title
-                document.title = `${surahInfoResult.data.name_id} - Islamic`
+                document.title = `${result.data.namaLatin} - Islamic`
 
                 // Scroll ke atas setelah data dimuat
                 window.scrollTo(0, 0)
@@ -98,7 +79,6 @@ export default function DetailPerSurah() {
                     {/* Icon muter di tengah */}
                     <div className="text-center">
                         <i className="ri-loader-2-line text-2xl text-blue-700 mb-2"></i>
-                        <p className="text-gray-600">Memuat surah...</p>
                     </div>
                 </div>
             </div>
@@ -113,7 +93,7 @@ export default function DetailPerSurah() {
                     <div className="text-center mt-4">
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
                         >
                             Coba Lagi
                         </button>
@@ -132,43 +112,43 @@ export default function DetailPerSurah() {
     }
 
     return (
-        <div className="min-h-screen pb-20 bg-gray-50">
+        <div className="min-h-screen pb-20">
             {/* Loading Bar saat navigasi antar surah */}
             {isLoading && (
-                <div className="fixed top-0 left-0 right-0 h-1 z-50">
-                    <div className="h-full bg-blue-600 animate-pulse"></div>
+                <div className="fixed top-0 left-0 right-0 h-0.5 z-50">
+                    <div className="h-full bg-blue-700 animate-[progress_1.2s_ease-in-out_infinite]"></div>
                 </div>
             )}
 
-            <div className="max-w-xl mx-auto bg-white min-h-screen shadow-lg">
+            <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
                 {/* Navback */}
-                <div className="sticky top-0 z-40 bg-white px-4 py-4 border-b border-gray-200 flex items-center justify-between shadow-sm">
+                <div className="max-w-xl mx-auto w-full z-40 bg-white px-3 py-4 border-b border-gray-200 flex items-center justify-between">
                     {/* Kiri: Back */}
                     <Link
                         to="/quran"
-                        className="flex items-center font-semibold gap-2 text-gray-800 text-[15px] hover:text-blue-600 transition-colors"
+                        className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]"
                     >
                         <i className="ri-arrow-left-line"></i> Detail Surah
                     </Link>
 
                     {/* Kanan: Settings & Filter */}
                     <div className="flex items-center gap-3">
-                        <button className="text-gray-600 hover:text-blue-600 transition-colors">
+                        <button className="text-gray-600 hover:text-gray-800">
                             <i className="ri-filter-line text-xl"></i>
                         </button>
-                        <button className="text-gray-600 hover:text-blue-600 transition-colors">
+                        <button className="text-gray-600 hover:text-gray-800">
                             <i className="ri-settings-5-line text-xl"></i>
                         </button>
                     </div>
                 </div>
 
                 {surahData && (
-                    <div className="px-4 pt-6 pb-4">
+                    <div className="pt-[10px]">
                         {/* Nama Surah */}
-                        <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center justify-between mb-4">
                             {/* Tombol navigasi ke surah sebelumnya */}
                             <button
-                                onClick={() => navigateToSurah(parseInt(surahData.number) > 1 ? parseInt(surahData.number) - 1 : 114)}
+                                onClick={() => navigateToSurah(surahData.nomor > 1 ? surahData.nomor - 1 : 114)}
                                 className="text-gray-500 hover:text-gray-700 p-2"
                                 disabled={isLoading}
                             >
@@ -179,20 +159,20 @@ export default function DetailPerSurah() {
                             <div className="text-center flex-1">
                                 <div>
                                     <p className="text-gray-900 font-mushaf text-2xl">
-                                        {surahData.name_short}
+                                        {surahData.nama}
                                     </p>
                                     <p className="text-gray-600 pt-1">
-                                        {surahData.name_id} - {surahData.translation_id}
+                                        {surahData.namaLatin} - {surahData.arti}
                                     </p>
                                     <p className="text-[12px] text-gray-500">
-                                        {surahData.revelation_id} | {surahData.number_of_verses} Ayat
+                                        {surahData.tempatTurun} | {surahData.jumlahAyat} Ayat
                                     </p>
                                 </div>
                             </div>
 
                             {/* Tombol navigasi ke surah selanjutnya */}
                             <button
-                                onClick={() => navigateToSurah(parseInt(surahData.number) < 114 ? parseInt(surahData.number) + 1 : 1)}
+                                onClick={() => navigateToSurah(surahData.nomor < 114 ? surahData.nomor + 1 : 1)}
                                 className="text-gray-500 hover:text-gray-700 p-2"
                                 disabled={isLoading}
                             >
@@ -201,12 +181,12 @@ export default function DetailPerSurah() {
                         </div>
 
                         {/* Bismillah (kecuali Al-Fatihah & At-Taubah) */}
-                        {parseInt(surahData.number) !== 1 && parseInt(surahData.number) !== 9 && (
-                            <div className="text-center my-6 py-4 border-y border-gray-100">
-                                <p className="font-uthmani text-4xl text-gray-800 mb-3">
+                        {surahData.nomor !== 1 && surahData.nomor !== 9 && (
+                            <div className="text-center my-6">
+                                <p className="font-uthmani text-3xl text-gray-800">
                                     بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-gray-600 mt-2">
                                     Dengan nama Allah Yang Maha Pengasih, Maha Penyayang
                                 </p>
                             </div>
@@ -219,7 +199,7 @@ export default function DetailPerSurah() {
                     {verses.map((verse, index) => (
                         <div key={index} className="p-4 hover:bg-gray-50">
                             <div className="flex items-start justify-between mb-4">
-                                {/* button Icon kiri */}
+                                {/* Icon kiri */}
                                 <button className="text-gray-500 hover:text-gray-700">
                                     <i className="ri-more-2-fill text-xl"></i>
                                 </button>
@@ -237,6 +217,7 @@ export default function DetailPerSurah() {
                         </div>
                     ))}
                 </div>
+                <ScrollToTop />
             </div>
         </div>
     )
