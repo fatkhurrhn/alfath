@@ -235,27 +235,37 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
             <div className="bg-white rounded-xl shadow-sm divide-y divide-gray-200">
                 {filteredSurahs.map((surah, index) => (
                     <div key={index} className="block hover:bg-gray-50 transition-colors duration-200">
-                        <div className="flex items-center justify-between px-4 py-3">
-                            <div className="flex items-center">
-                                {/* button play */}
-                                <button
-                                    className="w-9 h-9 flex items-center justify-center bg-gray-100 text-gray-700 rounded-lg mr-3 font-medium hover:bg-gray-200 transition-colors"
-                                    onClick={() => handlePlayClick(surah)}
-                                >
-                                    <i className="ri-play-line text-gray-600"></i>
-                                </button>
+                        <div className="flex items-center px-3 py-3">
+                            {/* Play Button */}
+                            <button
+                                onClick={() => handlePlayClick(surah)}
+                                className="mr-3 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-700 font-medium transition-colors hover:bg-gray-200"
+                            >
+                                <i className="ri-play-line text-gray-600"></i>
+                            </button>
 
-                                <Link to={`/quran/surah/${surah.number}`} >
-                                    <h3 className="font-semibold text-gray-800">{surah.number}. {surah.name.transliteration.id}</h3>
+                            {/* Surah Info + Arabic Title (in one Link) */}
+                            <Link
+                                to={`/quran/surah/${surah.number}`}
+                                className="flex w-full items-center justify-between"
+                            >
+                                {/* Left Info */}
+                                <div>
+                                    <h3 className="font-semibold text-gray-800">
+                                        {surah.number}. {surah.name.transliteration.id}
+                                    </h3>
                                     <p className="text-xs text-gray-500">
                                         {surah.name.translation.id} • {surah.numberOfVerses} Ayat
                                     </p>
-                                </Link>
-                            </div>
-                            <Link to={`/quran/surah/${surah.number}`} className="text-right">
-                                <p className="text-gray-600 font-mushaf text-xl">{surah.name.short}</p>
+                                </div>
+
+                                {/* Right Arabic Title */}
+                                <p className="font-mushaf text-xl text-gray-600 text-right">
+                                    {surah.name.short}
+                                </p>
                             </Link>
                         </div>
+
                     </div>
                 ))}
             </div>
@@ -293,7 +303,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                 {/* Daftar Syekh */}
                                 <div className="mb-6">
                                     <h3 className="font-medium text-gray-700 mb-3">Pilih Qari</h3>
-                                    <div className="grid grid-cols-2 gap-2">
+                                    <div className="grid grid-cols-1 gap-2">
                                         {surahAudioData.audioFull && Object.entries(surahAudioData.audioFull).map(([key]) => {
                                             const sheikhName = getSheikhName(key);
                                             return (
@@ -303,7 +313,6 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                                     onClick={() => handleSheikhSelect(key)}
                                                 >
                                                     <p className="font-medium text-gray-800">{sheikhName}</p>
-                                                    <p className="text-xs text-gray-500">Kualitas Audio: HQ</p>
                                                 </button>
                                             );
                                         })}
@@ -318,12 +327,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                                 <p className="font-medium text-gray-800">{getSheikhName(selectedSheikh)}</p>
                                                 <p className="text-sm text-gray-600">Sedang diputar</p>
                                             </div>
-                                            <button
-                                                className="w-10 h-10 flex items-center justify-center bg-green-500 text-white rounded-full hover:bg-green-600"
-                                                onClick={togglePlayPause}
-                                            >
-                                                <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
-                                            </button>
+
                                         </div>
 
                                         {/* Progress bar */}
@@ -342,24 +346,34 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                             </div>
                                         </div>
 
-                                        {/* Navigation controls */}
-                                        <div className="flex justify-center space-x-4 mt-4">
+                                        {/* Navigation Controls */}
+                                        <div className="flex justify-center items-center space-x-4 mt-2">
+                                            {/* Previous Button */}
                                             <button
-                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
                                                 onClick={playPrevSurah}
                                                 disabled={selectedSurah.number === 1}
+                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
                                             >
                                                 <i className="ri-skip-back-line text-xl"></i>
                                             </button>
+
+                                            {/* Play / Pause Button */}
                                             <button
-                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
+                                                onClick={togglePlayPause}
+                                                className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white hover:bg-green-600"
+                                            >
+                                                <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
+                                            </button>
+
+                                            {/* Next Button */}
+                                            <button
                                                 onClick={playNextSurah}
                                                 disabled={selectedSurah.number === 114}
+                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
                                             >
                                                 <i className="ri-skip-forward-line text-xl"></i>
                                             </button>
                                         </div>
-
                                     </div>
                                 )}
                             </>

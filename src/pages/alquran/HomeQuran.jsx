@@ -5,7 +5,6 @@ import SearchBar from '../../components/quran/SearchBar'
 import SurahList from '../../components/quran/SurahList'
 import GamesList from '../../components/quran/GamesList'
 import ReadingHistory from '../../components/quran/ReadingHistory'
-import ScrollToTop from '../../components/ScrollToTop'
 
 export default function HomeQuran() {
   const [surahList, setSurahList] = useState([]);
@@ -142,7 +141,6 @@ export default function HomeQuran() {
           {renderContent()}
         </div>
       </div>
-      <ScrollToTop />
     </div>
   )
 }
