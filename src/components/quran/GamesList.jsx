@@ -140,7 +140,6 @@ const GamesList = () => {
 
   return (
     <div className="p-2 pb-2 bg-gray-50 min-h-screen">
-
       {/* Game dengan mode (Tebak Ayat & Sambung Ayat) */}
       <div className="space-y-3 mb-6 pt-2">
         {gamesWithModes.map((game) => {

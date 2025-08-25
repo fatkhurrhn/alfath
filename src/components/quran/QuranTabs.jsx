@@ -27,7 +27,7 @@ const QuranTabs = ({ activeTab, setActiveTab }) => {
         className={`flex-1 py-3 text-center font-medium ${activeTab === 'games' ? 'text-gray-600 border-b-2 border-gray-600' : 'text-gray-500'}`}
         onClick={() => handleTabChange('games')}
       >
-        Games
+        Bookmark
       </button>
     </div>
   );

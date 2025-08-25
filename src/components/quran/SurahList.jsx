@@ -241,7 +241,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                 onClick={() => handlePlayClick(surah)}
                                 className="mr-3 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-700 font-medium transition-colors hover:bg-gray-200"
                             >
-                                <i className="ri-play-line text-gray-600"></i>
+                                <i class="ri-volume-up-line text-gray-600"></i>
                             </button>
 
                             {/* Surah Info + Arabic Title (in one Link) */}

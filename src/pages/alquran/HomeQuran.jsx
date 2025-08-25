@@ -4,7 +4,7 @@ import QuranTabs from '../../components/quran/QuranTabs'
 import SearchBar from '../../components/quran/SearchBar'
 import SurahList from '../../components/quran/SurahList'
 import JuzList from '../../components/quran/JuzList'
-import GamesList from '../../components/quran/GamesList' // Import komponen GamesList
+import GamesList from '../../components/quran/Bookmark'
 import { useParams, useNavigate } from 'react-router-dom'
 
 export default function HomeQuran() {

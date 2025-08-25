@@ -19,7 +19,6 @@ export default function DetailPerSurah() {
     const [selectedVerse, setSelectedVerse] = useState(verseNumber || '')
     const [allDataReady, setAllDataReady] = useState(false)
     const [showNavback, setShowNavback] = useState(true)
-    const [isBookmarked, setIsBookmarked] = useState(false)
     const lastScrollY = useRef(0)
     const navbackRef = useRef(null)
 
@@ -32,57 +31,22 @@ export default function DetailPerSurah() {
     const [currentTrack, setCurrentTrack] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
 
-    /* localStorage keys */
-    const PLAYER_STORAGE_KEY = 'quran-miniplayer'
-    const BOOKMARK_STORAGE_KEY = 'quran-bookmarks'
-
-    /* ---------- useEffect untuk localStorage ---------- */
-    // Load data dari localStorage saat komponen dimount
+    /* localStorage */
+    const STORAGE_KEY = 'quran-miniplayer'
     useEffect(() => {
-        const savedPlayer = JSON.parse(localStorage.getItem(PLAYER_STORAGE_KEY))
-        if (savedPlayer) {
-            setCurrentTrack(savedPlayer)
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY))
+        if (saved) {
+            setCurrentTrack(saved)
             setIsPlaying(true)
         }
-
-        // Cek apakah surah ini sudah di-bookmark
-        const bookmarks = JSON.parse(localStorage.getItem(BOOKMARK_STORAGE_KEY)) || []
-        const isSurahBookmarked = bookmarks.some(bookmark => bookmark.surahId === id)
-        setIsBookmarked(isSurahBookmarked)
-    }, [id])
-
-    // Simpan currentTrack ke localStorage
+    }, [])
     useEffect(() => {
         if (currentTrack) {
-            localStorage.setItem(PLAYER_STORAGE_KEY, JSON.stringify(currentTrack))
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(currentTrack))
         } else {
-            localStorage.removeItem(PLAYER_STORAGE_KEY)
+            localStorage.removeItem(STORAGE_KEY)
         }
     }, [currentTrack])
-
-    /* ---------- fungsi bookmark ---------- */
-    const toggleBookmark = () => {
-        const bookmarks = JSON.parse(localStorage.getItem(BOOKMARK_STORAGE_KEY)) || []
-
-        if (isBookmarked) {
-            // Hapus bookmark
-            const updatedBookmarks = bookmarks.filter(bookmark => bookmark.surahId !== id)
-            localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(updatedBookmarks))
-            setIsBookmarked(false)
-        } else {
-            // Tambah bookmark
-            const newBookmark = {
-                surahId: id,
-                surahName: surahData.name_id,
-                surahNameArabic: surahData.name_short,
-                totalVerses: surahData.number_of_verses,
-                timestamp: new Date().toISOString()
-            }
-            const updatedBookmarks = [...bookmarks, newBookmark]
-            localStorage.setItem(BOOKMARK_STORAGE_KEY, JSON.stringify(updatedBookmarks))
-            setIsBookmarked(true)
-        }
-    }
 
     /* ---------- fetch data ---------- */
     useEffect(() => {
@@ -389,12 +353,6 @@ export default function DetailPerSurah() {
                         <i className="ri-arrow-left-line"></i> Surah {surahData.name_id}
                     </Link>
                     <div className="flex items-center gap-3">
-                        <button
-                            onClick={toggleBookmark}
-                            className="text-gray-600 hover:text-gray-600"
-                        >
-                            <i className={isBookmarked ? "ri-bookmark-2-fill text-red-500" : "ri-bookmark-line"}></i>
-                        </button>
                         <button onClick={() => setShowFilterModal(true)} className="text-gray-600 hover:text-gray-600">
                             <i className="ri-filter-line text-xl"></i>
                         </button>
@@ -452,28 +410,17 @@ export default function DetailPerSurah() {
                             id={`verse-${verse.number.inSurah}`}
                             className={`p-4 ${currentTrack?.ayah === verse.number.inSurah && parseInt(currentTrack?.surahId) === parseInt(id) ? 'bg-yellow-100' : ''}`}
                         >
-                            <div className="flex mb-4">
-                                {/* Kolom kiri: tombol more di atas, bookmark di bawah */}
-                                <div className="flex flex-col justify-between items-start">
-                                    <button
-                                        onClick={() => openSheet(surahData, verse)}
-                                        className="text-gray-500 hover:text-gray-700"
-                                    >
-                                        <i className="ri-more-2-fill text-xl"></i>
-                                    </button>
-                                    <button
-                                        className="text-gray-500 hover:text-gray-700 mt-2"
-                                    >
-                                        <i className="ri-book-marked-line text-[14px]"></i>
-                                    </button>
-                                </div>
-
-                                {/* Teks arab di kanan */}
+                            <div className="flex items-start justify-between mb-4">
+                                <button
+                                    onClick={() => openSheet(surahData, verse)}
+                                    className="text-gray-500 hover:text-gray-700"
+                                >
+                                    <i className="ri-more-2-fill text-xl"></i>
+                                </button>
                                 <p className="font-mushaf text-[22px] leading-loose text-right flex-1 ml-4">
                                     {verse.text.arab}
                                 </p>
                             </div>
-
                             <div className="text-[15px]">
                                 <p className="text-gray-800 text-justify">
                                     <span className="mr-2 font-semibold">({verse.number.inSurah})</span>

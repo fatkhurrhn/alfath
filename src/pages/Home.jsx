@@ -48,9 +48,6 @@ export default function Home() {
 
               <FeatureGrid />
 
-              {/* Hadits & Quotes */}
-              {/* <HadithSection /> */}
-
               {/* Pengingat Sholat */}
               <PrayerReminder nextPrayer={nextPrayer} />
 

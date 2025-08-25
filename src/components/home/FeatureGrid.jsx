@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const features = [
   { to: "/quran", icon: "📖", label: "Qur'an", color: "text-green-500" },
-  { to: "/quran/games", icon: "🎮", label: "Game", color: "text-purple-500" },
+  { to: "/game", icon: "🎮", label: "Game", color: "text-purple-500" },
   { to: "/dzikir", icon: "📿", label: "Dzikir", color: "text-blue-500" },
   { to: "/kiblat", icon: "🕋", label: "Kiblat", color: "text-yellow-500" },
   { to: "/jadwal-sholat", icon: "🕌", label: "Sholat", color: "text-indigo-500" }
