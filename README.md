@@ -1,4 +1,4 @@
-# 🌙 Ihsanly – Muslim Daily
+# 🌙 Ihsanly – Muslim Daily [🔗](https://react.dev/)
 
 **Ihsanly – Muslim Daily** adalah aplikasi Islami berbasis web yang dibuat dengan **React + Vite + Tailwind**.  
 Aplikasi ini hadir sebagai **teman harian muslim** dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.
@@ -19,20 +19,9 @@ Aplikasi ini hadir sebagai **teman harian muslim** dengan berbagai fitur untuk m
 - [Remix Icon](https://remixicon.com/) – Icon set
 - **Public APIs** – Data Quran, Hadits, & Jadwal Sholat
 
-## 🚀 Instalasi & Development
+## 🚀 Selamat Menikmati 
 
-Clone repo ini lalu jalankan:
 
-```bash
-# Clone repository
-git clone https://github.com/fatkhurrhn/ihsanly.git
-cd ihsanly
 
-# Install dependencies
-npm install
 
-# Jalankan development server
-npm run dev
 
-# Build untuk production
-npm run build
