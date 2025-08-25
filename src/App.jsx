@@ -35,6 +35,7 @@ import Juz25 from "./pages/alquran/game/sambungayat/Juz25";
 
 // import Surah67 from "./pages/alquran/game/sambungayat/Surah67";
 import SurahSambungAyat from "./pages/alquran/game/sambungayat/Surah67";
+import DetailVideo from "./pages/DetailVideo";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
         <Route path="/page/:pageNumber" element={<QuranPage />} />
 
         <Route path="/" element={<Home />} />
+        <Route path="/detail/video/:id" element={<DetailVideo />} />
         <Route path="/dzikir" element={<Dzikir />} />
         <Route path="/dzikir/almasurat" element={<Almasurat />} />
         <Route path="/dzikir/almasurat/pagi" element={<DzikirPagiSugro />} />

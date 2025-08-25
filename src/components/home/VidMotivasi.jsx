@@ -83,7 +83,11 @@ function VidMotivasi() {
             {/* Container video dengan scroll horizontal */}
             <div className="flex space-x-3 overflow-x-auto pb-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {videos.map(video => (
-                    <div key={video.id} className="flex-shrink-0 w-64 overflow-hidden transition-all duration-300 rounded-md">
+                    <Link
+                        key={video.id}
+                        to={`/detail/video/${video.id}`}
+                        className="flex-shrink-0 w-64 overflow-hidden transition-all duration-300 rounded-md block hover:shadow-md"
+                    >
                         {/* Thumbnail video */}
                         <div className="relative">
                             <img
@@ -109,7 +113,7 @@ function VidMotivasi() {
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
