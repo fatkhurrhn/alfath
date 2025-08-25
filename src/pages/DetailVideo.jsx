@@ -222,7 +222,6 @@ export default function DetailVideo() {
                 <div className="fixed top-[60px] left-1/2 -translate-x-1/2 w-full max-w-xl bg-white z-40">
                     <div
                         className="relative bg-gray-900 overflow-hidden"
-                        onClick={handleVideoClick}
                         onMouseEnter={() => setHoverControls(true)}
                         onMouseLeave={() => setHoverControls(false)}
                     >
@@ -236,13 +235,14 @@ export default function DetailVideo() {
                         {/* Controls Tengah */}
                         {(showControls || hoverControls) && (
                             <div className="absolute inset-0 flex items-center justify-center space-x-6">
-                                <button onClick={handlePrevVideo} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:bg-opacity-70">
-                                    <i className="ri-skip-back-line text-2xl"></i>
+                                <button onClick={handlePrevVideo} className="w-12 h-12 flex items-center justify-center bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70">
+                                    <i className="ri-skip-back-line text-xl"></i>
                                 </button>
-                                <button onClick={togglePlayPause} className="bg-black bg-opacity-50 text-white p-6 rounded-full hover:bg-opacity-70">
+
+                                <button onClick={togglePlayPause} className="w-20 h-20 flex items-center justify-center bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70">
                                     <i className={`ri-${isPlaying ? 'pause' : 'play'}-line text-3xl`}></i>
                                 </button>
-                                <button onClick={handleNextVideo} className="bg-black bg-opacity-50 text-white p-4 rounded-full hover:bg-opacity-70">
+                                <button onClick={handleNextVideo} className="w-12 h-12 flex items-center justify-center bg-black bg-opacity-50 text-white rounded-full hover:bg-opacity-70">
                                     <i className="ri-skip-forward-line text-2xl"></i>
                                 </button>
                             </div>
@@ -255,7 +255,7 @@ export default function DetailVideo() {
 
                         {/* Time kiri bawah */}
                         {(showControls || hoverControls) && (
-                            <div className="absolute bottom-3 left-3 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                            <div className="absolute bottom-2 left-1 text-white px-2 py-1 text-xs">
                                 {formatTime(currentTime)} / {formatTime(duration)}
                             </div>
                         )}
@@ -264,7 +264,7 @@ export default function DetailVideo() {
                         {(showControls || hoverControls) && (
                             <button
                                 onClick={toggleFullscreen}
-                                className="absolute bottom-3 right-3 bg-black bg-opacity-50 text-white p-2 rounded hover:bg-opacity-70"
+                                className="absolute bottom-0 right-1 text-white p-2"
                             >
                                 <i className={`ri-${isFullscreen ? 'fullscreen-exit-line' : 'fullscreen-fill'} text-lg`}></i>
                             </button>
@@ -278,7 +278,14 @@ export default function DetailVideo() {
                             <span className="flex items-center">
                                 {currentVideo.views.toLocaleString()} x ditonton
                             </span>
-                            <span>{currentVideo.upload_date}</span>
+                            <div className="flex items-center space-x-3">
+                                <span className="flex items-center cursor-pointer hover:text-gray-700">
+                                    <i className="ri-share-forward-line mr-1"></i> Bagikan
+                                </span>
+                                <span className="flex items-center cursor-pointer hover:text-gray-700">
+                                    <i className="ri-download-line mr-1"></i> Unduh
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -286,7 +293,7 @@ export default function DetailVideo() {
                 </div>
 
                 {/* bagian Video List - Scrollable */}
-                <div className="px-2 mt-2 pt-[365px]">
+                <div className="px-2 mt-2 pt-[365px] mb-4">
                     <div className="flex items-center justify-between mb-2">
                         <h2 className="text-gray-800 text-lg font-semibold">Video Lainnya</h2>
 
