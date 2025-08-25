@@ -22,7 +22,7 @@ export default function Juz30() {
   /* ---------- per-soal ---------- */
   useEffect(() => {
     if (questions.length && currentQuestion < questions.length) {
-      setTimeLeft(30);
+      setTimeLeft(400);
       setSelectedOption(null);
 
       const audioUrl = questions[currentQuestion].question.audio;
@@ -88,7 +88,7 @@ export default function Juz30() {
         minute: '2-digit'
       }),
       score: score,
-      total: questions.length * 5, // karena setiap soal bernilai 5 poin
+      total: questions.length * 5, // set poin ditiap soal
       details: userAnswers
     };
 
@@ -160,7 +160,7 @@ export default function Juz30() {
   
     if (gameOver) {
       return (
-        <div className="min-h-screen bg-gray-50 px-4 py-8">
+        <div className="min-h-screen bg-gray-50 px-4 py-8 pb-20">
           <div className="max-w-md mx-auto">
             <h2 className="text-2xl font-bold text-center mb-1">Hasil Akhir</h2>
             <p className="text-center text-lg mb-6">
@@ -277,11 +277,12 @@ export default function Juz30() {
                 {q.question.arab}
               </p>
   
-              <button onClick={() => audioRef.current?.play()} className="absolute bottom-2 right-2 text-gray-700 p-2 rounded">
-                <i className="ri-volume-up-line"></i>
+              <button onClick={() => audioRef.current?.play()} className="absolute bottom-0 right-0.5 text-gray-700 p-1 rounded">
+                <i className="ri-volume-up-line text-[13px]"></i>
               </button>
             </div>
-  
+
+            
   
             <div className="max-w-md mx-auto px-4 py-6">
               {/* opsi jawaban */}
@@ -295,16 +296,16 @@ export default function Juz30() {
                       key={idx}
                       disabled={answered}
                       onClick={() => handleAnswer(opt)}
-                      className={`w-full p-4 border rounded-lg text-right text-xl font-mushaf transition
-                    ${answered && isCorrect ? 'bg-green-100 border-green-500 text-green-800' : ''}
-                    ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-100 border-red-500 text-red-800' : ''}
-                    ${!answered ? 'bg-white hover:bg-gray-100' : ''}
+                      className={`w-full p-3 border rounded-lg text-right text-xl leading-loose font-mushaf transition
+                    ${answered && isCorrect ? 'bg-green-50 border-green-500 text-green-800' : ''}
+                    ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-50 border-red-500 text-red-800' : ''}
+                    ${!answered ? 'bg-white' : ''}
                   `}
                     >
                       {opt.arab}{' '}
-                      {answered && isCorrect && <span className="ml-2">✓</span>}
+                      {answered && isCorrect && <span className=""></span>}
                       {answered && !isCorrect && opt.id === selectedOption?.id && (
-                        <span className="ml-2">✗</span>
+                        <span className=""></span>
                       )}
                     </button>
                   );
