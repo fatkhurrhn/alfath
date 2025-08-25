@@ -1,3 +1,9 @@
+// =============================================
+// File: History.jsx
+// History gabungan (Juz & Per Surah) + tombol Ulangi dinamis
+// - Robust ke riwayat lama yang belum punya juzNumber
+// =============================================
+
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -24,16 +30,24 @@ export default function History() {
     setActiveIndex(null);
   };
 
+  // Fallback: ambil angka juz dari string "Juz 26" kalau juzNumber tidak tersedia
+  const getJuzNumber = (rec) => {
+    if (!rec) return null;
+    if (rec.juzNumber != null) return rec.juzNumber; // already number or string
+    if (typeof rec.juz === 'string') {
+      const m = rec.juz.match(/\d+/);
+      if (m) return Number(m[0]);
+    }
+    return null;
+  };
+
   return (
     <div className="min-h-screen pb-2 bg-gray-50">
       <div className="max-w-xl mx-auto px-3 container border-x border-gray-200 bg-white min-h-screen">
         {/* Header */}
         <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
           <div className="flex items-center justify-between">
-            <Link
-              to="/game"
-              className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]"
-            >
+            <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
               <i className="ri-arrow-left-line"></i> History Games
             </Link>
           </div>
@@ -45,10 +59,7 @@ export default function History() {
             <div className="text-center py-10 text-gray-500">
               <i className="ri-time-line text-4xl mb-3"></i>
               <p>Belum ada riwayat permainan</p>
-              <Link
-                to="/juz30"
-                className="inline-block mt-4 text-blue-500 hover:text-blue-600"
-              >
+              <Link to="/juz30" className="inline-block mt-4 text-blue-500 hover:text-blue-600">
                 Main game sekarang
               </Link>
             </div>
@@ -56,8 +67,14 @@ export default function History() {
             <div className="space-y-3">
               {history.map((record, index) => {
                 const percent = Math.round((record.score / record.total) * 100);
+                const labelKanan = record?.juz
+                  ? record.juz
+                  : record?.surahName
+                  ? `Surah ${record.surahName}`
+                  : '';
 
                 return (
+                  // card konten history
                   <div
                     key={index}
                     onClick={() => {
@@ -66,13 +83,13 @@ export default function History() {
                     }}
                     className="flex items-center border border-gray-200 rounded-lg cursor-pointer transition bg-gray-50 hover:bg-gray-100"
                   >
-                    {/* Isi card */}
                     <div className="flex-1 p-4">
                       <div className="flex justify-between items-center">
                         <div>
                           <div className="font-medium">{record.date}</div>
                           <div className="text-sm text-gray-600">
-                            {record.game} — {record.juz}
+                            {record.game} {record.mode ? `` : ''}{' '}
+                            {labelKanan && `— ${labelKanan}`}
                           </div>
                           <div className="text-sm text-gray-500">
                             Skor: {record.score}/100
@@ -90,8 +107,6 @@ export default function History() {
                           {percent}%
                         </div>
                       </div>
-
-                      {/* Progress bar */}
                       <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                         <div
                           className={`h-2 rounded-full ${
@@ -132,16 +147,40 @@ export default function History() {
               </button>
 
               {/* Ulangi */}
-              <Link
-                to={`/game/sambung-ayat/juz/${history[activeIndex].juzNumber}`}
-                className="px-4 py-2 rounded-md bg-gray-800 text-white hover:bg-gray-700"
-                onClick={() => setShowModal(false)}
-              >
-                Ulangi
-              </Link>
+              {(() => {
+                const rec = history[activeIndex];
+                const juzNo = getJuzNumber(rec);
+                const surahNo = rec?.surahNumber;
+
+                if (juzNo != null) {
+                  return (
+                    <Link
+                      to={`/game/sambung-ayat/juz/${juzNo}`}
+                      className="px-4 py-2 rounded-md bg-gray-800 text-white hover:bg-gray-700"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Ulangi
+                    </Link>
+                  );
+                }
+
+                if (surahNo != null) {
+                  return (
+                    <Link
+                      to={`/game/sambung-ayat/surah/${surahNo}`}
+                      className="px-4 py-2 rounded-md bg-gray-800 text-white hover:bg-gray-700"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Ulangi
+                    </Link>
+                  );
+                }
+
+                // fallback kalau dua-duanya gak ada
+                return null;
+              })()}
             </div>
 
-            {/* Batal */}
             <button
               onClick={() => setShowModal(false)}
               className="mt-4 text-sm text-gray-500 hover:text-gray-700"

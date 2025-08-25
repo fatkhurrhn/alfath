@@ -121,7 +121,7 @@ const surahs = [
 const juzList = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const games = [
-    { id: 2, slug: "sambung-ayat", name: "Sambung Ayat", icon: "ri-link-m", modes: ["juz"] },
+    { id: 2, slug: "sambung-ayat", name: "Sambung Ayat", icon: "ri-link-m", modes: ["surah", "juz"] },
     { id: 3, slug: "tebak-surah", name: "Tebak Surah", icon: "ri-book-2-line", modes: [] },
     { id: 4, slug: "tebak-arti-surah", name: "Tebak Arti Surah", icon: "ri-translate-2", modes: [] },
     { id: 5, slug: "tebak-juz", name: "Tebak Juz", icon: "ri-numbers-line", modes: [] },
@@ -144,23 +144,16 @@ export default function Game() {
     return (
         <div className="min-h-screen pb-2">
             <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
-                
                 <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
-                    <Link to="/" className="flex items-center font-semibold gap-2 text-gray-800  text-[15px]">
-                        <i className="ri-arrow-left-line"></i> Games Have Fun
-                    </Link>
+                    <div className="flex items-center justify-between">
+                        <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
+                            <i className="ri-arrow-left-line"></i> Games Have Fun
+                        </Link>
+                        <button className="text-gray-600 hover:text-gray-600">
+                            <i className="ri-settings-5-line text-xl"></i>
+                        </button>
+                    </div>
                 </div>
-
-                {/* <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
-                          <div className="flex items-center justify-between">
-                            <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-                              <i className="ri-arrow-left-line"></i> Sambung Ayat Juz 30
-                            </Link>
-                            <button className="text-gray-600 hover:text-gray-600">
-                              <i className="ri-settings-5-line text-xl"></i>
-                            </button>
-                          </div>
-                        </div> */}
 
                 {/* isi kontennya */}
                 <div className='pt-[65px]'>
@@ -180,15 +173,15 @@ export default function Game() {
                                     <div className="space-y-3">
                                         {/* Box biasa */}
                                         <Link to="/games/tebak-ayat">
-                                        <div className="flex items-center justify-between p-4 cursor-pointer bg-white rounded-xl shadow-sm border border-gray-200">
-                                            <div className="flex items-center gap-3">
-                                                <div className="p-2 bg-gray-100 rounded-lg">
-                                                    <i className="ri-question-answer-line text-lg text-gray-700"></i>
+                                            <div className="flex items-center justify-between p-4 cursor-pointer bg-white rounded-xl shadow-sm border border-gray-200">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-gray-100 rounded-lg">
+                                                        <i className="ri-question-answer-line text-lg text-gray-700"></i>
+                                                    </div>
+                                                    <h3 className="font-medium text-gray-800">Tebak Ayat</h3>
                                                 </div>
-                                                <h3 className="font-medium text-gray-800">Tebak Ayat</h3>
+                                                <i className="ri-arrow-right-s-line text-gray-500"></i>
                                             </div>
-                                            <i className="ri-arrow-right-s-line text-gray-500"></i>
-                                        </div>
                                         </Link>
 
                                         {/* Box pakai logika */}
@@ -228,7 +221,7 @@ export default function Game() {
                                                 <div>
                                                     <h4 className="font-medium text-gray-700 mb-3 flex items-center gap-2 text-sm">
                                                         <i className="ri-book-open-line text-gray-500"></i>
-                                                        Pilih Surah
+                                                        SIlahkan Pilih Surah
                                                     </h4>
 
                                                     {/* Search bar */}
@@ -241,7 +234,7 @@ export default function Game() {
                                                             onChange={(e) =>
                                                                 setSearch({ ...search, [game.id]: e.target.value })
                                                             }
-                                                            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400 bg-gray-50"
+                                                            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-100 focus:border-gray-200 bg-gray-50"
                                                         />
                                                     </div>
 
@@ -251,11 +244,11 @@ export default function Game() {
                                                             .map((surah) => (
                                                                 <Link
                                                                     key={surah.number}
-                                                                    to={`/quran/games/${game.slug}/surah/${surah.slug}`}
+                                                                    to={`/game/${game.slug}/surah/${surah.number}`} // Diubah dari slug ke number
                                                                     className="p-2.5 text-sm bg-gray-50 rounded-lg hover:bg-gray-100 transition-all duration-200 flex flex-col border border-gray-200"
                                                                 >
                                                                     <span className="font-medium text-gray-800 ">{surah.name}</span>
-                                                                    <span className="text-xs text-gray-500 mt-1">{surah.verses} ayat</span>
+                                                                    <span className="text-xs text-gray-500 mt-0">{surah.verses} ayat</span>
                                                                 </Link>
                                                             ))
                                                         }
