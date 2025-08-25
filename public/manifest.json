@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "Ihsanly – Muslim Daily",
+  "name": "Ihsanly – Daily Muslim",
   "short_name": "Ihsanly",
   "start_url": "/",
   "scope": "/",
@@ -11,7 +11,7 @@
   "orientation": "portrait",
   "lang": "id",
   "dir": "ltr",
-  "description": "Ihsanly – Muslim Daily hadir sebagai teman harian muslim dengan Al-Qur’an, hadits, doa, dzikir, jadwal sholat, serta inspirasi Islami yang menenangkan hati.",
+  "description": "Ihsanly – Daily Muslim hadir sebagai teman harian muslim dengan Al-Qur’an, hadits, doa, dzikir, jadwal sholat, serta inspirasi Islami yang menenangkan hati.",
   "categories": ["education", "books", "utilities", "lifestyle"],
   "icons": [
     {

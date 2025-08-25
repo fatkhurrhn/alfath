@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import BottomNav from '../components/BottomNav'
 import PrayerTimeManager from '../components/PrayerTimeManager'
@@ -9,7 +9,6 @@ import NavbarWaktuSholat from '../components/NavWaktuSholat'
 // Import komponen-komponen home
 import DateDisplay from '../components/home/DateDisplay'
 import AyahOfTheDay from '../components/home/AyahOfTheDay'
-import HadithSection from '../components/home/HadithSection'
 import PrayerReminder from '../components/home/PrayerReminder'
 import PrayerSchedule from '../components/home/PrayerSchedule'
 import IslamicTips from '../components/home/IslamicTips'
@@ -21,6 +20,32 @@ import NewsSection from '../components/home/NewsSection'
 import FeatureGrid from '../components/home/FeatureGrid'
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    // Sembunyikan splash screen setelah 2 detik
+    const timer = setTimeout(() => {
+      setShowSplash(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (showSplash) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center">
+          <img 
+            src="/logo.png" 
+            alt="Ihsanly Logo" 
+            className="w-32 h-32 mb-[-3px]"
+          />
+          <h1 className="text-2xl font-bold text-gray-800">Ihsanly</h1>
+          <p className="text-gray-600">Daily Muslim</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pb-1 bg-gray-50">
