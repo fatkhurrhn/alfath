@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Juz30() {
+export default function Juz29() {
   /* ---------- state ---------- */
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -71,7 +71,7 @@ export default function Juz30() {
   const fetchQuestions = async () => {
     try {
       // hapus spasi di ujung URL
-      const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/30');
+      const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/29');
       const json = await res.json();
       const all = json.data;
 
@@ -110,8 +110,8 @@ export default function Juz30() {
     details: userAnswers,
     game: "Sambung Ayat",   // ⬅️ nama game
     // PENTING
-    juz: "Juz 30",          // ⬅️ nomor juz
-    juzNumber: 30, // ⬅️ penting untuk link ulangi
+    juz: "Juz 29",          // ⬅️ nomor juz
+    juzNumber: 29, // ⬅️ penting untuk link ulangi
   };
 
   const existingHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];

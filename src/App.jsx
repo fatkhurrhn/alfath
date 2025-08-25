@@ -22,6 +22,8 @@ import Games from "./pages/alquran/Games";
 import History from "./pages/History";
 import Juz30 from "./pages/alquran/game/sambungayat/Juz30";
 import Juz1 from "./pages/alquran/game/sambungayat/Juz1";
+import Juz29 from "./pages/alquran/game/sambungayat/Juz29";
+import Juz28 from "./pages/alquran/game/sambungayat/Juz28";
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function App() {
         <Route path="/game" element={<Games />} />
         <Route path="/history" element={<History />} />
         <Route path="/game/sambung-ayat/juz/1" element={<Juz1 />} />
+        <Route path="/game/sambung-ayat/juz/28" element={<Juz28 />} />
+        <Route path="/game/sambung-ayat/juz/29" element={<Juz29 />} />
         <Route path="/game/sambung-ayat/juz/30" element={<Juz30 />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}
