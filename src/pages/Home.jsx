@@ -23,10 +23,10 @@ export default function Home() {
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    // Sembunyikan splash screen setelah 2 detik
+    // Sembunyikan splash screen setelah 3 detik
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 25000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -34,15 +34,83 @@ export default function Home() {
   if (showSplash) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center animate-fade-in">
           <img 
             src="/logo.png" 
             alt="Ihsanly Logo" 
-            className="w-32 h-32 mb-[-3px]"
+            className="w-32 h-32 mb-0 animate-pulse"
+            style={{ 
+              animation: 'pulse 2s infinite, scaleIn 1.5s ease-out' 
+            }}
           />
-          <h1 className="text-2xl font-bold text-gray-800">Ihsanly</h1>
-          <p className="text-gray-600">Daily Muslim</p>
+          <h1 
+            className="text-2xl font-bold text-gray-800 animate-slide-in"
+            style={{ 
+              animation: 'slideIn 1s ease-out 0.5s both, fadeIn 1.5s ease-out 0.5s both' 
+            }}
+          >
+            Ihsanly
+          </h1>
+          <p 
+            className="text-gray-600 animate-fade-in"
+            style={{ animation: 'fadeIn 1.5s ease-out 1s both' }}
+          >
+            Daily Muslim
+          </p>
         </div>
+
+        {/* Menambahkan CSS untuk animasi */}
+        <style>
+          {`
+            @keyframes fadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            
+            @keyframes slideIn {
+              from { 
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to { 
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            
+            @keyframes scaleIn {
+              0% { 
+                opacity: 0;
+                transform: scale(0.8);
+              }
+              70% {
+                transform: scale(1.05);
+              }
+              100% { 
+                opacity: 1;
+                transform: scale(1);
+              }
+            }
+            
+            @keyframes pulse {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.05); }
+              100% { transform: scale(1); }
+            }
+            
+            .animate-fade-in {
+              animation: fadeIn 1.5s ease-out;
+            }
+            
+            .animate-slide-in {
+              animation: slideIn 1s ease-out;
+            }
+            
+            .animate-pulse {
+              animation: pulse 2s infinite;
+            }
+          `}
+        </style>
       </div>
     );
   }
