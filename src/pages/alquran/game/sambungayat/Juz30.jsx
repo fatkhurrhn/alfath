@@ -9,8 +9,8 @@ export default function Juz30() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameOver, setGameOver] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null); // menyimpan option yg dipilih
-  const [userAnswers, setUserAnswers] = useState([]); // untuk recap akhir
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
 
   const audioRef = useRef(null);
 
@@ -77,6 +77,31 @@ export default function Juz30() {
     }
   };
 
+  /* ---------- save to localStorage ---------- */
+  const saveGameHistory = () => {
+    const gameRecord = {
+      date: new Date().toLocaleString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      }),
+      score: score,
+      total: questions.length * 5, // karena setiap soal bernilai 5 poin
+      details: userAnswers
+    };
+
+    // Ambil data yang sudah ada dari localStorage
+    const existingHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    
+    // Tambahkan record baru di awal array
+    const updatedHistory = [gameRecord, ...existingHistory];
+    
+    // Simpan kembali ke localStorage (maksimal 50 record)
+    localStorage.setItem('gameHistory', JSON.stringify(updatedHistory.slice(0, 50)));
+  };
+
   /* ---------- logic ---------- */
   const handleAnswer = (option) => {
     if (selectedOption) return;
@@ -95,6 +120,7 @@ export default function Juz30() {
         setCurrentQuestion((q) => q + 1);
       } else {
         setGameOver(true);
+        saveGameHistory(); // Simpan ke localStorage ketika game selesai
       }
     }, 1200);
   };
@@ -109,6 +135,7 @@ export default function Juz30() {
         setCurrentQuestion((q) => q + 1);
       } else {
         setGameOver(true);
+        saveGameHistory(); // Simpan ke localStorage ketika game selesai
       }
     }, 500);
   };
@@ -123,160 +150,169 @@ export default function Juz30() {
   };
 
   /* ---------- UI ---------- */
-  if (!questions.length) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Memuat soal...</p>
-      </div>
-    );
-  }
-
-  if (gameOver) {
-    return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8">
-        <div className="max-w-md mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-1">Hasil Akhir</h2>
-          <p className="text-center text-lg mb-6">
-            Skor Kamu: <span className="font-bold text-green-700">{score}</span>/100
-          </p>
-
-          {/* Recap Timeline Style */}
-          <div className="space-y-6 border-l-2 border-gray-200 pl-4">
-            {userAnswers.map((item, idx) => (
-              <div key={idx} className="relative">
-                {/* Bullet */}
-                <span
-                  className={`absolute -left-[13px] top-2 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${item.isCorrect
-                    ? "bg-green-500 text-white"
-                    : !item.userAnswer
-                      ? "bg-yellow-500 text-white"
-                      : "bg-red-500 text-white"
-                    }`}
-                >
-                  {idx + 1}
-                </span>
-
-                {/* Card */}
-                <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                  {/* Pertanyaan */}
-                  <p className="font-semibold text-center mb-2 font-mushaf text-gray-800 leading-loose">
-                    {item.question.arab} — {" "}
-                    <span className="font-semibold text-green-700">
-                      {item.correct.arab}
-                    </span>
-                  </p>
-                  <hr className='p-2' />
-
-                  {/* Jawaban User */}
-                  {item.userAnswer ? (
-                    <div
-                      className={`px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center ${item.isCorrect
-                        ? "bg-green-50 text-green-700 border border-green-200"
-                        : "bg-red-50 text-red-700 border border-red-200"
-                        }`}
-                    >
-                      {item.isCorrect ? (
-                        <span className="text-base font-semibold">Jawabanmu benar</span>
-                      ) : (
-                        <>
-                          <span className="mb-2 text-base font-semibold">Jawaban salahmu</span>
-                          <span className="font-mushaf text-lg mb-1">{item.userAnswer.arab}</span>
-                        </>
-                      )}
-                    </div>
-                  ) : (
-                    <div className="px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center bg-yellow-50 text-yellow-700 border border-yellow-200">
-                      <span className="text-base font-semibold">Kamu tidak menjawab</span>
-                    </div>
-                  )}
-
+    if (!questions.length) {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <p className="text-gray-600">Memuat soal...</p>
+        </div>
+      );
+    }
+  
+    if (gameOver) {
+      return (
+        <div className="min-h-screen bg-gray-50 px-4 py-8">
+          <div className="max-w-md mx-auto">
+            <h2 className="text-2xl font-bold text-center mb-1">Hasil Akhir</h2>
+            <p className="text-center text-lg mb-6">
+              Skor Kamu: <span className="font-bold text-green-700">{score}</span>/100
+            </p>
+  
+            {/* Recap Timeline Style */}
+            <div className="space-y-6 border-l-2 border-gray-200 pl-4">
+              {userAnswers.map((item, idx) => (
+                <div key={idx} className="relative">
+                  {/* Bullet */}
+                  <span
+                    className={`absolute -left-[13px] top-2 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${item.isCorrect
+                      ? "bg-green-500 text-white"
+                      : !item.userAnswer
+                        ? "bg-yellow-500 text-white"
+                        : "bg-red-500 text-white"
+                      }`}
+                  >
+                    {idx + 1}
+                  </span>
+  
+                  {/* Card */}
+                  <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                    {/* Pertanyaan */}
+                    <p className="font-semibold text-center mb-2 font-mushaf text-gray-800 leading-loose">
+                      {item.question.arab} — {" "}
+                      <span className="font-semibold text-green-700">
+                        {item.correct.arab}
+                      </span>
+                    </p>
+                    <hr className='p-2' />
+  
+                    {/* Jawaban User */}
+                    {item.userAnswer ? (
+                      <div
+                        className={`px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center ${item.isCorrect
+                          ? "bg-green-50 text-green-700 border border-green-200"
+                          : "bg-red-50 text-red-700 border border-red-200"
+                          }`}
+                      >
+                        {item.isCorrect ? (
+                          <span className="text-base font-semibold">Jawabanmu benar</span>
+                        ) : (
+                          <>
+                            <span className="mb-2 text-base font-semibold">Jawaban salahmu</span>
+                            <span className="font-mushaf text-lg mb-1">{item.userAnswer.arab}</span>
+                          </>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center bg-yellow-50 text-yellow-700 border border-yellow-200">
+                        <span className="text-base font-semibold">Kamu tidak menjawab</span>
+                      </div>
+                    )}
+  
+                  </div>
                 </div>
+              ))}
+            </div>
+  
+  
+            {/* Floating Action Card */}
+            <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+              <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-xl divide-x divide-gray-200 overflow-hidden">
+                <button
+                  onClick={restartGame}
+                  className="w-[120px] py-2.5 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 transition"
+                >
+                  <i className="ri-refresh-line"></i> Main Lagi
+                </button>
+                <Link
+                  to="/history"
+                  className="w-[120px] py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
+                >
+                  <i className="ri-time-line"></i> History
+                </Link>
               </div>
-            ))}
+            </div>
+  
           </div>
-
-
-          {/* Floating Action Card */}
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
-            <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-xl divide-x divide-gray-200 overflow-hidden">
-              <button
-                onClick={restartGame}
-                className="w-[120px] py-2.5 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 transition"
-              >
-                <i className="ri-refresh-line"></i> Main Lagi
-              </button>
-              <Link
-                to="/history"
-                className="w-[120px] py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
-              >
-                <i className="ri-time-line"></i> History
+        </div>
+      );
+    }
+  
+    const q = questions[currentQuestion];
+  
+    return (
+      <div className='min-h-screen pb-2'>
+        <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
+          <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
+            <div className="flex items-center justify-between">
+              <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
+                <i className="ri-arrow-left-line"></i> Sambung Ayat Juz 30
               </Link>
+              <button className="text-gray-600 hover:text-gray-600">
+                <i className="ri-settings-5-line text-xl"></i>
+              </button>
             </div>
           </div>
-
+  
+          <div className='pt-[65px]'>
+            <div className="flex items-center justify-between pt-2 pb-2">
+              <span className="text-[14px] text-gray-700">
+                Soal {currentQuestion + 1}/{questions.length}
+              </span>
+              <span className="text-[14px] font-mono text-gray-700">
+                {timeLeft}s
+              </span>
+            </div>
+  
+            <div className="bg-white border rounded-lg p-3 mb-4 relative">
+              <p dir="rtl" className="text-2xl font-mushaf leading-loose text-center">
+                {q.question.arab}
+              </p>
+  
+              <button onClick={() => audioRef.current?.play()} className="absolute bottom-2 right-2 text-gray-700 p-2 rounded">
+                <i className="ri-volume-up-line"></i>
+              </button>
+            </div>
+  
+  
+            <div className="max-w-md mx-auto px-4 py-6">
+              {/* opsi jawaban */}
+              <div className="space-y-3">
+                {q.options.map((opt, idx) => {
+                  const isCorrect = opt.id === q.correct.id;
+                  const answered = selectedOption !== null;
+  
+                  return (
+                    <button
+                      key={idx}
+                      disabled={answered}
+                      onClick={() => handleAnswer(opt)}
+                      className={`w-full p-4 border rounded-lg text-right text-xl font-mushaf transition
+                    ${answered && isCorrect ? 'bg-green-100 border-green-500 text-green-800' : ''}
+                    ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-100 border-red-500 text-red-800' : ''}
+                    ${!answered ? 'bg-white hover:bg-gray-100' : ''}
+                  `}
+                    >
+                      {opt.arab}{' '}
+                      {answered && isCorrect && <span className="ml-2">✓</span>}
+                      {answered && !isCorrect && opt.id === selectedOption?.id && (
+                        <span className="ml-2">✗</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
-  }
-
-  const q = questions[currentQuestion];
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      {/* header */}
-      <div className="sticky top-0 bg-white border-b px-4 py-3 flex justify-between items-center">
-        <Link to="/game" className="text-gray-700">
-          ← Kembali
-        </Link>
-        <span className="text-sm text-gray-700">
-          Soal {currentQuestion + 1}/{questions.length}
-        </span>
-        <span className="text-sm font-mono text-gray-700">{timeLeft}s</span>
-      </div>
-
-      <div className="max-w-md mx-auto px-4 py-6">
-        {/* audio */}
-        <div className="flex justify-center mb-4">
-          <button
-            onClick={() => audioRef.current?.play()}
-            className="bg-gray-200 text-gray-700 px-4 py-2 rounded"
-          >
-            🔊 Play
-          </button>
-        </div>
-
-        {/* ayat soal */}
-        <div className="bg-white border rounded-lg p-4 mb-4 text-center">
-          <p className="text-3xl font-mushaf">{q.question.arab}</p>
-        </div>
-
-        {/* opsi */}
-        <div className="space-y-3">
-          {q.options.map((opt, idx) => {
-            const isCorrect = opt.id === q.correct.id;
-            const answered = selectedOption !== null;
-
-            return (
-              <button
-                key={idx}
-                disabled={answered}
-                onClick={() => handleAnswer(opt)}
-                className={`w-full p-4 border rounded-lg text-right text-xl font-mushaf transition
-                  ${answered && isCorrect ? 'bg-green-100 border-green-500 text-green-800' : ''}
-                  ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-100 border-red-500 text-red-800' : ''}
-                  ${!answered ? 'bg-white hover:bg-gray-100' : ''}
-                `}
-              >
-                {opt.arab}{' '}
-                {answered && isCorrect && <span className="ml-2">✓</span>}
-                {answered && !isCorrect && opt.id === selectedOption?.id && (
-                  <span className="ml-2">✗</span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  );
 }
