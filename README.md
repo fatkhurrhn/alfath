@@ -1,7 +1,7 @@
-# 🌙 Ihsanly – Muslim Daily [🔗](https://react.dev/)
+# [🌙 Ihsanly – Muslim Daily 🔗](https://ihsanly.vercel.app/)
 
-**Ihsanly – Muslim Daily** adalah aplikasi Islami berbasis web yang dibuat dengan **React + Vite + Tailwind**.  
-Aplikasi ini hadir sebagai **teman harian muslim** dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.
+[Ihsanly – Muslim Daily adalah aplikasi Islami berbasis web yang dibuat dengan React + Vite + Tailwind](https://ihsanly.vercel.app/)
+[Aplikasi ini hadir sebagai teman harian muslim dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.](https://ihsanly.vercel.app/)
 
 ## ✨ Fitur Utama
 - 📖 **Al-Qur’an** – Baca Quran harian dengan API.
