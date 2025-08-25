@@ -36,7 +36,7 @@ export default function Home() {
       <div className="min-h-screen flex items-center justify-center bg-white">
         <div className="flex flex-col items-center animate-fade-in">
           <img 
-            src="/logo.png" 
+            src="/logo-splash.png" 
             alt="Ihsanly Logo" 
             className="w-32 h-32 mb-0 animate-pulse"
             style={{ 
@@ -44,7 +44,7 @@ export default function Home() {
             }}
           />
           <h1 
-            className="text-2xl font-bold text-gray-800 animate-slide-in"
+            className="text-2xl font-bold mt-1.5 text-gray-800 animate-slide-in"
             style={{ 
               animation: 'slideIn 1s ease-out 0.5s both, fadeIn 1.5s ease-out 0.5s both' 
             }}
