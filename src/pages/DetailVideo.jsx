@@ -72,7 +72,8 @@ export default function DetailVideo() {
         }
     }, [currentVideo]);
 
-    const togglePlayPause = () => {
+    const togglePlayPause = (e) => {
+        e.stopPropagation(); // <── tambahkan ini
         if (videoRef.current) {
             if (videoRef.current.paused) {
                 videoRef.current.play();
@@ -101,7 +102,8 @@ export default function DetailVideo() {
         }
     };
 
-    const handleNextVideo = () => {
+    const handleNextVideo = (e) => {
+        e.stopPropagation(); // <── tambahkan ini
         const currentIndex = videos.findIndex(v => v.id === currentVideo.id);
         if (currentIndex < videos.length - 1) {
             const nextVideo = videos[currentIndex + 1];
@@ -109,7 +111,8 @@ export default function DetailVideo() {
         }
     };
 
-    const handlePrevVideo = () => {
+    const handlePrevVideo = (e) => {
+        e.stopPropagation(); // <── tambahkan ini
         const currentIndex = videos.findIndex(v => v.id === currentVideo.id);
         if (currentIndex > 0) {
             const prevVideo = videos[currentIndex - 1];
@@ -118,6 +121,7 @@ export default function DetailVideo() {
     };
 
     const handleSeek = (e) => {
+        e.stopPropagation(); // <── tambahkan ini (agar progress bar juga bisa diklik)
         if (videoRef.current && duration) {
             const rect = e.target.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
@@ -125,13 +129,16 @@ export default function DetailVideo() {
         }
     };
 
-    const toggleFullscreen = async () => {
+    const toggleFullscreen = async (e) => {
+        e.stopPropagation(); // <── tambahkan ini
         if (!document.fullscreenElement) {
             await videoRef.current.requestFullscreen();
             if (screen.orientation && screen.orientation.lock) {
                 try {
                     await screen.orientation.lock("landscape");
-                } catch { }
+                } catch (err) {
+                    console.warn("Orientation lock not supported:", err);
+                }
             }
             setIsFullscreen(true);
         } else {
@@ -183,13 +190,16 @@ export default function DetailVideo() {
                             <i className="ri-arrow-left-line"></i> Video Motivasi
                         </Link>
                         <button className="text-gray-600 hover:text-gray-800">
+                            <i class="ri-bookmark-line"></i>
+                        </button>
+                        <button className="text-gray-600 hover:text-gray-800">
                             <i className="ri-settings-5-line text-xl"></i>
                         </button>
                     </div>
                 </div>
 
                 {/* Video Player */}
-                <div className="pt-[60px]">
+                <div className="pt-[70px]">
                     <div
                         className="relative bg-gray-900 rounded-lg overflow-hidden"
                         onClick={handleVideoClick}
@@ -244,21 +254,32 @@ export default function DetailVideo() {
                     </div>
 
                     {/* Video Info */}
-                    <div className="p-4 bg-white">
-                        <h1 className="text-xl font-bold mb-2 text-gray-800">{currentVideo.title}</h1>
+                    <div className="p-3 px-2 bg-white">
+                        <h1 className="text-xl font-bold mb-2 line-clamp-2 text-gray-800">{currentVideo.title}</h1>
                         <div className="flex justify-between text-sm text-gray-500">
-                            <span>{currentVideo.upload_date}</span>
                             <span className="flex items-center">
-                                <i className="ri-eye-line mr-1"></i>
-                                {currentVideo.views.toLocaleString()} ditonton
+                                {currentVideo.views.toLocaleString()} x ditonton
                             </span>
+                            <span>{currentVideo.upload_date}</span>
                         </div>
                     </div>
 
-                    {/* Video List */}
-                    <div className="px-4 mt-4">
-                        <h2 className="text-gray-800 text-lg font-semibold mb-3">Video Lainnya</h2>
-                        <div className="space-y-3">
+                    <hr/>
+
+                    {/* bagian Video List */}
+                    <div className="px-2 mt-3">
+                        <div className="flex items-center justify-between mb-3">
+                            <h2 className="text-gray-800 text-lg font-semibold">Video Lainnya</h2>
+
+                            <button
+                                className="p-2 rounded-full hover:bg-gray-100 transition"
+                                onClick={() => console.log("Button clicked")}
+                            >
+                                <i className="ri-arrow-up-down-line text-xl text-gray-700"></i>
+                            </button>
+                        </div>
+
+                        <div className="space-y-2">
                             {videos.map(video => (
                                 <div
                                     key={video.id}

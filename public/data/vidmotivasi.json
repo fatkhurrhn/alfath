@@ -2,9 +2,9 @@
         "id": 1,
         "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157262/1_zo3jxm.mp4",
         "thumbnail": "/thumbnail/vid1.jpg",
-        "title": "inilah aku dengan versi baruku",
+        "title": "hi guys, iam back dengan versi barukuback dengan versi barukuback dengan versi baruku",
         "upload_date": "2 Agustus 2025",
-        "views": 6730
+        "views": "6,7 rb"
     },
     {
         "id": 2,
@@ -12,7 +12,7 @@
         "thumbnail": "/thumbnail/vid2.jpg",
         "title": "pacaran adalah jatuh cinta paling miskin",
         "upload_date": "15 Juli 2025",
-        "views": 8921
+        "views": "4,4 rb"
     },
     {
         "id": 3,
@@ -20,7 +20,7 @@
         "thumbnail": "/thumbnail/vid3.jpg",
         "title": "inget ya sendirian itu bukan berarti ga laku",
         "upload_date": "28 September 2025",
-        "views": 12453
+        "views": "12,3 rb"
     },
     {
         "id": 4,
@@ -28,7 +28,7 @@
         "thumbnail": "/thumbnail/vid4.jpg",
         "title": "suka sama dia tapi secara diam-diam",
         "upload_date": "5 November 2025",
-        "views": 9876
+        "views": "7,1 rb"
     },
     {
         "id": 5,
@@ -36,6 +36,6 @@
         "thumbnail": "/thumbnail/vid5.jpg",
         "title": "ingat! kamu itu terlalu berharga",
         "upload_date": "20 Desember 2025",
-        "views": 15642
+        "views": "18,9 rb"
     }
 ]
