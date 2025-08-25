@@ -26,7 +26,7 @@ export default function Home() {
     // Sembunyikan splash screen setelah 3 detik
     const timer = setTimeout(() => {
       setShowSplash(false);
-    }, 3000);
+    }, 2500);
 
     return () => clearTimeout(timer);
   }, []);
