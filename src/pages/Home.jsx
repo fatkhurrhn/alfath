@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import BottomNav from '../components/BottomNav'
 import PrayerTimeManager from '../components/PrayerTimeManager'
@@ -21,10 +21,6 @@ import NewsSection from '../components/home/NewsSection'
 import FeatureGrid from '../components/home/FeatureGrid'
 
 export default function Home() {
-  // Set judul halaman
-  useEffect(() => {
-    document.title = "Islamic App";
-  }, []);
 
   return (
     <div className="min-h-screen pb-1 bg-gray-50">
