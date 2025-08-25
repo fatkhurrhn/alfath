@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
     useEffect(() => {
-        document.title = "Kalender - Islamic";
+        document.title = "Kalender | Ihsanly – Muslim Daily";
     }, []);
 
     return (

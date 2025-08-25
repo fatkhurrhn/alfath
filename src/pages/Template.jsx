@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Templat() {
   useEffect(() => {
-    document.title = "Juz30 - Islamic";
+    document.title = "Ihsanly – Muslim Daily";
   }, []);
 
   return (

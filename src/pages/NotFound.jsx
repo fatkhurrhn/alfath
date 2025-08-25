@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const NotFound = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+      document.title = "Ihsanly – Muslim Daily";
+    }, []);
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6 text-center">
