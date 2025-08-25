@@ -22,7 +22,7 @@ export default function Juz30() {
   /* ---------- per-soal ---------- */
   useEffect(() => {
     if (questions.length && currentQuestion < questions.length) {
-      setTimeLeft(15);
+      setTimeLeft(30);
       setSelectedOption(null);
 
       const audioUrl = questions[currentQuestion].question.audio;
