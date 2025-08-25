@@ -18,9 +18,10 @@ import QuranPage from './components/QuranPage';
 import Tess from './components/Home';
 import HomeQuran from "./pages/alquran/HomeQuran";
 import TebakAyat from "./pages/alquran/game/TebakAyat";
-import SambungAyat from "./pages/alquran/game/sambungayat/Juz30";
 import Games from "./pages/alquran/Games";
 import History from "./pages/History";
+import Juz30 from "./pages/alquran/game/sambungayat/Juz30";
+import Juz1 from "./pages/alquran/game/sambungayat/Juz1";
 
 function App() {
   return (
@@ -49,7 +50,8 @@ function App() {
         {/* Route Games */}
         <Route path="/game" element={<Games />} />
         <Route path="/history" element={<History />} />
-        <Route path="/game/sambung-ayat/juz/30" element={<SambungAyat />} />
+        <Route path="/game/sambung-ayat/juz/1" element={<Juz1 />} />
+        <Route path="/game/sambung-ayat/juz/30" element={<Juz30 />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />

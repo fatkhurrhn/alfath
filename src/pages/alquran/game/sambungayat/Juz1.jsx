@@ -1,36 +1,59 @@
-// Juz30.jsx
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Juz30() {
+export default function Juz1() {
   /* ---------- state ---------- */
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameOver, setGameOver] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null); // menyimpan option yg dipilih
-  const [userAnswers, setUserAnswers] = useState([]); // untuk recap akhir
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
 
   const audioRef = useRef(null);
+
+  /* ---------- utils ---------- */
+  const formatDateId = (dateObj) => {
+    const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+    const d = String(dateObj.getDate()).padStart(2, '0');
+    const m = bulan[dateObj.getMonth()];
+    const y = dateObj.getFullYear();
+    const t = dateObj.toLocaleTimeString('id-ID', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    return `${d} ${m} ${y} | ${t}`;
+  };
 
   /* ---------- load ---------- */
   useEffect(() => {
     fetchQuestions();
+    return () => {
+      // cleanup audio saat unmount
+      audioRef.current?.pause();
+    };
   }, []);
 
   /* ---------- per-soal ---------- */
   useEffect(() => {
     if (questions.length && currentQuestion < questions.length) {
-      setTimeLeft(15);
+      setTimeLeft(30);
       setSelectedOption(null);
 
       const audioUrl = questions[currentQuestion].question.audio;
+
+      // stop audio lama (kalau ada)
+      audioRef.current?.pause();
+
+      // buat audio baru & play
       audioRef.current = new Audio(audioUrl);
       audioRef.current.play().catch(() => { });
-      return () => audioRef.current?.pause();
+
+      // cleanup saat pindah soal/unmount
+      return () => {
+        audioRef.current?.pause();
+      };
     }
   }, [currentQuestion, questions]);
+
 
   /* ---------- countdown ---------- */
   useEffect(() => {
@@ -47,16 +70,17 @@ export default function Juz30() {
   /* ---------- fetch ---------- */
   const fetchQuestions = async () => {
     try {
-      const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/30');
+      // hapus spasi di ujung URL
+      const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/1');
       const json = await res.json();
       const all = json.data;
 
       const picked = all.sort(() => Math.random() - 0.5).slice(0, 10);
 
       const qs = picked.map((ayat) => {
-        const correct = all.find(
-          (a) => a.surah === ayat.surah && +a.ayah === +ayat.ayah + 1
-        ) || all[Math.floor(Math.random() * all.length)];
+        const correct =
+          all.find((a) => a.surah === ayat.surah && +a.ayah === +ayat.ayah + 1) ||
+          all[Math.floor(Math.random() * all.length)];
 
         const wrongs = all
           .filter(
@@ -77,13 +101,33 @@ export default function Juz30() {
     }
   };
 
+  /* ---------- save to localStorage ---------- */
+  const saveGameHistory = (finalScore) => {
+  const gameRecord = {
+    date: formatDateId(new Date()),
+    score: finalScore,
+    total: 100,
+    details: userAnswers,
+    game: "Sambung Ayat",   // ⬅️ nama game
+    juz: "Juz 1",          // ⬅️ nomor juz
+    juzNumber: 30, // ⬅️ penting untuk link ulangi
+  };
+
+    const existingHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    const updatedHistory = [gameRecord, ...existingHistory];
+    localStorage.setItem('gameHistory', JSON.stringify(updatedHistory.slice(0, 50)));
+  };
+
   /* ---------- logic ---------- */
   const handleAnswer = (option) => {
     if (selectedOption) return;
     setSelectedOption(option);
 
     const isCorrect = option.id === questions[currentQuestion].correct.id;
-    if (isCorrect) setScore((s) => s + 5);
+    const poinPerSoal = Math.round(100 / questions.length);
+
+    // update skor untuk UI
+    if (isCorrect) setScore((s) => s + poinPerSoal);
 
     setUserAnswers((prev) => [
       ...prev,
@@ -94,7 +138,12 @@ export default function Juz30() {
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion((q) => q + 1);
       } else {
+        // hitung finalScore dari skor saat ini + poin jika benar
+        const finalScore = isCorrect ? score + poinPerSoal : score;
         setGameOver(true);
+        // simpan pakai finalScore agar tidak kena stale state
+        saveGameHistory(finalScore);
+        audioRef.current?.pause();
       }
     }, 1200);
   };
@@ -108,12 +157,16 @@ export default function Juz30() {
       if (currentQuestion + 1 < questions.length) {
         setCurrentQuestion((q) => q + 1);
       } else {
+        const finalScore = score; // tidak bertambah
         setGameOver(true);
+        saveGameHistory(finalScore);
+        audioRef.current?.pause();
       }
     }, 500);
   };
 
   const restartGame = () => {
+    audioRef.current?.pause();
     setCurrentQuestion(0);
     setScore(0);
     setUserAnswers([]);
@@ -133,7 +186,7 @@ export default function Juz30() {
 
   if (gameOver) {
     return (
-      <div className="min-h-screen bg-gray-50 px-4 py-8">
+      <div className="min-h-screen bg-gray-50 px-4 py-8 pb-20">
         <div className="max-w-md mx-auto">
           <h2 className="text-2xl font-bold text-center mb-1">Hasil Akhir</h2>
           <p className="text-center text-lg mb-6">
@@ -160,12 +213,12 @@ export default function Juz30() {
                 <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
                   {/* Pertanyaan */}
                   <p className="font-semibold text-center mb-2 font-mushaf text-gray-800 leading-loose">
-                    {item.question.arab} — {" "}
+                    {item.question.arab} —{" "}
                     <span className="font-semibold text-green-700">
                       {item.correct.arab}
                     </span>
                   </p>
-                  <hr className='p-2' />
+                  <hr className="p-2" />
 
                   {/* Jawaban User */}
                   {item.userAnswer ? (
@@ -189,12 +242,10 @@ export default function Juz30() {
                       <span className="text-base font-semibold">Kamu tidak menjawab</span>
                     </div>
                   )}
-
                 </div>
               </div>
             ))}
           </div>
-
 
           {/* Floating Action Card */}
           <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
@@ -213,7 +264,6 @@ export default function Juz30() {
               </Link>
             </div>
           </div>
-
         </div>
       </div>
     );
@@ -222,12 +272,12 @@ export default function Juz30() {
   const q = questions[currentQuestion];
 
   return (
-    <div className='min-h-screen pb-2'>
+    <div className="min-h-screen pb-2">
       <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
         <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
           <div className="flex items-center justify-between">
             <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-              <i className="ri-arrow-left-line"></i> Sambung Ayat Juz 30
+              <i className="ri-arrow-left-line"></i> Sambung Ayat Juz 1
             </Link>
             <button className="text-gray-600 hover:text-gray-600">
               <i className="ri-settings-5-line text-xl"></i>
@@ -235,56 +285,76 @@ export default function Juz30() {
           </div>
         </div>
 
-        <div className='pt-[65px]'>
-          <div className="flex items-center justify-between pt-2 pb-2">
-            <span className="text-[14px] text-gray-700">
-              Soal {currentQuestion + 1}/{questions.length}
+        <div className="pt-[70px]">
+          {/* Header progress */}
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-gray-700">
+              Soal <span className="font-semibold">{currentQuestion + 1}</span> / {questions.length}
             </span>
-            <span className="text-[14px] font-mono text-gray-700">
+            <span className="text-sm font-mono font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">
               {timeLeft}s
             </span>
           </div>
 
-          <div className="bg-white border rounded-lg p-3 mb-4 relative">
-            <p dir="rtl" className="text-2xl font-mushaf leading-loose text-center">
+          {/* Card pertanyaan */}
+          <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm relative">
+            <p
+              dir="rtl"
+              className="text-2xl font-mushaf leading-relaxed text-center text-gray-800"
+            >
               {q.question.arab}
             </p>
 
-            <button onClick={() => audioRef.current?.play()} className="absolute bottom-2 right-2 text-gray-700 p-2 rounded">
-              <i className="ri-volume-up-line"></i>
+            {/* Tombol play audio */}
+            <button
+              onClick={() => audioRef.current?.play()}
+              className="absolute bottom-1 right-2 transition"
+              aria-label="Putar audio"
+            >
+              <i className="ri-volume-up-line text-md text-gray-700"></i>
             </button>
           </div>
 
-
-          <div className="max-w-md mx-auto px-4 py-6">
-            {/* opsi jawaban */}
+          {/* Opsi jawaban */}
+          <div className="max-w-md mx-auto px-2">
+            <p className="text-center pb-3 font-medium text-gray-600">
+              Silakan pilih jawabanmu
+            </p>
             <div className="space-y-3">
               {q.options.map((opt, idx) => {
                 const isCorrect = opt.id === q.correct.id;
                 const answered = selectedOption !== null;
+
+                // Warna dasar zebra: selang-seling putih & abu muda
+                const zebraBase = idx % 2 === 0 ? 'bg-white' : 'bg-gray-100';
 
                 return (
                   <button
                     key={idx}
                     disabled={answered}
                     onClick={() => handleAnswer(opt)}
-                    className={`w-full p-4 border rounded-lg text-right text-xl font-mushaf transition
-                  ${answered && isCorrect ? 'bg-green-100 border-green-500 text-green-800' : ''}
-                  ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-100 border-red-500 text-red-800' : ''}
-                  ${!answered ? 'bg-white hover:bg-gray-100' : ''}
-                `}
+                    className={`w-full p-3 border rounded-lg text-right text-xl leading-relaxed font-mushaf transition
+            ${answered && isCorrect
+                        ? 'bg-green-50 border-green-500 text-green-700'
+                        : ''
+                      }
+            ${answered &&
+                        !isCorrect &&
+                        opt.id === selectedOption?.id
+                        ? 'bg-red-50 border-red-500 text-red-700'
+                        : ''
+                      }
+            ${!answered ? `${zebraBase}` : ''}
+          `}
                   >
-                    {opt.arab}{' '}
-                    {answered && isCorrect && <span className="ml-2">✓</span>}
-                    {answered && !isCorrect && opt.id === selectedOption?.id && (
-                      <span className="ml-2">✗</span>
-                    )}
+                    {opt.arab}
                   </button>
                 );
               })}
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

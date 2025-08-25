@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom';
 
-export default function Juz30() {
+export default function Templat() {
   useEffect(() => {
     document.title = "Juz30 - Islamic";
   }, []);
