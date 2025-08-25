@@ -9,146 +9,211 @@ export default function Juz30() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(30);
   const [gameOver, setGameOver] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showResult, setShowResult] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null); // menyimpan option yg dipilih
+  const [userAnswers, setUserAnswers] = useState([]); // untuk recap akhir
 
-  /* audio ref agar mudah di-control */
   const audioRef = useRef(null);
 
-  /* ---------- load soal ---------- */
+  /* ---------- load ---------- */
   useEffect(() => {
     fetchQuestions();
   }, []);
 
-  /* ---------- per-soal side-effect ---------- */
+  /* ---------- per-soal ---------- */
   useEffect(() => {
     if (questions.length && currentQuestion < questions.length) {
-      setTimeLeft(30);
+      setTimeLeft(15);
       setSelectedOption(null);
-      setShowResult(false);
 
-      /* autoplay audio */
       const audioUrl = questions[currentQuestion].question.audio;
       audioRef.current = new Audio(audioUrl);
-      audioRef.current.play().catch(() => {
-        // autoplay diblokir → user harus klik tombol play
-      });
-
-      return () => {
-        if (audioRef.current) audioRef.current.pause();
-      };
+      audioRef.current.play().catch(() => { });
+      return () => audioRef.current?.pause();
     }
   }, [currentQuestion, questions]);
 
   /* ---------- countdown ---------- */
   useEffect(() => {
     if (timeLeft === 0) {
-      handleNextQuestion();
+      handleTimeUp();
       return;
     }
-    if (!showResult && !gameOver) {
-      const t = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    if (!selectedOption && !gameOver) {
+      const t = setTimeout(() => setTimeLeft((v) => v - 1), 1000);
       return () => clearTimeout(t);
     }
-  }, [timeLeft, showResult, gameOver]);
+  }, [timeLeft, selectedOption, gameOver]);
 
   /* ---------- fetch ---------- */
   const fetchQuestions = async () => {
     try {
       const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/30');
       const json = await res.json();
-      const allAyat = json.data;
+      const all = json.data;
 
-      // ambil 5 ayat secara acak
-      const picked = allAyat.sort(() => Math.random() - 0.5).slice(0, 5);
+      const picked = all.sort(() => Math.random() - 0.5).slice(0, 10);
 
       const qs = picked.map((ayat) => {
-        const nextAyat =
-          allAyat.find((a) => a.surah === ayat.surah && +a.ayah === +ayat.ayah + 1) ||
-          allAyat[Math.floor(Math.random() * allAyat.length)];
+        const correct = all.find(
+          (a) => a.surah === ayat.surah && +a.ayah === +ayat.ayah + 1
+        ) || all[Math.floor(Math.random() * all.length)];
 
-        const wrongs = allAyat
+        const wrongs = all
           .filter(
             (a) =>
-              a.id !== nextAyat.id &&
-              (a.surah !== nextAyat.surah || a.ayah !== nextAyat.ayah)
+              a.id !== correct.id &&
+              !(a.surah === ayat.surah && +a.ayah === +ayat.ayah)
           )
           .sort(() => Math.random() - 0.5)
           .slice(0, 3);
 
-        const options = [
-          { ...nextAyat, isCorrect: true },
-          ...wrongs.map((w) => ({ ...w, isCorrect: false }))
-        ].sort(() => Math.random() - 0.5);
-
-        return { question: ayat, options };
+        const options = [correct, ...wrongs].sort(() => Math.random() - 0.5);
+        return { question: ayat, options, correct };
       });
 
       setQuestions(qs);
     } catch {
-      // fallback (jika API error) – bisa dihapus jika tidak diperlukan
-      alert('Gagal memuat soal, silakan refresh.');
+      alert('Gagal memuat soal');
     }
   };
 
   /* ---------- logic ---------- */
   const handleAnswer = (option) => {
-    if (selectedOption !== null) return;
+    if (selectedOption) return;
     setSelectedOption(option);
-    setShowResult(true);
-    if (option.isCorrect) setScore((s) => s + 20);
 
-    setTimeout(() => handleNextQuestion(), 1500);
+    const isCorrect = option.id === questions[currentQuestion].correct.id;
+    if (isCorrect) setScore((s) => s + 5);
+
+    setUserAnswers((prev) => [
+      ...prev,
+      { ...questions[currentQuestion], userAnswer: option, isCorrect }
+    ]);
+
+    setTimeout(() => {
+      if (currentQuestion + 1 < questions.length) {
+        setCurrentQuestion((q) => q + 1);
+      } else {
+        setGameOver(true);
+      }
+    }, 1200);
   };
 
-  const handleNextQuestion = () => {
-    if (audioRef.current) audioRef.current.pause();
-    if (currentQuestion + 1 < questions.length) {
-      setCurrentQuestion((q) => q + 1);
-    } else {
-      setGameOver(true);
-    }
+  const handleTimeUp = () => {
+    setUserAnswers((prev) => [
+      ...prev,
+      { ...questions[currentQuestion], userAnswer: null, isCorrect: false }
+    ]);
+    setTimeout(() => {
+      if (currentQuestion + 1 < questions.length) {
+        setCurrentQuestion((q) => q + 1);
+      } else {
+        setGameOver(true);
+      }
+    }, 500);
   };
 
   const restartGame = () => {
     setCurrentQuestion(0);
     setScore(0);
+    setUserAnswers([]);
     setGameOver(false);
+    setSelectedOption(null);
     fetchQuestions();
   };
 
   /* ---------- UI ---------- */
   if (!questions.length) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center">
-        <p className="text-white text-2xl animate-pulse">Memuat soal...</p>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-600">Memuat soal...</p>
       </div>
     );
   }
 
   if (gameOver) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-500 flex items-center justify-center p-4">
-        <div className="bg-white rounded-xl shadow-2xl p-8 text-center max-w-sm w-full">
-          <h2 className="text-3xl font-bold mb-4">Selesai!</h2>
-          <p className="text-6xl font-black text-green-500 mb-2">{score}</p>
-          <p className="text-gray-600 mb-6">
-            {score >= 80 ? 'Luar biasa!' : score >= 60 ? 'Bagus!' : 'Terus latihan!'}
+      <div className="min-h-screen bg-gray-50 px-4 py-8">
+        <div className="max-w-md mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-1">Hasil Akhir</h2>
+          <p className="text-center text-lg mb-6">
+            Skor Kamu: <span className="font-bold text-green-700">{score}</span>/100
           </p>
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={restartGame}
-              className="bg-green-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-green-600"
-            >
-              Main Lagi
-            </button>
-            <Link
-              to="/history"
-              className="bg-blue-500 text-white px-6 py-2 rounded-full shadow-md hover:bg-blue-600"
-            >
-              History
-            </Link>
+
+          {/* Recap Timeline Style */}
+          <div className="space-y-6 border-l-2 border-gray-200 pl-4">
+            {userAnswers.map((item, idx) => (
+              <div key={idx} className="relative">
+                {/* Bullet */}
+                <span
+                  className={`absolute -left-[13px] top-2 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${item.isCorrect
+                    ? "bg-green-500 text-white"
+                    : !item.userAnswer
+                      ? "bg-yellow-500 text-white"
+                      : "bg-red-500 text-white"
+                    }`}
+                >
+                  {idx + 1}
+                </span>
+
+                {/* Card */}
+                <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
+                  {/* Pertanyaan */}
+                  <p className="font-semibold text-center mb-2 font-mushaf text-gray-800 leading-loose">
+                    {item.question.arab} — {" "}
+                    <span className="font-semibold text-green-700">
+                      {item.correct.arab}
+                    </span>
+                  </p>
+                  <hr className='p-2' />
+
+                  {/* Jawaban User */}
+                  {item.userAnswer ? (
+                    <div
+                      className={`px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center ${item.isCorrect
+                        ? "bg-green-50 text-green-700 border border-green-200"
+                        : "bg-red-50 text-red-700 border border-red-200"
+                        }`}
+                    >
+                      {item.isCorrect ? (
+                        <span className="text-base font-semibold">Jawabanmu benar</span>
+                      ) : (
+                        <>
+                          <span className="mb-2 text-base font-semibold">Jawaban salahmu</span>
+                          <span className="font-mushaf text-lg mb-1">{item.userAnswer.arab}</span>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center bg-yellow-50 text-yellow-700 border border-yellow-200">
+                      <span className="text-base font-semibold">Kamu tidak menjawab</span>
+                    </div>
+                  )}
+
+                </div>
+              </div>
+            ))}
           </div>
+
+
+          {/* Floating Action Card */}
+          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+            <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-xl divide-x divide-gray-200 overflow-hidden">
+              <button
+                onClick={restartGame}
+                className="w-[120px] py-2.5 text-sm font-medium text-white bg-gray-800 hover:bg-gray-700 transition"
+              >
+                <i className="ri-refresh-line"></i> Main Lagi
+              </button>
+              <Link
+                to="/history"
+                className="w-[120px] py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition flex items-center justify-center"
+              >
+                <i className="ri-time-line"></i> History
+              </Link>
+            </div>
+          </div>
+
         </div>
       </div>
     );
@@ -157,89 +222,61 @@ export default function Juz30() {
   const q = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-400 to-blue-500">
+    <div className="min-h-screen bg-gray-50">
       {/* header */}
-      <div className="fixed top-0 left-0 right-0 bg-white/30 backdrop-blur-md p-4 flex justify-between items-center text-white font-bold z-20">
-        <Link to="/game" className="flex items-center gap-2">
-          <i className="ri-arrow-left-s-line text-2xl"></i>
-          <span className="hidden sm:inline">Kembali</span>
+      <div className="sticky top-0 bg-white border-b px-4 py-3 flex justify-between items-center">
+        <Link to="/game" className="text-gray-700">
+          ← Kembali
         </Link>
-        <span>
-          Soal {currentQuestion + 1} / {questions.length}
+        <span className="text-sm text-gray-700">
+          Soal {currentQuestion + 1}/{questions.length}
         </span>
-        <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg">
-          {timeLeft}
-        </div>
+        <span className="text-sm font-mono text-gray-700">{timeLeft}s</span>
       </div>
 
-      {/* konten */}
-      <div className="pt-28 pb-28 px-4 max-w-lg mx-auto">
-        <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-6">
-          {/* audio */}
-          <div className="flex justify-center mb-4">
-            <button
-              onClick={() => audioRef.current?.play()}
-              className="bg-green-500 text-white p-3 rounded-full shadow-md hover:scale-110 transition"
-            >
-              <i className="ri-play-fill text-2xl"></i>
-            </button>
-          </div>
+      <div className="max-w-md mx-auto px-4 py-6">
+        {/* audio */}
+        <div className="flex justify-center mb-4">
+          <button
+            onClick={() => audioRef.current?.play()}
+            className="bg-gray-200 text-gray-700 px-4 py-2 rounded"
+          >
+            🔊 Play
+          </button>
+        </div>
 
-          {/* ayat soal */}
-          <div className="text-center mb-4">
-            <p className="text-4xl font-arabic leading-loose text-gray-800">
-              {q.question.arab}
-            </p>
-            <p className="text-sm text-gray-500 mt-2">
-              Ayat: {q.question.ayah}
-            </p>
-          </div>
+        {/* ayat soal */}
+        <div className="bg-white border rounded-lg p-4 mb-4 text-center">
+          <p className="text-3xl font-mushaf">{q.question.arab}</p>
+        </div>
 
-          {/* opsi */}
-          <div className="space-y-3">
-            {q.options.map((opt, idx) => (
+        {/* opsi */}
+        <div className="space-y-3">
+          {q.options.map((opt, idx) => {
+            const isCorrect = opt.id === q.correct.id;
+            const answered = selectedOption !== null;
+
+            return (
               <button
                 key={idx}
-                disabled={selectedOption !== null}
+                disabled={answered}
                 onClick={() => handleAnswer(opt)}
-                className={`w-full p-4 rounded-xl text-right text-2xl font-arabic transition-all duration-300
-                  ${
-                    selectedOption
-                      ? opt.isCorrect
-                        ? 'bg-green-500 text-white scale-105 shadow-lg'
-                        : 'bg-red-400 text-white opacity-60'
-                      : 'bg-white/70 hover:bg-white hover:shadow-md'
-                  }`}
+                className={`w-full p-4 border rounded-lg text-right text-xl font-mushaf transition
+                  ${answered && isCorrect ? 'bg-green-100 border-green-500 text-green-800' : ''}
+                  ${answered && !isCorrect && opt.id === selectedOption?.id ? 'bg-red-100 border-red-500 text-red-800' : ''}
+                  ${!answered ? 'bg-white hover:bg-gray-100' : ''}
+                `}
               >
-                {opt.arab}
+                {opt.arab}{' '}
+                {answered && isCorrect && <span className="ml-2">✓</span>}
+                {answered && !isCorrect && opt.id === selectedOption?.id && (
+                  <span className="ml-2">✗</span>
+                )}
               </button>
-            ))}
-          </div>
-
-          {/* hasil */}
-          {showResult && (
-            <div className="mt-4 text-center">
-              {selectedOption?.isCorrect ? (
-                <p className="text-green-600 font-bold text-lg">✅ +20 poin</p>
-              ) : (
-                <p className="text-red-600 font-bold text-lg">❌ Salah</p>
-              )}
-            </div>
-          )}
+            );
+          })}
         </div>
       </div>
-
-      {/* footer score */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/30 backdrop-blur-md p-4 flex justify-between text-white font-bold">
-        <span>Skor: {score}</span>
-        <span>Target: 100</span>
-      </div>
-
-      <style>{`
-        .font-arabic {
-          font-family: 'Amiri', serif;
-        }
-      `}</style>
     </div>
   );
 }
