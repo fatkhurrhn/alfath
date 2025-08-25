@@ -1,12 +1,38 @@
-# React + Vite
+# 🌙 Ihsanly – Muslim Daily
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Ihsanly – Muslim Daily** adalah aplikasi Islami berbasis web yang dibuat dengan **React + Vite + Tailwind**.  
+Aplikasi ini hadir sebagai **teman harian muslim** dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.
 
-Currently, two official plugins are available:
+## ✨ Fitur Utama
+- 📖 **Al-Qur’an** – Baca Quran harian dengan API.
+- 🕌 **Jadwal Sholat** – Waktu sholat akurat sesuai lokasi.
+- 🤲 **Doa & Dzikir** – Kumpulan doa sehari-hari.
+- 📜 **Hadits** – Hadits harian acak untuk inspirasi.
+- 🌟 **Quotes & Motivasi** – Kutipan Islami & video motivasi.
+- 📅 **Kalender Islami** – Penanggalan Hijriah.
+- 🔔 **Notifikasi (coming soon)** – Pengingat sholat & dzikir.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tech Stack
+- [React](https://react.dev/) – Library utama UI
+- [Vite](https://vitejs.dev/) – Build tool cepat & ringan
+- [TailwindCSS](https://tailwindcss.com/) – Utility-first CSS
+- [Remix Icon](https://remixicon.com/) – Icon set
+- **Public APIs** – Data Quran, Hadits, & Jadwal Sholat
 
-## Expanding the ESLint configuration
+## 🚀 Instalasi & Development
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Clone repo ini lalu jalankan:
+
+```bash
+# Clone repository
+git clone https://github.com/fatkhurrhn/ihsanly.git
+cd ihsanly
+
+# Install dependencies
+npm install
+
+# Jalankan development server
+npm run dev
+
+# Build untuk production
+npm run build
