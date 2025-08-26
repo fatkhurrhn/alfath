@@ -19,7 +19,7 @@ import NewsSection from '../components/home/NewsSection'
 import FeatureGrid from '../components/home/FeatureGrid'
 import VidMotivasi from '../components/home/VidMotivasi'
 
-import InstallButton from '../components/home/InstallApp'
+import InstallButton from '../components/home/InstallBanner'
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(false);
