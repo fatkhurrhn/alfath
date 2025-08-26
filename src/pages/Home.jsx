@@ -19,6 +19,8 @@ import NewsSection from '../components/home/NewsSection'
 import FeatureGrid from '../components/home/FeatureGrid'
 import VidMotivasi from '../components/home/VidMotivasi'
 
+import InstallButton from '../components/home/InstallApp'
+
 export default function Home() {
   const [showSplash, setShowSplash] = useState(false);
 
@@ -81,6 +83,7 @@ export default function Home() {
               <DateDisplay />
               <AyahOfTheDay />
               <FeatureGrid />
+              <InstallButton/>
               <VidMotivasi />
               <PrayerReminder nextPrayer={nextPrayer} />
               <PrayerSchedule

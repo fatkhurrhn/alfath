@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "Ihsanly – Daily Muslim",
+  "name": "Ihsanly – Muslim Daily",
   "short_name": "Ihsanly",
   "start_url": "/",
   "scope": "/",
@@ -11,7 +11,7 @@
   "orientation": "portrait",
   "lang": "id",
   "dir": "ltr",
-  "description": "Ihsanly – Daily Muslim hadir sebagai teman harian muslim dengan Al-Qur’an, hadits, doa, dzikir, jadwal sholat, serta inspirasi Islami yang menenangkan hati.",
+  "description": "Ihsanly – Muslim Daily hadir sebagai teman harian muslim dengan Al-Qur’an, hadits, doa, dzikir, jadwal sholat, serta inspirasi Islami yang menenangkan hati.",
   "categories": ["education", "books", "utilities", "lifestyle"],
   "icons": [
     {
@@ -43,12 +43,20 @@
     {
       "src": "/screenshots/home.png",
       "sizes": "540x720",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow"
     },
     {
       "src": "/screenshots/quran.png",
       "sizes": "540x720",
-      "type": "image/png"
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
     }
   ],
   "launch_handler": {
@@ -56,6 +64,5 @@
   },
   "handle_links": "preferred",
   "prefer_related_applications": false,
-  "related_applications": [],
-  "scope_extensions": []
+  "related_applications": []
 }
