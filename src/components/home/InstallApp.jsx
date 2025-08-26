@@ -32,7 +32,7 @@ export default function InstallBanner() {
     if (!visible) return null;
 
     return (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-white shadow-md p-3 rounded-lg border w-[90%] max-w-sm text-center">
+        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 bg-white shadow-md p-3 rounded-lg border w-[90%] max-w-sm text-center">
             <p className="mb-2 text-gray-700 font-medium">
                 📲 Install Ihsanly di perangkatmu
             </p>
