@@ -74,7 +74,7 @@ function VidMotivasi() {
             <div className="flex items-center justify-between mb-2">
                 <h2 className="text-[16px] font-semibold text-gray-800">Video Motivasi</h2>
                 <Link
-                    to="/more-videos"
+                    to="/video"
                     className="flex items-center text-[14px] text-gray-600"
                 >
                     More <i className="ml-1 ri-arrow-right-line"></i>
@@ -86,7 +86,7 @@ function VidMotivasi() {
                     <Link
                         key={video.id}
                         to={`/detail/video/${video.id}`}
-                        className="flex-shrink-0 w-64 overflow-hidden transition-all duration-300 rounded-md block hover:shadow-md"
+                        className="flex-shrink-0 w-64 overflow-hidden transition-all duration-300 rounded-md block"
                     >
                         {/* Thumbnail video */}
                         <div className="relative">
@@ -106,11 +106,10 @@ function VidMotivasi() {
                         <div className="px-1 py-2">
                             <h3 className="font-medium text-[14px] text-gray-800 line-clamp-1">{video.title}</h3>
                             <div className="flex items-center justify-between mt-0 text-[11px] text-gray-500">
-                                <span>{video.upload_date}</span>
                                 <span className="flex items-center">
-                                    <i className="mr-1 ri-eye-line"></i>
-                                    {video.views.toLocaleString()}
+                                    {video.views.toLocaleString()} x ditonton
                                 </span>
+                                <span>{video.upload_date}</span>
                             </div>
                         </div>
                     </Link>

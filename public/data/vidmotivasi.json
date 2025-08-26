@@ -2,14 +2,16 @@
         "id": 1,
         "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157262/1_zo3jxm.mp4",
         "thumbnail": "/thumbnail/vid1.jpg",
+        "share_url": "https://www.instagram.com/storythur/reel/DI8sNwwz_dr/",
         "title": "hi guys, iam back dengan versi barukuback dengan versi barukuback dengan versi baruku",
         "upload_date": "2 Agustus 2025",
         "views": "6,7 rb"
     },
     {
         "id": 2,
-        "video_url": "/https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157255/2_a7osc0.mp4",
+        "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756167417/2_x58jo7.mp4",
         "thumbnail": "/thumbnail/vid2.jpg",
+        "share_url": "https://www.instagram.com/storythur/reel/DI_QLNXz4PI/",
         "title": "pacaran itu adalah jatuh cinta paling miskin",
         "upload_date": "15 Juli 2025",
         "views": "4,4 rb"
@@ -18,6 +20,7 @@
         "id": 3,
         "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157265/3_irleih.mp4",
         "thumbnail": "/thumbnail/vid3.jpg",
+        "share_url": "https://www.instagram.com/storythur/reel/DJB_Q01z9Jb/",
         "title": "inget ya sendirian itu bukan berarti ga lakuuu",
         "upload_date": "28 September 2025",
         "views": "12,3 rb"
@@ -26,6 +29,7 @@
         "id": 4,
         "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157262/4_rrofll.mp4",
         "thumbnail": "/thumbnail/vid4.jpg",
+        "share_url": "https://www.instagram.com/storythur/reel/DJEd3pxzll6/",
         "title": "suka sama dia tapi secara diam-diam tanpa si dia tau",
         "upload_date": "5 November 2025",
         "views": "7,1 rb"
@@ -34,8 +38,18 @@
         "id": 5,
         "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756157264/5_gz9vjy.mp4",
         "thumbnail": "/thumbnail/vid5.jpg",
+        "share_url": "https://www.instagram.com/storythur/reel/DJOxbJ2zmDa/",
         "title": "ingat! kamu itu terlalu berharga untuk diajak pacaran",
         "upload_date": "20 Desember 2025",
         "views": "18,9 rb"
+    },
+    {
+      "id": 6,
+      "video_url": "https://res.cloudinary.com/dbssvz2pe/video/upload/v1756167413/6_bpahcn.mp4",
+      "thumbnail": "/thumbnail/vid5.jpg",
+      "share_url": "https://www.instagram.com/storythur/reel/DJRgcpSzb0S/",
+      "title": "aku gamau ngonten ah, karena gaada yang nonton sama sekali",
+      "upload_date": "10 Agustus 2025",
+      "views": "11,3 rb"
     }
 ]
