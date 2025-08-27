@@ -1,5 +1,5 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const QuranTabs = ({ activeTab, setActiveTab }) => {
   const navigate = useNavigate();
@@ -9,24 +9,21 @@ const QuranTabs = ({ activeTab, setActiveTab }) => {
     navigate(`/quran/${tab}`);
   };
 
+  const tabStyle = (tab) =>
+    `flex-1 py-2 text-center font-medium rounded-lg transition-all ${activeTab === tab
+      ? "bg-[#355485] text-white shadow-md"
+      : "text-[#355485] hover:text-[#4f90c6]"
+    }`;
+
   return (
-    <div className="flex border-b border-gray-200">
-      <button
-        className={`flex-1 py-3 text-center font-medium ${activeTab === 'surah' ? 'text-gray-600 border-b-2 border-gray-600' : 'text-gray-500'}`}
-        onClick={() => handleTabChange('surah')}
-      >
+    <div className="flex gap-2 bg-[#f0f1f2] p-2 rounded-xl mb-2">
+      <button className={tabStyle("surah")} onClick={() => handleTabChange("surah")}>
         Surah
       </button>
-      <button
-        className={`flex-1 py-3 text-center font-medium ${activeTab === 'juz' ? 'text-gray-600 border-b-2 border-gray-600' : 'text-gray-500'}`}
-        onClick={() => handleTabChange('juz')}
-      >
+      <button className={tabStyle("juz")} onClick={() => handleTabChange("juz")}>
         Juz
       </button>
-      <button
-        className={`flex-1 py-3 text-center font-medium ${activeTab === 'games' ? 'text-gray-600 border-b-2 border-gray-600' : 'text-gray-500'}`}
-        onClick={() => handleTabChange('games')}
-      >
+      <button className={tabStyle("bookmark")} onClick={() => handleTabChange("bookmark")}>
         Bookmark
       </button>
     </div>

@@ -5,8 +5,6 @@ import VidMotivasi from '../components/home/VidPopuler';
 export default function VideoList() {
     const [videos, setVideos] = useState([]);
     const [filteredVideos, setFilteredVideos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [showFilter, setShowFilter] = useState(false);
     const [sortBy, setSortBy] = useState('newest'); // default: terbaru (id terbesar)
 
@@ -27,10 +25,7 @@ export default function VideoList() {
                 setFilteredVideos(sortedVideos);
             } catch (error) {
                 console.error('Error fetching video data:', error);
-                setError('Gagal memuat data video. Pastikan file JSON tersedia.');
-            } finally {
-                setLoading(false);
-            }
+            } 
         };
 
         fetchVideos();

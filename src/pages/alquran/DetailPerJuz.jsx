@@ -10,7 +10,7 @@ const BottomSheet = ({ isOpen, onClose, verse, onPlayAudio }) => {
             <div onClick={onClose} className="fixed inset-0 bg-black bg-opacity-40 z-40" />
             <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-2xl shadow-2xl max-w-xl mx-auto">
                 <div className="p-4 border-b flex items-center justify-between">
-                    <p className="font-semibold text-gray-800">
+                    <p className="font-semibold text-[#355485]">
                         QS {verse?.surah_name_id} ayat {verse?.ayah} (Juz {verse?.juz})
                     </p>
                     <button onClick={onClose}>
@@ -23,17 +23,17 @@ const BottomSheet = ({ isOpen, onClose, verse, onPlayAudio }) => {
                             onClose();
                             onPlayAudio();
                         }}
-                        className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-600 text-white"
+                        className="w-full flex items-center gap-2 px-4 py-2 rounded bg-[#355485] text-white"
                     >
                         <i className="ri-play-fill"></i> Play / Putar ayat
                     </button>
-                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                         <i className="ri-share-line"></i> Bagikan
                     </button>
-                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                         <i className="ri-bookmark-line"></i> Tandai akhir ayat
                     </button>
-                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                    <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                         <i className="ri-bookmark-3-line"></i> Bookmark
                     </button>
                 </div>
@@ -61,13 +61,13 @@ const MiniPlayer = ({ currentTrack, allSurahs, isPlaying, onTogglePlay, onPrev, 
 
                 {/* Controls */}
                 <div className="flex items-center gap-2 ml-4">
-                    <button onClick={onPrev} className="text-gray-600 hover:text-gray-800 transition">
+                    <button onClick={onPrev} className="text-gray-600 hover:text-[#355485] transition">
                         <i className="ri-skip-back-fill text-xl"></i>
                     </button>
                     <button onClick={onTogglePlay} className="text-gray-600 hover:text-gray-700 transition">
                         <i className={`text-3xl ${isPlaying ? 'ri-pause-circle-fill' : 'ri-play-circle-fill'}`}></i>
                     </button>
-                    <button onClick={onNext} className="text-gray-600 hover:text-gray-800 transition">
+                    <button onClick={onNext} className="text-gray-600 hover:text-[#355485] transition">
                         <i className="ri-skip-forward-fill text-xl"></i>
                     </button>
                     <button onClick={onStop} className="text-red-500 hover:text-red-600 transition">
@@ -351,7 +351,7 @@ export default function DetailPerJuz() {
             <div className="max-w-xl mx-auto bg-white min-h-screen shadow-lg">
                 {/* Navback */}
                 <div className={`sticky top-0 z-40 bg-white px-4 py-4 border-b border-gray-200 flex items-center justify-between shadow-sm transition-transform duration-300 ${showNavback ? 'translate-y-0' : '-translate-y-full'}`}>
-                    <Link to="/quran/juz" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px] transition-colors">
+                    <Link to="/quran/juz" className="flex items-center font-semibold gap-2 text-[#355485] text-[15px] transition-colors">
                         <i className="ri-arrow-left-line"></i> Juz {id}
                     </Link>
                     <div className="flex items-center gap-3">
@@ -429,12 +429,12 @@ export default function DetailPerJuz() {
                                 >
                                     <i className="ri-more-2-fill text-xl"></i>
                                 </button>
-                                <p className="font-mushaf text-[22px] leading-loose text-right flex-1 ml-4">
+                                <p className="font-mushaf text-[22px] text-[#1f3963] leading-loose text-right flex-1 ml-4">
                                     {verse.arab}
                                 </p>
                             </div>
                             <div className='text-[15px] mb-3'>
-                                <p className="text-gray-800 text-justify">
+                                <p className="text-[#355485] text-justify">
                                     <span className='font-semibold mr-2'>[{verse.surah}:{verse.ayah}]</span>
                                     {verse.text}
                                 </p>

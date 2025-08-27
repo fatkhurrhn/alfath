@@ -1,3 +1,4 @@
+// src/components/HybridCalendar.jsx
 import React, { useState, useEffect } from 'react';
 
 export default function HybridCalendar() {
@@ -10,378 +11,165 @@ export default function HybridCalendar() {
   const [hijriMonthRange, setHijriMonthRange] = useState('');
   const [calendarDays, setCalendarDays] = useState([]);
   const [autoShowDate, setAutoShowDate] = useState(null);
-  const [eventsLoading, setEventsLoading] = useState(false); // State untuk loading events
+  const [eventsLoading, setEventsLoading] = useState(false);
 
-  // Fungsi untuk mendapatkan jumlah hari dalam bulan
-  const getDaysInMonth = (year, month) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
+  /* ------------------ Helper Functions ------------------ */
+  const getDaysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
+  const getFirstDayOfMonth = (y, m) => new Date(y, m, 1).getDay();
 
-  // Fungsi untuk mendapatkan hari pertama dalam bulan
-  const getFirstDayOfMonth = (year, month) => {
-    return new Date(year, month, 1).getDay();
-  };
-
-  // Fungsi untuk mengubah bulan
   const changeMonth = (offset) => {
     const newDate = new Date(currentDate);
     newDate.setMonth(currentDate.getMonth() + offset);
     setCurrentDate(newDate);
     setSelectedDate(null);
     setAutoShowDate(null);
-    setEventsLoading(true); // Set loading events ketika bulan berubah
+    setEventsLoading(true);
   };
 
-  // Fungsi untuk mendapatkan data Hijriyah untuk semua tanggal dalam bulan
-  const fetchHijriMonthData = async (year, month) => {
-    try {
-      setLoading(true);
-      setEventsLoading(true); // Set loading events
-      const daysInMonth = getDaysInMonth(year, month);
-      const newHijriData = { ...hijriData };
+  const getIndonesianMonthName = (m) =>
+    ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][m];
+  const getIndonesianMonthShortName = (m) =>
+    ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'][m];
+  const getIndonesianDayName = (d) =>
+    ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'][d];
 
-      // Fetch data untuk semua tanggal dalam bulan
-      for (let day = 1; day <= daysInMonth; day++) {
-        const formattedDate = `${day.toString().padStart(2, '0')}-${(month + 1).toString().padStart(2, '0')}-${year}`;
+  const getHijriMonthName = (num) => ({
+    1: 'Muharram', 2: 'Safar', 3: 'Rabiul Awal', 4: 'Rabiul Akhir',
+    5: 'Jumadil Awal', 6: 'Jumadil Akhir', 7: 'Rajab', 8: 'Sya’ban',
+    9: 'Ramadhan', 10: 'Syawal', 11: 'Dzulqa’dah', 12: 'Dzulhijjah'
+  }[num] || '');
 
-        // Skip jika data sudah ada
-        if (newHijriData[formattedDate]) continue;
+  const handleDateClick = (d) => { setSelectedDate(d); setAutoShowDate(null); };
 
-        try {
-          const response = await fetch(`https://api.aladhan.com/v1/gToH/${formattedDate}?calendarMethod=UAQ`);
-          const data = await response.json();
-
-          if (data.code === 200) {
-            newHijriData[formattedDate] = data.data.hijri;
-          }
-        } catch (error) {
-          console.error(`Error fetching hijri date for ${formattedDate}:`, error);
-        }
-
-        // Tambahkan delay kecil untuk menghindari rate limiting
-        await new Promise(resolve => setTimeout(resolve, 30));
-      }
-
-      setHijriData(newHijriData);
-    } catch (error) {
-      console.error('Error fetching hijri month data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fungsi untuk mendapatkan nama bulan Indonesia
-  const getIndonesianMonthName = (monthIndex) => {
-    const months = [
-      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-    ];
-    return months[monthIndex];
-  };
-
-  // Fungsi untuk mendapatkan nama bulan Indonesia singkat
-  const getIndonesianMonthShortName = (monthIndex) => {
-    const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
-      'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
-    ];
-    return months[monthIndex];
-  };
-
-  // Fungsi untuk mendapatkan nama hari Indonesia
-  const getIndonesianDayName = (dayIndex) => {
-    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-    return days[dayIndex];
-  };
-
-  // Fungsi untuk mendapatkan nama bulan Hijriyah Indonesia
-  const getHijriMonthName = (monthNumber) => {
-    const months = {
-      1: 'Muharram',
-      2: 'Safar',
-      3: 'Rabiul Awal',
-      4: 'Rabiul Akhir',
-      5: 'Jumadil Awal',
-      6: 'Jumadil Akhir',
-      7: 'Rajab',
-      8: 'Sya\'ban',
-      9: 'Ramadhan',
-      10: 'Syawal',
-      11: 'Dzulqa\'dah',
-      12: 'Dzulhijjah'
-    };
-    return months[monthNumber] || '';
-  };
-
-  // Fungsi untuk menangani klik tanggal
-  const handleDateClick = (date) => {
-    setSelectedDate(date);
-    setAutoShowDate(null);
-  };
-
-  // Fungsi untuk menentukan event berdasarkan hari dan tanggal Hijriyah
   const getEventsForDate = (date, hijriInfo) => {
-    const events = [];
-    const dayOfWeek = date.getDay(); // 0 = Minggu, 1 = Senin, 2 = Selasa, ..., 6 = Sabtu
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
+    const ev = [];
+    const day = date.getDay();
+    const fDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1)
+      .toString().padStart(2, '0')}-${date.getFullYear()}`;
 
-    // Event berdasarkan hari (Senin & Kamis)
-    if (dayOfWeek === 1) { // Senin
-      events.push({
-        type: 'puasa_senin',
-        title: 'Puasa Senin',
-        category: 'Puasa Sunnah',
-        color: 'blue'
-      });
-    } else if (dayOfWeek === 4) { // Kamis
-      events.push({
-        type: 'puasa_kamis',
-        title: 'Puasa Kamis',
-        category: 'Puasa Sunnah',
-        color: 'yellow'
-      });
-    }
+    if (day === 1) ev.push({ title: 'Puasa Senin', category: 'Puasa Sunnah', color: 'blue' });
+    if (day === 4) ev.push({ title: 'Puasa Kamis', category: 'Puasa Sunnah', color: 'yellow' });
+    if (hijriInfo && [13, 14, 15].includes(parseInt(hijriInfo.day)))
+      ev.push({ title: 'Puasa Yaumul Bidh', category: 'Puasa Sunnah', color: 'green' });
+    if (specialDates[fDate])
+      ev.push({ title: specialDates[fDate], category: 'Hari Besar & Libur Nasional', color: 'red' });
 
-    // Event berdasarkan tanggal Hijriyah (13, 14, 15)
-    if (hijriInfo && [13, 14, 15].includes(parseInt(hijriInfo.day))) {
-      events.push({
-        type: 'puasa_yaumul_bidh',
-        title: 'Puasa Yaumul Bidh',
-        category: 'Puasa Sunnah',
-        color: 'green'
-      });
-    }
-
-    // Event khusus berdasarkan tanggal Masehi
-    if (specialDates[formattedDate]) {
-      events.push({
-        type: 'special',
-        title: specialDates[formattedDate],
-        category: 'Hari Besar & Libur Nasional',
-        color: 'red'
-      });
-    }
-
-    return events;
+    return ev;
   };
 
-  // Effect untuk mengambil data awal
+  /* ------------------ Effects ------------------ */
   useEffect(() => {
-    // Set data tanggal penting (contoh)
-    setSpecialDates({
-      '01-01-2022': 'Tahun Baru Masehi (Internasional)'
-      
-    });
+    setSpecialDates({ '01-01-2025': 'Tahun Baru Masehi' });
   }, []);
 
-  // Effect untuk mengambil data Hijriyah ketika bulan berubah
   useEffect(() => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    fetchHijriMonthData(year, month);
+    const fetchHijriMonthData = async (y, m) => {
+      try {
+        setLoading(true); setEventsLoading(true);
+        const dInM = getDaysInMonth(y, m);
+        const newHijriData = { ...hijriData };
+
+        for (let d = 1; d <= dInM; d++) {
+          const f = `${String(d).padStart(2, '0')}-${String(m + 1).padStart(2, '0')}-${y}`;
+          if (newHijriData[f]) continue;
+          try {
+            const res = await fetch(`https://api.aladhan.com/v1/gToH/${f}?calendarMethod=UAQ`);
+            const data = await res.json();
+            if (data.code === 200) newHijriData[f] = data.data.hijri;
+          } catch (err) { console.error(err); }
+          await new Promise(r => setTimeout(r, 30));
+        }
+        setHijriData(newHijriData);
+      } finally { setLoading(false); }
+    };
+    fetchHijriMonthData(currentDate.getFullYear(), currentDate.getMonth());
   }, [currentDate]);
 
-  // Effect untuk menggenerate hari kalender
   useEffect(() => {
-    const generateCalendarDays = () => {
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-      const daysInMonth = getDaysInMonth(year, month);
-      const firstDayOfMonth = getFirstDayOfMonth(year, month);
-      const days = [];
-
-      // Tambahkan hari dari bulan sebelumnya
-      const prevMonth = month === 0 ? 11 : month - 1;
-      const prevMonthYear = month === 0 ? year - 1 : year;
-      const daysInPrevMonth = getDaysInMonth(prevMonthYear, prevMonth);
-
-      for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-        const day = daysInPrevMonth - i;
-        const date = new Date(prevMonthYear, prevMonth, day);
-        days.push({
-          date,
-          isCurrentMonth: false,
-          isOtherMonth: true
-        });
-      }
-
-      // Tambahkan hari dalam bulan saat ini
-      for (let i = 1; i <= daysInMonth; i++) {
-        const date = new Date(year, month, i);
-        days.push({
-          date,
-          isCurrentMonth: true,
-          isOtherMonth: false
-        });
-      }
-
-      // Tambahkan hari dari bulan berikutnya
-      const nextMonth = month === 11 ? 0 : month + 1;
-      const nextMonthYear = month === 11 ? year + 1 : year;
-      const daysToAdd = 42 - days.length; // 6 minggu x 7 hari = 42
-
-      for (let i = 1; i <= daysToAdd; i++) {
-        const date = new Date(nextMonthYear, nextMonth, i);
-        days.push({
-          date,
-          isCurrentMonth: false,
-          isOtherMonth: true
-        });
-      }
-
-      setCalendarDays(days);
-    };
-
-    generateCalendarDays();
+    const y = currentDate.getFullYear(), m = currentDate.getMonth();
+    const dInM = getDaysInMonth(y, m), fDay = getFirstDayOfMonth(y, m), days = [];
+    const prevM = m === 0 ? 11 : m - 1, prevY = m === 0 ? y - 1 : y;
+    const dPrev = getDaysInMonth(prevY, prevM);
+    for (let i = fDay - 1; i >= 0; i--) days.push({ date: new Date(prevY, prevM, dPrev - i), isCurrentMonth: false });
+    for (let i = 1; i <= dInM; i++) days.push({ date: new Date(y, m, i), isCurrentMonth: true });
+    const nextM = m === 11 ? 0 : m + 1, nextY = m === 11 ? y + 1 : y;
+    const left = 42 - days.length;
+    for (let i = 1; i <= left; i++) days.push({ date: new Date(nextY, nextM, i), isCurrentMonth: false });
+    setCalendarDays(days);
   }, [currentDate]);
 
-  // Effect untuk mengupdate event bulanan ketika data berubah
   useEffect(() => {
-    const generateMonthEvents = () => {
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
-      const daysInMonth = getDaysInMonth(year, month);
-      const events = [];
-      const hijriMonths = new Set();
-
-      for (let i = 1; i <= daysInMonth; i++) {
-        const date = new Date(year, month, i);
-        const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
-
-        if (hijriData[formattedDate]) {
-          hijriMonths.add(getHijriMonthName(hijriData[formattedDate].month.number));
-        }
-
-        const dateEvents = getEventsForDate(date, hijriData[formattedDate]);
-
-        if (dateEvents.length > 0) {
-          events.push({
-            date,
-            formattedDate,
-            events: dateEvents,
-            hijriInfo: hijriData[formattedDate]
-          });
-        }
-      }
-
-      // Set judul bulan Hijriyah
-      setHijriMonthRange(Array.from(hijriMonths).join('-'));
-
-      return events;
-    };
-
-    if (Object.keys(hijriData).length > 0) {
-      setMonthEvents(generateMonthEvents());
-      setEventsLoading(false); // Matikan loading events setelah data siap
+    if (!Object.keys(hijriData).length) return;
+    const y = currentDate.getFullYear(), m = currentDate.getMonth(), dInM = getDaysInMonth(y, m);
+    const events = [], hijriMonths = new Set();
+    for (let d = 1; d <= dInM; d++) {
+      const date = new Date(y, m, d);
+      const f = `${String(d).padStart(2, '0')}-${String(m + 1).padStart(2, '0')}-${y}`;
+      if (hijriData[f]) hijriMonths.add(getHijriMonthName(hijriData[f].month.number));
+      const ev = getEventsForDate(date, hijriData[f]);
+      if (ev.length > 0) events.push({ date, formattedDate: f, events: ev, hijriInfo: hijriData[f] });
     }
+    setHijriMonthRange([...hijriMonths].join(' - '));
+    setMonthEvents(events); setEventsLoading(false);
   }, [currentDate, hijriData]);
 
-  // Effect untuk otomatis menampilkan info tanggal penting saat data siap
   useEffect(() => {
     if (!loading && monthEvents.length > 0 && !selectedDate && !autoShowDate) {
-      // Cari tanggal hari ini
       const today = new Date();
-      const isCurrentMonth = today.getMonth() === currentDate.getMonth() &&
-        today.getFullYear() === currentDate.getFullYear();
-
-      if (isCurrentMonth) {
+      if (today.getMonth() === currentDate.getMonth() && today.getFullYear() === currentDate.getFullYear()) {
         setAutoShowDate(today);
       }
     }
   }, [loading, monthEvents, selectedDate, autoShowDate, currentDate]);
 
-  // Tentukan tanggal yang akan ditampilkan infonya
+  /* ------------------ Render ------------------ */
   const displayDate = selectedDate || autoShowDate;
-
-  // Dapatkan data Hijriyah untuk bulan dan tahun saat ini
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const currentMonthYear = `${getIndonesianMonthName(month)} ${year}`;
+  const year = currentDate.getFullYear(), month = currentDate.getMonth();
 
   return (
-    <div className="mb-1">
-      {/* Loading Bar untuk HybridCalendar */}
-      {(loading || eventsLoading) && (
-        <div className="fixed top-0 left-0 right-0 h-0.5 z-50">
-          <div className="h-full bg-blue-700 animate-[progress_1.2s_ease-in-out_infinite]"></div>
-        </div>
-      )}
-
+    <div className="max-w-xl mx-auto px-1 pt-3 shadow-sm">
+      {/* Header bulan */}
       <div className="flex justify-between items-center mb-4">
-        <button
-          onClick={() => changeMonth(-1)}
-          className="p-2 rounded-full hover:bg-gray-100"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
+        <button onClick={() => changeMonth(-1)} className="p-2 rounded-full hover:bg-gray-100 text-[#6d9bbc]">
+          <i className="ri-arrow-left-s-line text-xl"></i>
         </button>
-
-        <h2 className="text-lg font-semibold text-gray-800 text-center">
-          {currentMonthYear}
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-[#355485]">{getIndonesianMonthName(month)} {year}</h2>
           {hijriMonthRange && (
-            <span className="block text-sm font-normal text-gray-500">
-              {hijriMonthRange} {hijriData[`01-${(month + 1).toString().padStart(2, '0')}-${year}`]?.year || '1447'} H
-            </span>
+            <p className="text-xs text-[#6d9bbc] mt-0.5">{hijriMonthRange} H</p>
           )}
-        </h2>
-
-        <button
-          onClick={() => changeMonth(1)}
-          className="p-2 rounded-full hover:bg-gray-100"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+        </div>
+        <button onClick={() => changeMonth(1)} className="p-2 rounded-full hover:bg-gray-100 text-[#6d9bbc]">
+          <i className="ri-arrow-right-s-line text-xl"></i>
         </button>
       </div>
 
-      {loading && (
-        <div className="text-center text-sm text-gray-500 mb-2">Memuat data hijriyah...</div>
-      )}
-
-      <div className="grid grid-cols-7 gap-2 text-center mb-4">
-        {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map(day => (
-          <div key={day} className="text-xs font-medium text-gray-500 py-1">
-            {day}
-          </div>
+      {/* Grid hari */}
+      <div className="grid grid-cols-7 gap-1 text-center mb-3">
+        {["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"].map((d) => (
+          <div key={d} className="text-xs font-medium text-[#355485] py-1">{d}</div>
         ))}
-
-        {calendarDays.map((dayObj, index) => {
-          const date = dayObj.date;
-          const formattedDate = `${date.getDate().toString().padStart(2, '0')}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
-          const isToday = new Date().toDateString() === date.toDateString();
-          const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
-          const isAutoShown = autoShowDate && autoShowDate.toDateString() === date.toDateString();
-          const hijriInfo = hijriData[formattedDate];
-          const events = getEventsForDate(date, hijriInfo);
-
+        {calendarDays.map((dayObj, idx) => {
+          const d = dayObj.date, f = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+          const hijriInfo = hijriData[f], events = getEventsForDate(d, hijriInfo);
+          const isToday = new Date().toDateString() === d.toDateString();
+          const isSel = displayDate && displayDate.toDateString() === d.toDateString();
           return (
-            <div
-              key={index}
-              onClick={() => dayObj.isCurrentMonth && handleDateClick(date)}
-              className={`h-10 w-10 flex items-center justify-center rounded-lg transition-all relative ${dayObj.isCurrentMonth
-                ? `cursor-pointer ${isToday ? "bg-blue-100 border border-blue-300" : isSelected || isAutoShown ? "bg-gray-200 text-gray-800" : "hover:bg-gray-100"}`
-                : "text-gray-400"
-                }`}
-            >
-              <span className={`text-sm font-medium ${isSelected || isAutoShown ? "text-gray-800" : dayObj.isCurrentMonth ? "text-gray-800" : "text-gray-400"}`}>
-                {date.getDate()}
-              </span>
-
-              {/* Penanda event */}
-              {dayObj.isCurrentMonth && events.length > 0 && (
-                <div className="absolute bottom-1 flex space-x-1">
-                  {events.map((event, i) => (
-                    <div
-                      key={i}
-                      className={`w-1 h-1 rounded-full ${event.color === 'blue' ? 'bg-blue-500' :
-                        event.color === 'yellow' ? 'bg-yellow-400' :
-                          event.color === 'green' ? 'bg-green-500' :
-                            'bg-red-500'
-                        }`}
-                      title={event.title}
-                    ></div>
+            <div key={idx} onClick={() => dayObj.isCurrentMonth && handleDateClick(d)}
+              className={`h-10 w-10 flex items-center justify-center rounded-lg cursor-pointer relative transition-all
+              ${dayObj.isCurrentMonth ? (isSel ? 'bg-[#e9f1f8] text-[#355485] font-bold' :
+                  isToday ? 'bg-[#d4e6f6] border border-[#6d9bbc]' : 'hover:bg-gray-100 text-gray-700')
+                  : 'text-gray-400'}`}>
+              <span className="text-sm">{d.getDate()}</span>
+              {events.length > 0 && (
+                <div className="absolute bottom-1 flex space-x-0.5">
+                  {events.map((e, i) => (
+                    <span key={i} className={`w-1.5 h-1.5 rounded-full 
+                      ${e.color === 'blue' ? 'bg-blue-500' :
+                        e.color === 'yellow' ? 'bg-yellow-400' :
+                          e.color === 'green' ? 'bg-green-500' : 'bg-red-500'}`}></span>
                   ))}
                 </div>
               )}
@@ -390,157 +178,47 @@ export default function HybridCalendar() {
         })}
       </div>
 
+      {/* Detail tanggal terpilih */}
       {displayDate && (
-        <div className="mt-4 p-3 bg-gray-50 text-sm rounded-lg border mb-4">
-          <h5 className="font-semibold text-gray-800">
+        <div className="mt-4 p-3 bg-white rounded-lg border border-[#f0f1f2] shadow-sm">
+          <h5 className="text-sm font-semibold text-[#355485]">
             {getIndonesianDayName(displayDate.getDay())}, {displayDate.getDate()} {getIndonesianMonthShortName(displayDate.getMonth())} {displayDate.getFullYear()}
-            {hijriData[`${displayDate.getDate().toString().padStart(2, '0')}-${(displayDate.getMonth() + 1).toString().padStart(2, '0')}-${displayDate.getFullYear()}`] && (
-              <span className="text-gray-600 font-normal">
-                {' | '}
-                {hijriData[`${displayDate.getDate().toString().padStart(2, '0')}-${(displayDate.getMonth() + 1).toString().padStart(2, '0')}-${displayDate.getFullYear()}`].day}{' '}
-                {getHijriMonthName(hijriData[`${displayDate.getDate().toString().padStart(2, '0')}-${(displayDate.getMonth() + 1).toString().padStart(2, '0')}-${displayDate.getFullYear()}`].month.number)}{' '}
-                {hijriData[`${displayDate.getDate().toString().padStart(2, '0')}-${(displayDate.getMonth() + 1).toString().padStart(2, '0')}-${displayDate.getFullYear()}`].year} H
-              </span>
-            )}
           </h5>
+          {hijriData[`${String(displayDate.getDate()).padStart(2, '0')}-${String(displayDate.getMonth() + 1).padStart(2, '0')}-${displayDate.getFullYear()}`] && (
+            <p className="text-xs text-[#6d9bbc]">
+              {hijriData[`${String(displayDate.getDate()).padStart(2, '0')}-${String(displayDate.getMonth() + 1).padStart(2, '0')}-${displayDate.getFullYear()}`].day}
+              {' '}{getHijriMonthName(hijriData[`${String(displayDate.getDate()).padStart(2, '0')}-${String(displayDate.getMonth() + 1).padStart(2, '0')}-${displayDate.getFullYear()}`].month.number)}
+              {' '}{hijriData[`${String(displayDate.getDate()).padStart(2, '0')}-${String(displayDate.getMonth() + 1).padStart(2, '0')}-${displayDate.getFullYear()}`].year} H
+            </p>
+          )}
         </div>
       )}
 
-      {/* Daftar event bulanan - Tampilkan info Hijriyah untuk semua event */}
-      {eventsLoading ? (
-        <div className="text-left text-sm text-gray-500 py-2">
-          Memuat data event...
-        </div>
-      ) : monthEvents.length > 0 ? (
-        <div className="mt-4">
-          {/* Hari Besar & Libur Nasional */}
-          {monthEvents.some(event => event.events.some(e => e.category === 'Hari Besar & Libur Nasional')) && (
-            <div className="mb-4">
-              <h4 className="text-md font-medium text-gray-700 mb-2">Hari Besar & Libur Nasional</h4>
-              <div className="space-y-2">
-                {monthEvents
-                  .filter(event => event.events.some(e => e.category === 'Hari Besar & Libur Nasional'))
-                  .map((event, i) => (
-                    <div key={i}>
-                      {event.events
-                        .filter(e => e.category === 'Hari Besar & Libur Nasional')
-                        .map((e, j) => (
-                          <div key={j}>
-                            <div className="flex items-start text-sm">
-                              {/* Box untuk tanggal dengan warna merah */}
-                              <div className="flex flex-col items-center justify-center w-12 h-12 bg-red-100 rounded-md mr-3">
-                                <div className="text-xs font-semibold text-red-800 uppercase -mb-1.5">
-                                  {getIndonesianMonthShortName(event.date.getMonth())}
-                                </div>
-                                <div className="text-lg font-bold text-red-800">
-                                  {event.date.getDate()}
-                                </div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-medium">
-                                  {e.title}
-                                </div>
-                                {event.hijriInfo && (
-                                  <div className="text-gray-500 text-xs">
-                                    {getIndonesianDayName(event.date.getDay())}, {event.date.getDate()} {getIndonesianMonthShortName(event.date.getMonth())} {event.date.getFullYear()} / {event.hijriInfo.day} {getHijriMonthName(event.hijriInfo.month.number)} {event.hijriInfo.year} H
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            {/* Garis pembatas antara events dalam tanggal yang sama */}
-                            {j < event.events.filter(e => e.category === 'Hari Besar & Libur Nasional').length - 1 && (
-                              <hr className="my-2 mx-12 border-gray-200" />
-                            )}
-                          </div>
-                        ))}
-                      {/* Garis pembatas antara tanggal yang berbeda */}
-                      {i < monthEvents.filter(event => event.events.some(e => e.category === 'Hari Besar & Libur Nasional')).length - 1 && (
-                        <hr className="my-3 border-gray-200" />
-                      )}
-                    </div>
-                  ))}
-              </div>
+      {/* Daftar Event Bulanan */}
+      <div className="mt-2 space-y-4">
+        {monthEvents.map((ev, i) => (
+          <div key={i} className="flex items-start bg-white p-3 border rounded-md border-[#f0f1f2] shadow-sm">
+            <div className={`w-12 h-12 flex flex-col items-center justify-center rounded-md mr-3 
+              ${ev.events[0].color === 'blue' ? 'bg-blue-100 text-blue-700' :
+                ev.events[0].color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
+                  ev.events[0].color === 'green' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+              <span className="text-xs -mb-1">{getIndonesianMonthShortName(ev.date.getMonth())}</span>
+              <span className="text-lg font-bold">{ev.date.getDate()}</span>
             </div>
-          )}
-
-          {/* Puasa Sunnah */}
-          {monthEvents.some(event => event.events.some(e => e.category === 'Puasa Sunnah')) && (
-            <div>
-              <h4 className="text-md font-medium text-gray-700 mb-2">Puasa Sunnah</h4>
-              <div className="space-y-2">
-                {monthEvents
-                  .filter(event => event.events.some(e => e.category === 'Puasa Sunnah'))
-                  .map((event, i) => (
-                    <div key={i}>
-                      {event.events
-                        .filter(e => e.category === 'Puasa Sunnah')
-                        .map((e, j) => (
-                          <div key={j}>
-                            <div className="flex items-start text-sm">
-                              {/* Box untuk tanggal dengan warna sesuai jenis puasa */}
-                              <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-md mr-3 ${e.title.includes('Senin')
-                                ? 'bg-blue-100'
-                                : e.title.includes('Kamis')
-                                  ? 'bg-yellow-100'
-                                  : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                    ? 'bg-green-100'
-                                    : 'bg-gray-100'
-                                }`}>
-                                <div className={`text-xs font-semibold uppercase -mb-1.5 ${e.title.includes('Senin')
-                                  ? 'text-blue-800'
-                                  : e.title.includes('Kamis')
-                                    ? 'text-yellow-800'
-                                    : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                      ? 'text-green-800'
-                                      : 'text-gray-800'
-                                  }`}>
-                                  {getIndonesianMonthShortName(event.date.getMonth())}
-                                </div>
-                                <div className={`text-lg font-bold ${e.title.includes('Senin')
-                                  ? 'text-blue-800'
-                                  : e.title.includes('Kamis')
-                                    ? 'text-yellow-800'
-                                    : e.title.includes('Ayyamul Bidh') || e.title.includes('Yaumul Bidh')
-                                      ? 'text-green-800'
-                                      : 'text-gray-800'
-                                  }`}>
-                                  {event.date.getDate()}
-                                </div>
-                              </div>
-                              <div className="flex-1">
-                                <div className="font-medium">
-                                  {e.title}
-                                </div>
-                                {event.hijriInfo && (
-                                  <div className="text-gray-500 text-xs">
-                                    {getIndonesianDayName(event.date.getDay())}, {event.date.getDate()} {getIndonesianMonthShortName(event.date.getMonth())} {event.date.getFullYear()} / {event.hijriInfo.day} {getHijriMonthName(event.hijriInfo.month.number)} {event.hijriInfo.year} H
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                            {/* Garis pembatas antara events dalam tanggal yang sama */}
-                            {j < event.events.filter(e => e.category === 'Puasa Sunnah').length - 1 && (
-                              <hr className="my-2 mx-12 border-gray-200" />
-                            )}
-                          </div>
-                        ))}
-                      {/* Garis pembatas antara tanggal yang berbeda */}
-                      {i < monthEvents.filter(event => event.events.some(e => e.category === 'Puasa Sunnah')).length - 1 && (
-                        <hr className="my-3 border-gray-200" />
-                      )}
-                    </div>
-                  ))}
-              </div>
+            <div className='pt-1'>
+              {ev.events.map((e, j) => (
+                <p key={j} className="text-sm font-medium text-[#355485]">{e.title}</p>
+              ))}
+              {ev.hijriInfo && (
+                <p className="text-xs text-[#6d9bbc]">
+                  {ev.hijriInfo.day} {getHijriMonthName(ev.hijriInfo.month.number)} {ev.hijriInfo.year} H
+                  
+                </p>
+              )}
             </div>
-          )}
-        </div>
-      ) : (
-        !eventsLoading && (
-          <div className="mt-4 text-center text-gray-500 py-4">
-            Tidak ada event pada bulan ini.
           </div>
-        )
-      )}
+        ))}
+      </div>
     </div>
   );
 }

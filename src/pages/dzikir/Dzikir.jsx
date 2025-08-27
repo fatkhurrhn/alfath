@@ -1,170 +1,181 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import BottomNav from '../../components/BottomNav';
-import Donate from '../../components/Donate';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import BottomNav from "../../components/BottomNav";
+import Donate from "../../components/Donate";
 
-export default function Home() {
+export default function DzikirPage() {
   useEffect(() => {
     document.title = "Dzikir - Islamic";
   }, []);
 
-  // Ambil jam sekarang
   const now = new Date();
   const hour = now.getHours();
 
-  // Tentukan rekomendasi dzikir berdasarkan jam
   let recommended = {
-    title: 'Dzikir Harian',
-    desc: 'Dzikir kapan saja, di mana saja',
-    icon: 'ri-heart-pulse-line',
-    color: 'text-teal-500',
-    to: '/dzikir/harian',
+    title: "Dzikir Harian",
+    desc: "Dzikir kapan saja, di mana saja",
+    icon: "ri-heart-pulse-line",
+    color: "text-white",
+    to: "/dzikir/harian",
+    bg: "bg-[#355485]",
   };
 
   if (hour >= 4 && hour < 10) {
     recommended = {
-      title: 'Dzikir Pagi',
-      desc: 'Subhanallah, Alhamdulillah, Allahu Akbar 33x',
-      icon: 'ri-sun-line',
-      color: 'text-yellow-500',
-      to: '/dzikir/pagi-sugro',
+      title: "Dzikir Pagi",
+      desc: "Subhanallah, Alhamdulillah, Allahu Akbar 33x",
+      icon: "ri-sun-line",
+      color: "text-yellow-300",
+      to: "/dzikir/pagi-sugro",
+      bg: "bg-gradient-to-r from-[#355485] to-[#4f90c6]",
     };
   } else if (hour >= 16 && hour < 20) {
     recommended = {
-      title: 'Dzikir Sore / Petang',
-      desc: 'Dzikir menjelang malam, penuh berkah',
-      icon: 'ri-moon-line',
-      color: 'text-indigo-500',
-      to: '/dzikir/sore-sugro',
+      title: "Dzikir Sore",
+      desc: "Dzikir menjelang malam, penuh berkah",
+      icon: "ri-moon-line",
+      color: "text-indigo-300",
+      to: "/dzikir/sore-sugro",
+      bg: "bg-gradient-to-r from-[#4f90c6] to-[#6d9bbc]",
     };
   }
 
   return (
-    <div className="min-h-screen pb-20">
-      <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
-        <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border border-gray-200 bg-white px-3 py-4">
+    <div className="min-h-screen pb-20 bg-[#fcfeff]">
+      <div className="max-w-xl mx-auto px-3 border-x border-gray-200">
+        {/* HEADER */}
+        <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-4">
           <div className="flex items-center justify-between">
-            {/* Kiri: Back */}
             <Link
               to="/"
-              className="flex items-center gap-2 text-[15px] font-semibold text-gray-800"
+              className="flex items-center gap-2 text-[15px] font-semibold text-[#355485]"
             >
               <i className="ri-arrow-left-line"></i>
               Dzikir
             </Link>
-
-            {/* Kanan: Settings */}
-            <div className="flex items-center gap-3">
-              <button className="text-gray-600 hover:text-gray-800">
-                <i className="ri-settings-5-line text-xl"></i>
-              </button>
-            </div>
+            <button className="text-gray-600 hover:text-gray-800">
+              <i className="ri-settings-5-line text-xl"></i>
+            </button>
           </div>
         </div>
 
-        {/* Konten Utama */}
-        <div className="pt-[65px]">
-          {/* === REKOMENDASI DZIKIR HARIAN === */}
-          <section className="py-8 px-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl mb-10">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">✨ Rekomendasi Waktu Ini</h2>
-              <Link
-                to={recommended.to}
-                className="flex items-center p-5 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow transition-shadow duration-200"
-              >
-                <div className={`text-4xl ${recommended.color} flex-shrink-0`}>
-                  <i className={recommended.icon}></i>
-                </div>
-                <div className="ml-5 text-left">
-                  <h3 className="text-lg font-medium text-gray-800">{recommended.title}</h3>
-                  <p className="text-gray-600 text-sm mt-1">{recommended.desc}</p>
-                </div>
-                <div className="ml-auto text-gray-400">
-                  <i className="ri-arrow-right-s-line text-2xl"></i>
-                </div>
-              </Link>
-            </div>
+        {/* === KONTEN === */}
+        <div className="pt-[70px] space-y-8">
+          {/* === REKOMENDASI === */}
+          <section className="px-2">
+            <h2 className="text-lg font-semibold text-[#355485] mb-3">
+              ✨ Rekomendasi Waktu Ini
+            </h2>
+            <Link
+              to={recommended.to}
+              className={`flex items-center p-5 rounded-2xl shadow-md text-white ${recommended.bg}`}
+            >
+              <div className={`text-4xl ${recommended.color} flex-shrink-0`}>
+                <i className={recommended.icon}></i>
+              </div>
+              <div className="ml-4 text-left">
+                <h3 className="text-base font-semibold">{recommended.title}</h3>
+                <p className="text-sm opacity-90 mt-0.5">{recommended.desc}</p>
+              </div>
+              <i className="ri-arrow-right-s-line text-xl ml-auto text-white/70"></i>
+            </Link>
           </section>
 
           {/* === MENU DZIKIR === */}
-          <section className="mb-0 max-w-5xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center">Dzikir Harian</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-3">
-              <Link
-                to="/dzikir/almasurat"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-purple-500 mb-3">
-                  <i className="ri-time-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Al-Ma'surat</h3>
-                <p className="text-gray-500 text-xs">Dzikir pagi & petang waktu penuh berkah</p>
-              </Link>
-              <Link
-                to="/dzikir/setelah-shalat"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-yellow-500 mb-3">
-                  <i className="ri-sun-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Setelah Shalat</h3>
-                <p className="text-gray-500 text-xs">Dzikir setelah selesai shalat</p>
-              </Link>
-              <Link
-                to="/dzikir/sebelum-tidur"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-blue-500 mb-3">
-                  <i className="ri-moon-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Sebelum Tidur</h3>
-                <p className="text-gray-500 text-xs">Dzikir malam & doa tidur</p>
-              </Link>
-              <Link
-                to="/dzikir/harian"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-teal-500 mb-3">
-                  <i className="ri-heart-pulse-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Dzikir Harian</h3>
-                <p className="text-gray-500 text-xs">Setiap saat, kapan saja dan di mana saja</p>
-              </Link>
-              <Link
-                to="/dzikir/aktivitas"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-pink-500 mb-3">
-                  <i className="ri-hand-heart-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Saat Aktivitas</h3>
-                <p className="text-gray-500 text-xs">Makan, masuk rumah, dll</p>
-              </Link>
-              <Link
-                to="/dzikir/setelah-adzan"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-indigo-500 mb-3">
-                  <i className="ri-volume-up-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Setelah Adzan</h3>
-                <p className="text-gray-500 text-xs">Doa setelah panggilan shalat</p>
-              </Link>
-              <Link
-                to="/dzikir/istighfar"
-                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 text-center hover:shadow-md transition-shadow duration-200"
-              >
-                <div className="text-3xl text-emerald-500 mb-3">
-                  <i className="ri-refresh-line"></i>
-                </div>
-                <h3 className="text-base font-medium text-gray-800 mb-1">Istighfar & Taubat</h3>
-                <p className="text-gray-500 text-xs">Memohon ampunan Allah</p>
-              </Link>
+          <section className="px-2">
+            <h2 className="text-lg font-semibold text-[#355485] mb-4">
+              📿 Pilihan Dzikir
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                {
+                  title: "Al-Ma'surat",
+                  desc: "Dzikir waktu pagi & waktu petang",
+                  icon: "ri-time-line",
+                  color: "text-purple-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/almasurat",
+                },
+                {
+                  title: "Setelah Shalat",
+                  desc: "Dzikir rutin selesai shalat",
+                  icon: "ri-sun-line",
+                  color: "text-yellow-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/setelah-shalat",
+                },
+                {
+                  title: "Sebelum Tidur",
+                  desc: "Dzikir malam & doa tidur",
+                  icon: "ri-moon-line",
+                  color: "text-blue-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/sebelum-tidur",
+                },
+                {
+                  title: "Dzikir Harian",
+                  desc: "Bisa kapan saja, di mana saja",
+                  icon: "ri-heart-pulse-line",
+                  color: "text-teal-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/harian",
+                },
+                {
+                  title: "Istighfar",
+                  desc: "Memohon ampunan Allah",
+                  icon: "ri-refresh-line",
+                  color: "text-emerald-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/istighfar",
+                },
+                {
+                  title: "Saat Aktivitas",
+                  desc: "Ketika makan, masuk rumah, dll",
+                  icon: "ri-hand-heart-line",
+                  color: "text-pink-500",
+                  bg: "bg-[#f0f1f2]",
+                  to: "/dzikir/aktivitas",
+                },
+              ].map((dz, i) => (
+                <Link
+                  key={i}
+                  to={dz.to}
+                  className={`p-3 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition text-center ${dz.bg}`}
+                >
+                  <div className={`text-3xl ${dz.color} mb-2`}>
+                    <i className={dz.icon}></i>
+                  </div>
+                  <h3 className="text-sm font-semibold text-[#44515f] mb-0.5">
+                    {dz.title}
+                  </h3>
+                  <p className="text-xs text-[#6d9bbc]">{dz.desc}</p>
+                </Link>
+              ))}
             </div>
+          </section>
+
+          {/* === KEUTAMAAN DZIKIR === */}
+          <section className="px-4">
+            <div className="bg-[#355485] rounded-xl p-5 text-white shadow-md">
+              <h2 className="text-lg font-semibold mb-2">🌙 Keutamaan Dzikir</h2>
+              <p className="text-sm opacity-90 leading-relaxed">
+                Rasulullah ﷺ bersabda: <br />
+                <span className="italic">
+                  “Perumpamaan orang yang berdzikir kepada Allah dengan yang
+                  tidak berdzikir, bagaikan orang hidup dan orang mati.”
+                </span>{" "}
+                (HR. Bukhari)
+              </p>
+            </div>
+          </section>
+
+          {/* === DONATE === */}
+          <section className="px-4">
             <Donate />
           </section>
         </div>
       </div>
+      <BottomNav />
     </div>
   );
 }

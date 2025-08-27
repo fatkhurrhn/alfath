@@ -15,7 +15,7 @@ export default function Home() {
                         {/* Kiri: Back */}
                         <Link
                             to="/"
-                            className="flex items-center gap-2 text-[15px] font-semibold text-gray-800"
+                            className="flex items-center gap-2 text-[15px] font-semibold text-[#355485]"
                         >
                             <i className="ri-arrow-left-line"></i>
                             Kalender
@@ -23,7 +23,7 @@ export default function Home() {
 
                         {/* Kanan: Settings */}
                         <div className="flex items-center gap-3">
-                            <button className="text-gray-600 hover:text-gray-800">
+                            <button className="text-[#355485]">
                                 <i className="ri-settings-5-line text-xl"></i>
                             </button>
                         </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-// Komponen Mini Player yang terpisah
+// ================== MINI PLAYER ==================
 const MiniPlayer = ({
     surahData,
     sheikh,
@@ -13,31 +13,31 @@ const MiniPlayer = ({
     if (!surahData || !sheikh) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 left-4 bg-white rounded-xl shadow-lg border border-gray-200 p-3 z-50">
+        <div className="fixed bottom-4 right-4 left-4 bg-[#fcfeff] rounded-xl shadow-lg border border-[#cbdde9] p-3 z-50">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <button
-                        className="w-10 h-10 flex items-center justify-center bg-gray-400 text-white rounded-full mr-3"
+                        className="w-10 h-10 flex items-center justify-center bg-[#355485] text-white rounded-full mr-3"
                         onClick={onTogglePlay}
                     >
                         <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
                     </button>
                     <div className="flex-1 min-w-0">
-                        <h4 className="font-medium text-gray-800 truncate">
+                        <h4 className="font-medium text-[#355485] truncate">
                             {surahData.nomor}. {surahData.namaLatin}
                         </h4>
-                        <p className="text-xs text-gray-500 truncate">{getSheikhName(sheikh)}</p>
+                        <p className="text-xs text-[#6d9bbc] truncate">{getSheikhName(sheikh)}</p>
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
                     <button
-                        className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                        className="w-8 h-8 flex items-center justify-center text-[#6d9bbc] hover:text-[#4f90c6]"
                         onClick={onExpand}
                     >
                         <i className="ri-expand-diagonal-line"></i>
                     </button>
                     <button
-                        className="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700"
+                        className="w-8 h-8 flex items-center justify-center text-[#6d9bbc] hover:text-red-500"
                         onClick={onClose}
                     >
                         <i className="ri-close-line"></i>
@@ -48,7 +48,9 @@ const MiniPlayer = ({
     );
 };
 
-// Komponen utama SurahList
+
+
+// ================== SURAH LIST ==================
 const SurahList = ({ surahList, isLoading, searchQuery }) => {
     const [selectedSurah, setSelectedSurah] = useState(null);
     const [surahAudioData, setSurahAudioData] = useState(null);
@@ -61,7 +63,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
     const [duration, setDuration] = useState(0);
     const audioRef = useRef(null);
 
-    // Memuat state dari localStorage saat komponen dimuat
+    // Load saved state
     useEffect(() => {
         const savedSheikh = localStorage.getItem('selectedSheikh');
         const savedSurah = localStorage.getItem('playingSurah');
@@ -73,27 +75,21 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         if (savedIsPlaying === 'true') setIsPlaying(true);
         if (savedCurrentTime) setCurrentTime(parseFloat(savedCurrentTime));
 
-        // Cek apakah ada audio yang sedang diputar
         if (savedSurah && savedSheikh) {
             setIsMiniPlayerVisible(true);
-            // Load audio data untuk surah yang sedang diputar
             loadAudioData(JSON.parse(savedSurah));
         }
     }, []);
 
-    // Menyimpan state ke localStorage saat berubah
+    // Save state
     useEffect(() => {
-        if (selectedSheikh) {
-            localStorage.setItem('selectedSheikh', selectedSheikh);
-        }
-        if (selectedSurah) {
-            localStorage.setItem('playingSurah', JSON.stringify(selectedSurah));
-        }
+        if (selectedSheikh) localStorage.setItem('selectedSheikh', selectedSheikh);
+        if (selectedSurah) localStorage.setItem('playingSurah', JSON.stringify(selectedSurah));
         localStorage.setItem('isPlaying', isPlaying.toString());
         localStorage.setItem('currentTime', currentTime.toString());
     }, [selectedSheikh, selectedSurah, isPlaying, currentTime]);
 
-    // Load audio data dari API
+    // Load audio
     const loadAudioData = async (surah) => {
         setIsLoadingAudio(true);
         try {
@@ -107,41 +103,34 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }
     };
 
-    // Handler untuk membuka sidebar murottal dan mengambil data audio
     const handlePlayClick = async (surah) => {
         setSelectedSurah(surah);
         setIsLoadingAudio(true);
         setIsSidebarOpen(true);
-        setIsMiniPlayerVisible(false); // Pastikan mini player tidak terlihat saat sidebar terbuka
+        setIsMiniPlayerVisible(false);
         await loadAudioData(surah);
 
-        // ➕ Tambahkan ini untuk otomatis play
         setTimeout(() => {
             if (audioRef.current && selectedSheikh) {
                 audioRef.current.play();
                 setIsPlaying(true);
             }
-        }, 100); // delay kecil untuk pastikan audio sudah loaded
+        }, 100);
     };
 
-    // Handler untuk minimize sidebar menjadi mini player
     const handleMinimize = () => {
         setIsSidebarOpen(false);
         setIsMiniPlayerVisible(true);
     };
 
-    // Handler untuk expand mini player menjadi sidebar
     const handleExpand = () => {
         setIsSidebarOpen(true);
         setIsMiniPlayerVisible(false);
     };
 
-    // Handler untuk menutup mini player dan menghentikan audio
     const handleClose = () => {
         setIsMiniPlayerVisible(false);
-        if (audioRef.current) {
-            audioRef.current.pause();
-        }
+        if (audioRef.current) audioRef.current.pause();
         setIsPlaying(false);
         setSelectedSurah(null);
         setSurahAudioData(null);
@@ -150,22 +139,16 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         localStorage.removeItem('currentTime');
     };
 
-    // Handler untuk memutar/menjeda audio
     const togglePlayPause = () => {
         if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-            } else {
-                audioRef.current.play();
-            }
+            if (isPlaying) audioRef.current.pause();
+            else audioRef.current.play();
             setIsPlaying(!isPlaying);
         }
     };
 
-    // Handler untuk memilih syekh
-    const handleSheikhSelect = async (sheikhKey) => {
+    const handleSheikhSelect = (sheikhKey) => {
         setSelectedSheikh(sheikhKey);
-        // Otomatis putar audio setelah memilih syekh
         setTimeout(() => {
             if (audioRef.current) {
                 audioRef.current.play();
@@ -174,7 +157,6 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }, 100);
     };
 
-    // Handler untuk mengupdate progress bar
     const handleTimeUpdate = () => {
         if (audioRef.current) {
             setCurrentTime(audioRef.current.currentTime);
@@ -182,7 +164,6 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }
     };
 
-    // Handler untuk mengubah posisi pemutaran
     const handleSeek = (e) => {
         if (audioRef.current) {
             const seekTime = parseFloat(e.target.value);
@@ -191,7 +172,6 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }
     };
 
-    // Handler untuk memutar surah berikutnya
     const playNextSurah = () => {
         if (selectedSurah && surahList.length > 0) {
             const currentIndex = surahList.findIndex(s => s.number === selectedSurah.number);
@@ -202,7 +182,6 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }
     };
 
-    // Handler untuk memutar surah sebelumnya
     const playPrevSurah = () => {
         if (selectedSurah && surahList.length > 0) {
             const currentIndex = surahList.findIndex(s => s.number === selectedSurah.number);
@@ -213,124 +192,92 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
         }
     };
 
-    // Filter surah berdasarkan pencarian
-    const filteredSurahs = surahList.filter(surah => {
-        return (
-            surah.name.transliteration.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            surah.name.translation.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            surah.number.toString().includes(searchQuery)
-        );
-    });
+    // Filter surah
+    const filteredSurahs = surahList.filter(surah =>
+        surah.name.transliteration.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        surah.name.translation.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        surah.number.toString().includes(searchQuery)
+    );
 
-    if (isLoading) {
-        return <div className="p-4 text-center text-gray-500">Memuat data surah...</div>;
-    }
-
-    if (filteredSurahs.length === 0) {
-        return <div className="p-4 text-center text-gray-500">Surah tidak ditemukan</div>;
-    }
+    if (isLoading) return <div className="p-4 text-center text-[#6d9bbc]">Memuat data surah...</div>;
+    if (filteredSurahs.length === 0) return <div className="p-4 text-center text-[#6d9bbc]">Surah tidak ditemukan</div>;
 
     return (
         <>
-            <div className="bg-white rounded-xl shadow-sm divide-y divide-gray-200">
+            {/* List Surah */}
+            <div className="bg-[#fcfeff] rounded-xl shadow-sm divide-y divide-[#f0f1f2]">
                 {filteredSurahs.map((surah, index) => (
-                    <div key={index} className="block hover:bg-gray-50 transition-colors duration-200">
-                        <div className="flex items-center px-3 py-3">
-                            {/* Play Button */}
+                    <div key={index} className="block hover:bg-[#f0f1f2] transition-colors duration-200">
+                        <div className="flex items-center px-2 py-3">
                             <button
                                 onClick={() => handlePlayClick(surah)}
-                                className="mr-3 flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100 text-gray-700 font-medium transition-colors hover:bg-gray-200"
+                                className="mr-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[#cbdde9] text-[#355485] hover:bg-[#90b6d5]"
                             >
-                                <i class="ri-volume-up-line text-gray-600"></i>
+                                <i className="ri-volume-up-line"></i>
                             </button>
 
-                            {/* Surah Info + Arabic Title (in one Link) */}
-                            <Link
-                                to={`/quran/surah/${surah.number}`}
-                                className="flex w-full items-center justify-between"
-                            >
-                                {/* Left Info */}
+                            <Link to={`/quran/surah/${surah.number}`} className="flex w-full items-center justify-between">
                                 <div>
-                                    <h3 className="font-semibold text-gray-800">
+                                    <h3 className="font-semibold text-[#355485]">
                                         {surah.number}. {surah.name.transliteration.id}
                                     </h3>
-                                    <p className="text-xs text-gray-500">
+                                    <p className="text-xs text-[#6d9bbc]">
                                         {surah.name.translation.id} • {surah.numberOfVerses} Ayat
                                     </p>
                                 </div>
-
-                                {/* Right Arabic Title */}
-                                <p className="font-mushaf text-xl text-gray-600 text-right">
+                                <p className="font-mushaf text-xl text-[#44515f] text-right">
                                     {surah.name.short}
                                 </p>
                             </Link>
                         </div>
-
                     </div>
                 ))}
             </div>
 
-            {/* Sidebar Murottal */}
+            {/* Sidebar Player */}
             {isSidebarOpen && (
                 <div className="fixed inset-0 z-50 overflow-hidden">
-                    {/* Overlay */}
-                    <div
-                        className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
-                        onClick={() => { }} // Tidak melakukan apa-apa saat overlay diklik
-                    ></div>
+                    <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
-                    {/* Sidebar Content */}
-                    <div className="absolute bottom-0 inset-x-0 bg-white rounded-t-2xl shadow-lg p-4 max-h-[80vh] overflow-y-auto">
-                        {/* Close button */}
+                    <div className="absolute bottom-0 inset-x-0 bg-[#fcfeff] rounded-t-2xl shadow-lg p-4 max-h-[80vh] overflow-y-auto">
                         <button
-                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+                            className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#f0f1f2] hover:bg-[#cbdde9]"
                             onClick={handleMinimize}
                         >
-                            <i className="ri-collapse-diagonal-line text-gray-600"></i>
+                            <i className="ri-collapse-diagonal-line text-[#355485]"></i>
                         </button>
 
                         {isLoadingAudio ? (
                             <div className="flex justify-center items-center py-8">
-                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-500"></div>
-                                <span className="ml-3 text-gray-600">Memuat data audio...</span>
+                                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#355485]"></div>
+                                <span className="ml-3 text-[#44515f]">Memuat data audio...</span>
                             </div>
                         ) : surahAudioData ? (
                             <>
-                                <h2 className="text-xl font-bold mb-4 text-center">
+                                <h2 className="text-xl font-bold mb-4 text-center text-[#355485]">
                                     {surahAudioData.nomor}. Surah {surahAudioData.namaLatin}
                                 </h2>
 
-                                {/* Daftar Syekh */}
                                 <div className="mb-6">
-                                    <h3 className="font-medium text-gray-700 mb-3">Pilih Qari Favoritmu</h3>
+                                    <h3 className="font-medium text-[#44515f] mb-3">Pilih Qari Favoritmu</h3>
                                     <div className="grid grid-cols-1 gap-2">
-                                        {surahAudioData.audioFull && Object.entries(surahAudioData.audioFull).map(([key]) => {
-                                            const sheikhName = getSheikhName(key);
-                                            return (
-                                                <button
-                                                    key={key}
-                                                    className={`p-3 rounded-lg text-left ${selectedSheikh === key ? 'bg-gray-300 border border-gray-500' : 'bg-gray-100'}`}
-                                                    onClick={() => handleSheikhSelect(key)}
-                                                >
-                                                    <p className="font-medium text-gray-800">{sheikhName}</p>
-                                                </button>
-                                            );
-                                        })}
+                                        {Object.entries(surahAudioData.audioFull).map(([key]) => (
+                                            <button
+                                                key={key}
+                                                className={`p-3 rounded-lg text-left ${selectedSheikh === key
+                                                        ? 'bg-[#355485] text-white shadow'
+                                                        : 'bg-[#f0f1f2] text-[#44515f] hover:bg-[#cbdde9]'
+                                                    }`}
+                                                onClick={() => handleSheikhSelect(key)}
+                                            >
+                                                <p className="font-medium">{getSheikhName(key)}</p>
+                                            </button>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Audio Player */}
                                 {selectedSheikh && surahAudioData.audioFull[selectedSheikh] && (
-                                    <div className="bg-gray-100 rounded-xl p-4 mb-4">
-                                        <div className="flex items-center justify-between mb-3">
-                                            <div>
-                                                <p className="font-medium text-gray-800">{getSheikhName(selectedSheikh)}</p>
-                                                <p className="text-sm text-gray-600">Sedang diputar</p>
-                                            </div>
-
-                                        </div>
-
-                                        {/* Progress bar */}
+                                    <div className="bg-[#f0f1f2] rounded-xl p-4 mb-4">
                                         <div className="mb-2">
                                             <input
                                                 type="range"
@@ -338,39 +285,27 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                                 max={duration || 0}
                                                 value={currentTime}
                                                 onChange={handleSeek}
-                                                className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                                                className="w-full h-2 bg-[#cbdde9] rounded-lg appearance-none cursor-pointer accent-[#355485]"
                                             />
-                                            <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                            <div className="flex justify-between text-xs text-[#6d9bbc] mt-1">
                                                 <span>{formatTime(currentTime)}</span>
                                                 <span>{formatTime(duration)}</span>
                                             </div>
                                         </div>
 
-                                        {/* Navigation Controls */}
-                                        <div className="flex justify-center items-center space-x-4 mt-2">
-                                            {/* Previous Button */}
-                                            <button
-                                                onClick={playPrevSurah}
-                                                disabled={selectedSurah.number === 1}
-                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
-                                            >
+                                        <div className="flex justify-center items-center space-x-4 mt-3">
+                                            <button onClick={playPrevSurah} disabled={selectedSurah.number === 1}
+                                                className="w-8 h-8 flex items-center justify-center text-[#6d9bbc] hover:text-[#355485] disabled:opacity-40">
                                                 <i className="ri-skip-back-line text-xl"></i>
                                             </button>
-
-                                            {/* Play / Pause Button */}
                                             <button
                                                 onClick={togglePlayPause}
-                                                className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-500 text-white hover:bg-gray-600"
+                                                className="w-10 h-10 flex items-center justify-center rounded-full bg-[#355485] text-white hover:bg-[#4f90c6]"
                                             >
                                                 <i className={isPlaying ? 'ri-pause-line' : 'ri-play-line'}></i>
                                             </button>
-
-                                            {/* Next Button */}
-                                            <button
-                                                onClick={playNextSurah}
-                                                disabled={selectedSurah.number === 114}
-                                                className="w-8 h-8 flex items-center justify-center text-gray-600 hover:text-gray-800 disabled:opacity-50"
-                                            >
+                                            <button onClick={playNextSurah} disabled={selectedSurah.number === 114}
+                                                className="w-8 h-8 flex items-center justify-center text-[#6d9bbc] hover:text-[#355485] disabled:opacity-40">
                                                 <i className="ri-skip-forward-line text-xl"></i>
                                             </button>
                                         </div>
@@ -378,7 +313,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                 )}
                             </>
                         ) : (
-                            <div className="text-center py-8 text-gray-500">
+                            <div className="text-center py-8 text-[#6d9bbc]">
                                 <i className="ri-error-warning-line text-3xl mb-2"></i>
                                 <p>Gagal memuat data audio</p>
                             </div>
@@ -392,15 +327,11 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                 src={selectedSheikh && surahAudioData?.audioFull?.[selectedSheikh]}
                 onTimeUpdate={handleTimeUpdate}
                 onLoadedMetadata={() => setDuration(audioRef.current.duration || 0)}
-                onEnded={() => {
-                    setIsPlaying(false);
-                    +       playNextSurah();   // ➕ Auto-play surah berikutnya
-                }}
+                onEnded={() => { setIsPlaying(false); playNextSurah(); }}
                 autoPlay={isPlaying}
                 className="hidden"
             />
 
-            {/* Mini Player */}
             {isMiniPlayerVisible && selectedSurah && surahAudioData && selectedSheikh && (
                 <MiniPlayer
                     surahData={surahAudioData}
@@ -415,7 +346,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
     );
 };
 
-// Helper function untuk mendapatkan nama syekh berdasarkan kode
+// ================== HELPER ==================
 function getSheikhName(key) {
     const sheikhMap = {
         '01': 'Syaikh Abdullah Al-Juhany',
@@ -427,7 +358,6 @@ function getSheikhName(key) {
     return sheikhMap[key] || `Qari ${key}`;
 }
 
-// Helper function untuk format waktu (detik ke menit:detik)
 function formatTime(seconds) {
     if (isNaN(seconds)) return '0:00';
     const minutes = Math.floor(seconds / 60);

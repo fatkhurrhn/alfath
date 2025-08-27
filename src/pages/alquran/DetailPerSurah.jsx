@@ -293,8 +293,8 @@ export default function DetailPerSurah() {
             <div className="min-h-screen bg-gray-50">
                 <div className="container mx-auto max-w-xl px-4 md:mb-0 mb-[70px] border-x border-gray-200 bg-white min-h-screen flex items-center justify-center">
                     <div className="text-center">
-                        <i className="ri-loader-2-line text-2xl text-gray-700 mb-2"></i>
-                        <p className="text-gray-600">Memuat surah...</p>
+                        <i className="ri-loader-2-line text-2xl text-[#1f3963] mb-2"></i>
+                        <p className="text-[#355485]">Memuat surah...</p>
                     </div>
                 </div>
             </div>
@@ -307,12 +307,12 @@ export default function DetailPerSurah() {
                 <div className="container mx-auto max-w-xl px-4 md:mb-0 pt-20 mb-[70px] border-x border-gray-200 bg-white min-h-screen">
                     <div className="p-4 text-center text-red-500">Error: {error}</div>
                     <div className="text-center mt-4">
-                        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-gray-500 text-white rounded">
+                        <button onClick={() => window.location.reload()} className="px-4 py-2 bg-[#355485] text-white rounded">
                             Coba Lagi
                         </button>
                     </div>
                     <div className="text-center mt-4">
-                        <Link to="/" className="text-gray-500 hover:text-gray-700">
+                        <Link to="/" className="text-[#355485] hover:text-[#1f3963]">
                             Kembali ke Halaman Utama
                         </Link>
                     </div>
@@ -328,21 +328,21 @@ export default function DetailPerSurah() {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                     <div className="bg-white rounded-lg w-full max-w-md max-h-[80vh] overflow-hidden">
                         <div className="p-4 border-b flex justify-between items-center">
-                            <h3 className="font-semibold text-lg">Pilih Surah & Ayat</h3>
+                            <h3 className="font-semibold text-lg text-[#1f3963]">Pilih Surah & Ayat</h3>
                             <button onClick={() => setShowFilterModal(false)}>
-                                <i className="ri-close-line text-xl text-gray-500"></i>
+                                <i className="ri-close-line text-xl text-[#355485]"></i>
                             </button>
                         </div>
                         <div className="p-4 overflow-y-auto max-h-[60vh]">
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Pilih Surah</label>
+                                <label className="block text-sm font-medium text-[#1f3963] mb-2">Pilih Surah</label>
                                 <select
                                     value={selectedSurah}
                                     onChange={(e) => {
                                         setSelectedSurah(e.target.value)
                                         setSelectedVerse('')
                                     }}
-                                    className="w-full p-2 font-mushaf border border-gray-300 rounded-md"
+                                    className="w-full p-2 font-mushaf border text-[#1f3963] border-gray-300 rounded-md"
                                 >
                                     {allSurahs.map(s => (
                                         <option key={s.number} value={s.number}>
@@ -352,9 +352,9 @@ export default function DetailPerSurah() {
                                 </select>
                             </div>
                             <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <label className="block text-sm font-medium text-[#1f3963] mb-2">
                                     Pilih Ayat{" "}
-                                    <span className="text-gray-500 text-xs">(1 - {surahData?.number_of_verses})</span>
+                                    <span className="text-[#355485] text-xs">(1 - {surahData?.number_of_verses})</span>
                                 </label>
                                 <input
                                     type="number"
@@ -368,10 +368,10 @@ export default function DetailPerSurah() {
                             </div>
                         </div>
                         <div className="p-4 border-t flex justify-end gap-2">
-                            <button onClick={() => setShowFilterModal(false)} className="px-4 py-2 text-gray-600">
+                            <button onClick={() => setShowFilterModal(false)} className="px-4 py-2 text-[#355485]">
                                 Batal
                             </button>
-                            <button onClick={handleFilter} className="px-4 py-2 bg-gray-600 text-white rounded-md">
+                            <button onClick={handleFilter} className="px-4 py-2 bg-[#355485] text-white rounded-md">
                                 Terapkan
                             </button>
                         </div>
@@ -385,24 +385,25 @@ export default function DetailPerSurah() {
                     ref={navbackRef}
                     className={`sticky top-0 z-40 bg-white px-4 py-4 border-b border-gray-200 flex items-center justify-between shadow-sm transition-transform duration-300 ${showNavback ? 'translate-y-0' : '-translate-y-full'}`}
                 >
-                    <Link to="/quran" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
+                    <Link to="/quran" className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]">
                         <i className="ri-arrow-left-line"></i> Surah {surahData.name_id}
                     </Link>
                     <div className="flex items-center gap-3">
                         <button
                             onClick={toggleBookmark}
-                            className="text-gray-600 hover:text-gray-600"
+                            className="text-[#355485]"
                         >
                             <i className={isBookmarked ? "ri-bookmark-2-fill text-red-500" : "ri-bookmark-line"}></i>
                         </button>
-                        <button onClick={() => setShowFilterModal(true)} className="text-gray-600 hover:text-gray-600">
+                        <button onClick={() => setShowFilterModal(true)} className="text-[#355485]">
                             <i className="ri-filter-line text-xl"></i>
                         </button>
-                        <button className="text-gray-600 hover:text-gray-600">
+                        <button className="text-[#355485]">
                             <i className="ri-settings-5-line text-xl"></i>
                         </button>
                     </div>
                 </div>
+                {/* text-[#355485] */}
 
                 {/* info data surah */}
                 {surahData && (
@@ -410,22 +411,22 @@ export default function DetailPerSurah() {
                         <div className="flex items-center justify-between mb-6">
                             <button
                                 onClick={() => navigateToSurah(parseInt(surahData.number) > 1 ? parseInt(surahData.number) - 1 : 114)}
-                                className="text-gray-500 hover:text-gray-700 p-2"
+                                className="text-[#355485] hover:text-[#1f3963] p-2"
                             >
                                 <i className="ri-arrow-left-s-line text-2xl"></i>
                             </button>
                             <div className="text-center flex-1">
-                                <p className="text-gray-900 font-mushaf text-2xl">{surahData.name_short}</p>
-                                <p className="text-gray-600 pt-1">
+                                <p className="text-[#1f3963] font-mushaf text-2xl">{surahData.name_short}</p>
+                                <p className="text-[#355485] pt-1">
                                     {surahData.name_id} - {surahData.translation_id}
                                 </p>
-                                <p className="text-[12px] text-gray-500">
+                                <p className="text-[12px] text-[#355485]">
                                     {surahData.revelation_id} | {surahData.number_of_verses} Ayat
                                 </p>
                             </div>
                             <button
                                 onClick={() => navigateToSurah(parseInt(surahData.number) < 114 ? parseInt(surahData.number) + 1 : 1)}
-                                className="text-gray-500 hover:text-gray-700 p-2"
+                                className="text-[#355485] hover:text-[#1f3963] p-2"
                             >
                                 <i className="ri-arrow-right-s-line text-2xl"></i>
                             </button>
@@ -433,10 +434,10 @@ export default function DetailPerSurah() {
 
                         {parseInt(surahData.number) !== 1 && parseInt(surahData.number) !== 9 && (
                             <div className="text-center my-6 py-4 border-y border-gray-100">
-                                <p className="font-mushaf text-3xl text-gray-800 mb-3">
+                                <p className="font-mushaf text-3xl text-[#1f3963] mb-3">
                                     بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
                                 </p>
-                                <p className="text-sm text-gray-600">
+                                <p className="text-sm text-[#355485]">
                                     Dengan nama Allah Yang Maha Pengasih, Maha Penyayang
                                 </p>
                             </div>
@@ -450,32 +451,27 @@ export default function DetailPerSurah() {
                         <div
                             key={index}
                             id={`verse-${verse.number.inSurah}`}
-                            className={`p-4 ${currentTrack?.ayah === verse.number.inSurah && parseInt(currentTrack?.surahId) === parseInt(id) ? 'bg-yellow-100' : ''}`}
+                            className={`p-4 ${currentTrack?.ayah === verse.number.inSurah && parseInt(currentTrack?.surahId) === parseInt(id) ? 'bg-[#cbdde9]' : ''}`}
                         >
                             <div className="flex mb-4">
                                 {/* Kolom kiri: tombol more di atas, bookmark di bawah */}
                                 <div className="flex flex-col justify-between items-start">
                                     <button
                                         onClick={() => openSheet(surahData, verse)}
-                                        className="text-gray-500 hover:text-gray-700"
+                                        className="text-[#355485]"
                                     >
                                         <i className="ri-more-2-fill text-xl"></i>
-                                    </button>
-                                    <button
-                                        className="text-gray-500 hover:text-gray-700 mt-2"
-                                    >
-                                        <i className="ri-book-marked-line text-[14px]"></i>
                                     </button>
                                 </div>
 
                                 {/* Teks arab di kanan */}
-                                <p className="font-mushaf text-[22px] leading-loose text-right flex-1 ml-4">
+                                <p className="font-mushaf text-[#1f3963] text-[22px] leading-loose text-right flex-1 ml-4">
                                     {verse.text.arab}
                                 </p>
                             </div>
 
                             <div className="text-[15px]">
-                                <p className="text-gray-800 text-justify">
+                                <p className="text-[#355485] text-justify">
                                     <span className="mr-2 font-semibold">({verse.number.inSurah})</span>
                                     {verse.translation.id}
                                 </p>
@@ -491,11 +487,11 @@ export default function DetailPerSurah() {
                     <div onClick={closeSheet} className="fixed inset-0 bg-black bg-opacity-40 z-40" />
                     <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-2xl shadow-2xl max-w-xl mx-auto">
                         <div className="p-4 border-b flex items-center justify-between">
-                            <p className="font-semibold text-gray-800">
+                            <p className="font-semibold text-[#355485]">
                                 QS {sheetSurah.name_id} ayat {sheetVerse.number.inSurah} (Juz {sheetVerse.juz})
                             </p>
                             <button onClick={closeSheet}>
-                                <i className="ri-close-line text-xl text-gray-500"></i>
+                                <i className="ri-close-line text-xl text-[#355485]"></i>
                             </button>
                         </div>
                         <div className="p-4 space-y-3">
@@ -504,17 +500,17 @@ export default function DetailPerSurah() {
                                     closeSheet()
                                     play(id, sheetVerse.number.inSurah, sheetVerse.audio)
                                 }}
-                                className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-600 text-white"
+                                className="w-full flex items-center gap-2 px-4 py-2 rounded bg-[#355485] text-white"
                             >
                                 <i className="ri-play-fill"></i> Play / Putar ayat
                             </button>
-                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                                 <i className="ri-share-line"></i> Bagikan
                             </button>
-                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                                 <i className="ri-bookmark-line"></i> Tandai akhir ayat
                             </button>
-                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-gray-800">
+                            <button className="w-full flex items-center gap-2 px-4 py-2 rounded bg-gray-100 text-[#355485]">
                                 <i className="ri-bookmark-3-line"></i> Bookmark
                             </button>
                         </div>
@@ -529,21 +525,21 @@ export default function DetailPerSurah() {
 
                         {/* Info Surah */}
                         <div className="flex-1 min-w-0">
-                            <p className="font-semibold text-sm truncate">
+                            <p className="font-semibold text-[#1f3963] text-sm truncate">
                                 QS. {allSurahs.find(s => s.number === currentTrack.surahId)?.name_id || ''} · Ayat {currentTrack.ayah}
                             </p>
-                            <p className="text-xs text-gray-500">{QARI_NAME}</p>
+                            <p className="text-xs text-[#355485]">{QARI_NAME}</p>
                         </div>
 
                         {/* Controls */}
                         <div className="flex items-center gap-2 ml-4">
-                            <button onClick={prevAyat} className="text-gray-600 hover:text-gray-800 transition">
+                            <button onClick={prevAyat} className="text-[#355485] transition">
                                 <i className="ri-skip-back-fill text-xl"></i>
                             </button>
-                            <button onClick={togglePlay} className="text-gray-600 hover:text-gray-700 transition">
+                            <button onClick={togglePlay} className="text-[#355485] hover:text-[#1f3963] transition">
                                 <i className={`text-3xl ${isPlaying ? 'ri-pause-circle-fill' : 'ri-play-circle-fill'}`}></i>
                             </button>
-                            <button onClick={nextAyat} className="text-gray-600 hover:text-gray-800 transition">
+                            <button onClick={nextAyat} className="text-[#355485] transition">
                                 <i className="ri-skip-forward-fill text-xl"></i>
                             </button>
                             <button onClick={stop} className="text-red-500 hover:text-red-600 transition">

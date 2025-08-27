@@ -1,91 +1,101 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Helper format tanggal
 function formatTanggal(timestamp, short = false) {
-    const date = new Date(timestamp)
+    const date = new Date(timestamp);
 
-    // Mapping bulan
-    const bulanMapPendek = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
-    const bulanMapPanjang = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"]
+    const bulanMapPendek = [
+        "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+        "Jul", "Agu", "Sep", "Okt", "Nov", "Des"
+    ];
+    const bulanMapPanjang = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
 
-    const hari = date.getDate()
-    const bulan = short ? bulanMapPendek[date.getMonth()] : bulanMapPanjang[date.getMonth()]
-    const tahun = date.getFullYear()
+    const hari = date.getDate();
+    const bulan = short ? bulanMapPendek[date.getMonth()] : bulanMapPanjang[date.getMonth()];
+    const tahun = date.getFullYear();
 
     const jam = date.toLocaleTimeString("id-ID", {
         hour: "2-digit",
         minute: "2-digit",
-        hourCycle: "h23"
-    })
+        hourCycle: "h23",
+    });
 
-    return `${hari} ${bulan} ${tahun} Pukul ${jam}`
+    return `${hari} ${bulan} ${tahun} • ${jam}`;
 }
 
 function Bookmark() {
-    const [bookmarks, setBookmarks] = useState([])
+    const [bookmarks, setBookmarks] = useState([]);
 
     useEffect(() => {
-        // Ambil data bookmark dari localStorage
-        const savedBookmarks = JSON.parse(localStorage.getItem('quran-bookmarks')) || []
-        setBookmarks(savedBookmarks)
-    }, [])
+        const savedBookmarks = JSON.parse(localStorage.getItem("quran-bookmarks")) || [];
+        setBookmarks(savedBookmarks);
+    }, []);
 
     const removeBookmark = (surahId) => {
-        const updatedBookmarks = bookmarks.filter(bookmark => bookmark.surahId !== surahId)
-        setBookmarks(updatedBookmarks)
-        localStorage.setItem('quran-bookmarks', JSON.stringify(updatedBookmarks))
-    }
+        const updatedBookmarks = bookmarks.filter((bookmark) => bookmark.surahId !== surahId);
+        setBookmarks(updatedBookmarks);
+        localStorage.setItem("quran-bookmarks", JSON.stringify(updatedBookmarks));
+    };
 
     return (
-        <div className="min-h-screen bg-gray-50">
-            <div className="max-w-xl mx-auto min-h-screen">
-
-                {/* Daftar Bookmark */}
-                <div className="p-4">
-                    {bookmarks.length === 0 ? (
-                        <div className="text-center py-10">
-                            <i className="ri-bookmark-line text-4xl text-gray-300 mb-4"></i>
-                            <p className="text-gray-500">Belum ada surah yang di-bookmark</p>
-                            <Link
-                                to="/quran"
-                                className="mt-4 inline-block px-4 py-2 bg-gray-600 text-white rounded-md"
+        <div className="min-h-screen bg-[#fcfeff]">
+            <div className="max-w-xl mx-auto px-2 py-3">
+                {/* Empty state */}
+                {bookmarks.length === 0 ? (
+                    <div className="text-center py-14">
+                        <i className="ri-bookmark-line text-5xl text-[#cbdde9] mb-4"></i>
+                        <p className="text-[#6d9bbc] mb-4">Belum ada surah yang di-bookmark</p>
+                        <Link
+                            to="/quran"
+                            className="px-4 py-2 bg-[#355485] text-white rounded-lg shadow hover:bg-[#4f90c6] transition"
+                        >
+                            Jelajahi Surah
+                        </Link>
+                    </div>
+                ) : (
+                    <div className="space-y-2">
+                        {bookmarks.map((bookmark, index) => (
+                            <div
+                                key={index}
+                                className="flex items-center justify-between p-4 rounded-xl shadow-sm border border-gray-200 bg-[#fcfeff]"
                             >
-                                Jelajahi Surah
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="divide-y divide-gray-200">
-                            {bookmarks.map((bookmark, index) => (
-                                <div key={index} className="py-4 flex items-center justify-between">
-                                    <div className="flex-1">
-                                        <Link
-                                            to={`/quran/surah/${bookmark.surahId}`}
-                                            className="block"
-                                        >
-                                            <h3 className="font-semibold font-mushaf text-gray-800">
-                                                {bookmark.surahName} ({bookmark.surahNameArabic})
-                                            </h3>
-                                            <p className="text-sm text-gray-500">
-                                                {bookmark.totalVerses} ayat • {formatTanggal(bookmark.timestamp, true)}
-                                                {/* true = pakai bulan pendek (Agu), false = bulan panjang (Agustus) */}
-                                            </p>
-                                        </Link>
+                                {/* Left: icon + info surah */}
+                                <Link to={`/quran/surah/${bookmark.surahId}`} className="flex items-center flex-1 gap-3">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#cbdde9]">
+                                        <i className="ri-book-open-line text-[#355485] text-xl"></i>
                                     </div>
-                                    <button
-                                        onClick={() => removeBookmark(bookmark.surahId)}
-                                        className="text-red-500 ml-4"
-                                    >
-                                        <i className="ri-close-line text-xl"></i>
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                                    <div>
+                                        <h3 className="font-semibold text-[#355485]">
+                                            {bookmark.surahName}
+                                            <span className="text-[#6d9bbc] ml-1 font-mushaf ">
+                                                ({bookmark.surahNameArabic})
+                                            </span>
+                                        </h3>
+                                        <p className="text-xs text-[#6d9bbc] mt-0.5">
+                                            {bookmark.totalVerses} ayat • {formatTanggal(bookmark.timestamp, true)}
+                                        </p>
+                                    </div>
+                                </Link>
+
+                                {/* Right: remove button */}
+                                <button
+                                    onClick={() => removeBookmark(bookmark.surahId)}
+                                    className="ml-3 text-red-500 p-2 transition"
+                                >
+                                    <i className="ri-delete-bin-5-line text-lg"></i>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+
+                )}
             </div>
         </div>
-    )
+    );
 }
 
-export default Bookmark
+export default Bookmark;
