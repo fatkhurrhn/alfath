@@ -7,6 +7,7 @@ import PrayersSection from "../components/home/PrayersSection";
 import QuranReminder from "../components/home/QuranReminder";
 import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
+import VidMotivasi from "../components/home/VidMotivasi";
 
 export default function Home() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -24,12 +25,13 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-[#44515f] pb-24">
+    <div className="min-h-screen bg-white text-[#44515f] pb-10">
       <HeaderDisplay/>
       <PrayersSection/>
       <FeatureGrid/>
-      <QuranReminder/>
+      <VidMotivasi/>
       <NewsSection/>
+      <QuranReminder/>
       <BottomNav />
     </div>
   );

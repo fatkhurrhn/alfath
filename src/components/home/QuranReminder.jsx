@@ -5,7 +5,7 @@ function QuranReminder() {
   return (
     <div>
       {/* Quran Reminder */}
-      <div className="p-4 shadow-sm bg-[#fcfeff]">
+      <div className="px-4 pt-2 shadow-sm bg-[#fcfeff] pb-10">
         <div className="bg-[#355485] rounded-xl p-5 text-white shadow-md">
           <h2 className="text-lg font-semibold mb-1">Ingat Baca Qur'an</h2>
           <p className="text-sm opacity-90 mb-4">
