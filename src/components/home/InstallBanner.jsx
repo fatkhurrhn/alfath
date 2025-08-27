@@ -62,7 +62,7 @@ export default function InstallBanner() {
                         </button>
                     ) : (
                         <span className="ml-4 px-4 py-2 rounded-lg bg-white/20 text-white font-medium text-sm shadow">
-                            ✅ Terpasang
+                            Terpasang
                         </span>
                     )}
                 </div>
