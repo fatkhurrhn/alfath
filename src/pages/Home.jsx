@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -21,6 +21,50 @@ export default function Home() {
     { name: "Maghrib", time: "5:53 PM" },
     { name: "Isha", time: "7:03 PM" },
   ];
+
+  const [showSplash, setShowSplash] = useState(false);
+  
+    useEffect(() => {
+      const alreadyShown = sessionStorage.getItem("splashShown");
+  
+      if (!alreadyShown) {
+        setShowSplash(true);
+        const timer = setTimeout(() => {
+          setShowSplash(false);
+          sessionStorage.setItem("splashShown", "true"); // tandai sudah lihat di sesi/tab ini
+        }, 2500);
+  
+        return () => clearTimeout(timer);
+      }
+    }, []);
+  
+  
+    if (showSplash) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-white">
+          <div className="flex flex-col items-center animate-fade-in">
+            <img
+              src="/logo-splash.png"
+              alt="Ihsanly Logo"
+              className="w-32 h-32 mb-0 animate-pulse"
+              style={{ animation: 'pulse 2s infinite, scaleIn 1.5s ease-out' }}
+            />
+            <h1
+              className="text-2xl font-bold mt-1.5 text-gray-800 animate-slide-in"
+              style={{ animation: 'slideIn 1s ease-out 0.5s both, fadeIn 1.5s ease-out 0.5s both' }}
+            >
+              Ihsanly
+            </h1>
+            <p
+              className="text-gray-600 animate-fade-in"
+              style={{ animation: 'fadeIn 1.5s ease-out 1s both' }}
+            >
+              Daily Muslim
+            </p>
+          </div>
+        </div>
+      );
+    }
 
   return (
     <div className="min-h-screen bg-white text-[#44515f]">
