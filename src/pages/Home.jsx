@@ -32,7 +32,7 @@ export default function Home() {
       </div>
 
       {/* Header (Now Prayer) */}
-      <div className="flex justify-between items-center px-4 py-3 border-b"
+      <div className="flex justify-between items-center px-5 py-3 border-b"
         style={{ backgroundColor: "#fcfeff" }}>
         <div className="space-y-[-4px]">
           <div className="w-[30px] h-[30px] flex items-center mb-2 justify-center rounded-[5px] bg-[#355485]">
@@ -62,7 +62,7 @@ export default function Home() {
       </div>
 
       {/* Prayer times row */}
-      <div className="flex justify-around py-3 border-b"
+      <div className="flex justify-around py-3 px-2 border-b"
         style={{ backgroundColor: "#fcfeff" }}>
         {prayers.map((p, i) => (
           <div key={i} className="text-center flex flex-col items-center">
