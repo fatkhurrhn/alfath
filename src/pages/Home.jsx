@@ -1,108 +1,116 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import BottomNav from '../components/BottomNav'
-import PrayerTimeManager from '../components/PrayerTimeManager'
-import Donate from '../components/Donate'
-import NavbarWaktuSholat from '../components/NavWaktuSholat'
-
-// Import komponen-komponen home
-import DateDisplay from '../components/home/DateDisplay'
-import AyahOfTheDay from '../components/home/AyahOfTheDay'
-import PrayerReminder from '../components/home/PrayerReminder'
-import PrayerSchedule from '../components/home/PrayerSchedule'
-import IslamicTips from '../components/home/IslamicTips'
-import QuranReminder from '../components/home/QuranReminder'
-import QuickMenu from '../components/home/QuickMenu'
-import IslamicCalendar from '../components/home/IslamicCalendar'
-import Recommendations from '../components/home/Recommendations'
-import NewsSection from '../components/home/NewsSection'
-import FeatureGrid from '../components/home/FeatureGrid'
-import VidMotivasi from '../components/home/VidMotivasi'
-
-import InstallButton from '../components/home/InstallBanner'
+// src/pages/Home.jsx
+import React from "react";
 
 export default function Home() {
-  const [showSplash, setShowSplash] = useState(false);
+  const menus = [
+    { label: "Prayer Time", icon: "ri-time-line" },
+    { label: "Al-Quran", icon: "ri-book-2-line" },
+    { label: "Hadith", icon: "ri-book-open-line" },
+    { label: "Dua", icon: "ri-hand-heart-line" },
+    { label: "Qibla", icon: "ri-compass-3-line" },
+    { label: "Tasbih", icon: "ri-heart-2-line" },
+    { label: "Zakat", icon: "ri-money-dollar-circle-line" },
+    { label: "Hijri", icon: "ri-calendar-line" },
+    { label: "Community", icon: "ri-team-line" },
+    { label: "Mosque", icon: "ri-building-4-line" },
+    { label: "Kitab", icon: "ri-book-mark-line" },
+    { label: "Donate", icon: "ri-hand-coin-line" },
+  ];
 
-  useEffect(() => {
-    const alreadyShown = sessionStorage.getItem("splashShown");
-
-    if (!alreadyShown) {
-      setShowSplash(true);
-      const timer = setTimeout(() => {
-        setShowSplash(false);
-        sessionStorage.setItem("splashShown", "true"); // tandai sudah lihat di sesi/tab ini
-      }, 2500);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-
-  if (showSplash) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="flex flex-col items-center animate-fade-in">
-          <img
-            src="/logo-splash.png"
-            alt="Ihsanly Logo"
-            className="w-32 h-32 mb-0 animate-pulse"
-            style={{ animation: 'pulse 2s infinite, scaleIn 1.5s ease-out' }}
-          />
-          <h1
-            className="text-2xl font-bold mt-1.5 text-gray-800 animate-slide-in"
-            style={{ animation: 'slideIn 1s ease-out 0.5s both, fadeIn 1.5s ease-out 0.5s both' }}
-          >
-            Ihsanly
-          </h1>
-          <p
-            className="text-gray-600 animate-fade-in"
-            style={{ animation: 'fadeIn 1.5s ease-out 1s both' }}
-          >
-            Daily Muslim
-          </p>
-        </div>
-      </div>
-    );
-  }
+  const prayers = [
+    { name: "Fajr", time: "4:37 AM" },
+    { name: "Dhuhr", time: "11:55 AM" },
+    { name: "Asr", time: "3:14 PM" },
+    { name: "Maghrib", time: "5:53 PM" },
+    { name: "Isha", time: "7:03 PM" },
+  ];
 
   return (
-    <div className="min-h-screen pb-1 bg-gray-50">
-      <PrayerTimeManager>
-        {({ nextPrayer, nextPrayerTime, countdown, selectedCity, handleCitySelect, prayerTimes }) => (
-          <>
-            <NavbarWaktuSholat
-              onCitySelect={handleCitySelect}
-              nextPrayer={nextPrayer}
-              nextPrayerTime={nextPrayerTime}
-              countdown={countdown}
-              selectedCity={selectedCity}
-            />
+    <div className="min-h-screen bg-white text-[#44515f]">
+      {/* Topbar Date & Location */}
+      <div className="flex justify-between items-center px-4 py-2 border-b text-sm"
+        style={{ backgroundColor: "#fcfeff" }}>
+        <span className="text-[#355485] font-medium">28 Agustus 2025</span>
+        <span className="font-semibold text-[#4f90c6]">Kota Depok</span>
+      </div>
 
-            <div className="container mx-auto max-w-xl px-4 md:mb-0 mb-[70px] border-x border-gray-200 pt-2">
-              <DateDisplay />
-              <AyahOfTheDay />
-              <FeatureGrid />
-              <InstallButton/>
-              <VidMotivasi />
-              <PrayerReminder nextPrayer={nextPrayer} />
-              <PrayerSchedule
-                prayerTimes={prayerTimes}
-                nextPrayer={nextPrayer}
-                selectedCity={selectedCity}
-              />
-              <IslamicTips />
-              <QuranReminder />
-              <QuickMenu />
-              <IslamicCalendar />
-              <Recommendations />
-              <NewsSection />
-              <Donate />
-            </div>
-          </>
-        )}
-      </PrayerTimeManager>
-      <BottomNav />
+      {/* Header (Now Prayer) */}
+      <div className="flex justify-between items-center px-4 py-3 border-b"
+        style={{ backgroundColor: "#fcfeff" }}>
+        <div>
+          <p className="font-semibold flex items-center gap-2 text-[#355485]">
+            <i className="ri-notification-3-line text-[#4f90c6]"></i>
+            Now : Ashar
+          </p>
+          <p className="font-semibold text-[#44515f]">
+            16:14 PM (Start time)
+          </p>
+          <p className="text-sm" style={{ color: "#6d9bbc" }}>
+            1 hour 19.45 min left
+          </p>
+        </div>
+        <img
+          src="/img/masjid.jpg"
+          alt="Masjid"
+          className="w-24 h-24 object-contain"
+        />
+      </div>
+
+      {/* Prayer times row */}
+      <div className="flex justify-around py-3 border-b"
+        style={{ backgroundColor: "#fcfeff" }}>
+        {prayers.map((p, i) => (
+          <div key={i} className="text-center">
+            <p className="text-sm font-medium text-[#355485]">{p.name}</p>
+            <p className="text-xs text-[#6d9bbc]">{p.time}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Menu grid */}
+      <div className="grid grid-cols-4 gap-4 p-4">
+        {menus.map((m, i) => (
+          <div
+            key={i}
+            className="flex flex-col items-center text-center p-2 rounded-lg shadow-sm hover:shadow-md"
+            style={{ backgroundColor: "#fcfeff", border: "1px solid #cbdde9" }}
+          >
+            <i className={`${m.icon} text-2xl`} style={{ color: "#4f90c6" }} />
+            <p className="text-xs mt-2 text-[#44515f]">{m.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Prayer tracker */}
+      <div className="p-4 mt-2 shadow-sm"
+        style={{ backgroundColor: "#fcfeff" }}>
+        <h2 className="font-semibold mb-2 text-[#355485]">Prayer Tracker</h2>
+        <div className="flex gap-2 flex-wrap">
+          {prayers.map((p, i) => (
+            <button
+              key={i}
+              className="px-3 py-1 rounded-full text-sm flex items-center gap-1 border"
+              style={{
+                borderColor: "#a6b0b6",
+                backgroundColor: "#f0f1f2",
+                color: "#44515f",
+              }}
+            >
+              <i className="ri-alert-line text-red-500"></i> {p.name}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Daily Ayah */}
+      <div className="mt-3 p-4 shadow-sm"
+        style={{ backgroundColor: "#fcfeff" }}>
+        <h2 className="font-semibold text-[#355485]">Daily Ayah</h2>
+        <p className="text-sm text-[#6d9bbc]">Ayah - 69 : 28</p>
+        <p className="text-xl text-right mt-2 text-[#355485]">
+          مَا أَغْنَى عَنِّي مَالِيَهْ
+        </p>
+      </div>
     </div>
-  )
+  );
 }

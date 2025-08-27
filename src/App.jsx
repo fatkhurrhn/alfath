@@ -37,6 +37,7 @@ import Juz25 from "./pages/alquran/game/sambungayat/Juz25";
 import SurahSambungAyat from "./pages/alquran/game/sambungayat/Surah67";
 import DetailVideo from "./pages/DetailVideo";
 import VideoList from "./pages/VideoList";
+import StoryThur from "./pages/StoryThur";
 
 function App() {
   return (
@@ -58,6 +59,7 @@ function App() {
         <Route path="/tes" element={<Tes />} />
         <Route path="/quran/games/tebak-ayat" element={<TebakAyat />} />
         <Route path="/kalender" element={<Kalender />} />
+        <Route path="/profile/storythur" element={<StoryThur />} />
         <Route path="/quran" element={<HomeQuran />} />
         <Route path="/quran/:tab?" element={<HomeQuran />} />
         <Route path="/quran/juz/:id" element={<DetailPerJuz />} />

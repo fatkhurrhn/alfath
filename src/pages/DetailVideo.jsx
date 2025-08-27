@@ -2,6 +2,32 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
 export default function DetailVideo() {
+    const [liked, setLiked] = useState(false);
+    const [disliked, setDisliked] = useState(false);
+
+    // load state dari localStorage
+    useEffect(() => {
+        const savedLike = localStorage.getItem("liked") === "true";
+        const savedDislike = localStorage.getItem("disliked") === "true";
+        setLiked(savedLike);
+        setDisliked(savedDislike);
+    }, []);
+
+    // simpan ke localStorage tiap kali berubah
+    useEffect(() => {
+        localStorage.setItem("liked", liked);
+        localStorage.setItem("disliked", disliked);
+    }, [liked, disliked]);
+
+    const toggleLike = () => {
+        setLiked(!liked);
+        if (!liked && disliked) setDisliked(false);
+    };
+
+    const toggleDislike = () => {
+        setDisliked(!disliked);
+        if (!disliked && liked) setLiked(false);
+    };
     const { id } = useParams();
     const navigate = useNavigate();
     const videoRef = useRef(null);
@@ -342,35 +368,93 @@ export default function DetailVideo() {
                 style={{ paddingTop: CONTENT_OFFSET, paddingBottom: 16 }}
             >
                 {/* Info video (ikut scroll) */}
-                <div className="py-3">
-                    <h1 className="text-lg font-bold mb-2 line-clamp-2">{currentVideo.title}</h1>
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                        <span className="flex items-center">
-                            {currentVideo.views} x ditonton
-                        </span>
+                <div className="py-2 border-b space-y-2">
+                    {/* Judul */}
+                    <h1 className="text-xl font-semibold leading-tight line-clamp-2">
+                        {currentVideo.title}
+                    </h1>
 
-                        <div className="flex items-center gap-3">
-                            <button
-                                onClick={handleShare}
-                                className="flex items-center gap-1 hover:text-black"
-                                title="Bagikan"
-                            >
-                                <i className="ri-share-forward-line"></i>
-                                <span>Bagikan</span>
+                    {/* Meta: views & tanggal */}
+                    <div className="text-sm text-gray-600">
+                        {currentVideo.views} rb x ditonton • {currentVideo.upload_date} #quotes #motivation
+                    </div>
+
+                    {/* Channel + Subscribe */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center min-w-0">
+                            <Link to="/profile/storythur" className="flex items-center min-w-0">
+                                <img
+                                    src="https://fatkhurrhn.vercel.app/preview.jpg"
+                                    alt="StoryThur"
+                                    className="w-10 h-10 rounded-full object-cover mr-3 flex-shrink-0"
+                                />
+                                <p className="font-medium text-[16px]">StoryThur <span className='text-gray-500 font-normal text-[12px]'>84 rb</span></p>
+                            </Link>
+                        </div>
+
+                        <a
+                            href="https://instagram.com/storythur"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center px-4 py-2 rounded-full bg-red-600 text-white text-sm font-medium hover:bg-red-700 active:scale-[0.98] transition"
+                            aria-label="Subscribe ke StoryThur di Instagram"
+                        >
+                            Subscribe
+                        </a>
+                    </div>
+
+                    {/* Aksi: scrollable bar */}
+                    <div className="flex items-center gap-2 pt-2 overflow-x-auto no-scrollbar">
+                        {/* Like & Dislike */}
+                        <div className="inline-flex items-center bg-gray-100 rounded-full overflow-hidden flex-shrink-0">
+                            <button onClick={toggleLike} className="inline-flex items-center gap-2 px-3 py-2 hover:bg-gray-200 text-sm">
+                                <i className={liked ? "ri-thumb-up-fill text-black text-base" : "ri-thumb-up-line text-base"}/>
                             </button>
-
-                            <button
-                                onClick={handleDownload}
-                                className="flex items-center gap-1 hover:text-black disabled:opacity-60"
-                                disabled={downloading}
-                                title="Unduh video"
-                            >
-                                <i className="ri-download-line"></i>
-                                <span>{downloading ? 'Menyiapkan…' : 'Unduh'}</span>
+                            <span className="w-px h-6 bg-gray-300" />
+                            <button onClick={toggleDislike} className="inline-flex items-center gap-2 px-3 py-2 hover:bg-gray-200 text-sm">
+                                <i className={disliked ? "ri-thumb-down-fill text-black text-base" : "ri-thumb-down-line text-base"}/>
                             </button>
                         </div>
+
+
+                        <button
+                            onClick={handleShare}
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm"
+                            title="Bagikan"
+                        >
+                            <i className="ri-share-forward-line text-base" />
+                            <span>Bagikan</span>
+                        </button>
+
+                        {/* Unduh */}
+                        <button
+                            onClick={handleDownload}
+                            disabled={downloading}
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 disabled:opacity-60 text-sm flex-shrink-0"
+                        >
+                            <i className="ri-download-line text-base" />
+                            <span>{downloading ? "Menyiapkan…" : "Unduh"}</span>
+                        </button>
+
+                        {/* Simpan */}
+                        <button className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm flex-shrink-0">
+                            <i className="ri-bookmark-line text-base" />
+                            <span>Simpan</span>
+                        </button>
+                        
+                        {/* Komentar */}
+                        <button
+                            onClick={() => document.getElementById("komentar")?.scrollIntoView({ behavior: "smooth" })}
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200 text-sm flex-shrink-0"
+                        >
+                            <i className="ri-chat-3-line text-base" />
+                            <span>Komentar</span>
+                        </button>
                     </div>
+
                 </div>
+
+
 
                 <hr />
 
