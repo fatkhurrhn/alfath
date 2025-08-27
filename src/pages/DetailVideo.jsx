@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import VidMotivasi from '../components/home/VidMotivasi';
 
 export default function DetailVideo() {
     const [liked, setLiked] = useState(false);

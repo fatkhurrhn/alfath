@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import VidMotivasi from '../components/home/VidPopuler';
 
 export default function VideoList() {
     const [videos, setVideos] = useState([]);
@@ -169,69 +170,6 @@ export default function VideoList() {
         );
     };
 
-    if (loading) {
-        return (
-            <div className="min-h-screen pb-2 bg-gray-50">
-                {/* Header */}
-                <div className="fixed w-full border-b border-gray-200 top-0 z-50 bg-white px-4 py-3 shadow-sm">
-                    <div className="flex items-center justify-between max-w-6xl mx-auto">
-                        <Link to="/" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-                            <i className="ri-arrow-left-line"></i> Video Motivasi
-                        </Link>
-                        <button className="text-gray-600 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100">
-                            <i className="ri-settings-5-line text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Skeleton loading */}
-                <div className='pt-[70px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 max-w-6xl mx-auto'>
-                    {[...Array(8)].map((_, i) => (
-                        <div key={i} className="bg-white rounded-lg overflow-hidden shadow-sm animate-pulse">
-                            <div className="w-full aspect-video bg-gray-300"></div>
-                            <div className="p-3">
-                                <div className="flex items-start mt-2">
-                                    <div className="w-9 h-9 rounded-full bg-gray-300 mr-3"></div>
-                                    <div className="flex-1">
-                                        <div className="h-4 bg-gray-300 rounded mb-2"></div>
-                                        <div className="h-3 bg-gray-300 rounded w-3/4"></div>
-                                        <div className="flex justify-between mt-2">
-                                            <div className="h-3 bg-gray-300 rounded w-1/3"></div>
-                                            <div className="h-3 bg-gray-300 rounded w-1/4"></div>
-                                        </div>
-                                    </div>
-                                    <div className="w-5 h-5 bg-gray-300 rounded"></div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="min-h-screen pb-2 bg-gray-50">
-                {/* Header */}
-                <div className="fixed w-full border-b border-gray-200 top-0 z-50 bg-white px-4 py-3 shadow-sm">
-                    <div className="flex items-center justify-between max-w-6xl mx-auto">
-                        <Link to="/" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-                            <i className="ri-arrow-left-line"></i> Video Motivasi
-                        </Link>
-                        <button className="text-gray-600 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100">
-                            <i className="ri-settings-5-line text-xl"></i>
-                        </button>
-                    </div>
-                </div>
-
-                <div className='pt-[70px] p-4 text-center text-red-500 bg-red-100 rounded-lg max-w-6xl mx-auto'>
-                    {error}
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="min-h-screen pb-2 bg-gray-50">
             {/* Header - di luar container biar full width dan nempel atas */}
@@ -255,8 +193,13 @@ export default function VideoList() {
             {/* Sidebar Filter */}
             <FilterSidebar />
 
+            <VidMotivasi/>
+
             {/* Konten video dalam bentuk grid seperti YouTube */}
-            <div className='pt-[70px] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 max-w-6xl mx-auto'>
+            <div className="flex justify-between items-center pt-3 px-4">
+                <h2 className="font-semibold text-[#355485]">Video Terbaru</h2>
+            </div>
+            <div className='pt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 max-w-6xl mx-auto'>
                 {filteredVideos.map(video => (
                     <div key={video.id} className="bg-white overflow-hidden transition-all duration-300 border border-gray-100">
                         <Link to={`/detail/video/${video.id}`}>

@@ -51,7 +51,7 @@ function NewsSection() {
                 <span className="inline-block px-2 py-0.5 bg-[#cbdde9] text-[#355485] text-[11px] font-medium rounded mb-2">
                   Republika
                 </span>
-                <h3 className="text-sm font-semibold text-gray-800 leading-snug mb-1 line-clamp-2">
+                <h3 className="text-sm font-semibold text-gray-800 leading-snug mb-1 line-clamp-2 mr-2">
                   {item.title}
                 </h3>
                 <p className="text-xs text-[#6d9bbc]">
