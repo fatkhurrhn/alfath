@@ -1,33 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react'
 
-const features = [
-  { to: "/quran", icon: "📖", label: "Qur'an", color: "text-green-500" },
-  { to: "/game", icon: "🎮", label: "Game", color: "text-purple-500" },
-  { to: "/dzikir", icon: "📿", label: "Dzikir", color: "text-blue-500" },
-  { to: "/kiblat", icon: "🕋", label: "Kiblat", color: "text-yellow-500" },
-  { to: "/jadwal-sholat", icon: "🕌", label: "Sholat", color: "text-indigo-500" }
-];
-
-export default function FeatureGrid() {
+function FeatureGrid() {
+  // kalau mobile → tampilan app
+  const menus = [
+    { label: "Prayer Time", icon: "ri-time-line" },
+    { label: "Al-Quran", icon: "ri-book-2-line" },
+    { label: "Hadith", icon: "ri-book-open-line" },
+    { label: "Dua", icon: "ri-hand-heart-line" },
+    { label: "Qibla", icon: "ri-compass-3-line" },
+    { label: "Tasbih", icon: "ri-heart-2-line" },
+    { label: "Zakat", icon: "ri-money-dollar-circle-line" },
+    { label: "More", icon: "ri-apps-line" },
+  ];
   return (
-    <div className="mb-2">
-      <div className="flex overflow-x-auto space-x-3 pb-2 no-scrollbar gap-0 space-x-0 overflow-visible">
-        {features.map(item => (
-          <Link 
-            key={item.to} 
-            to={item.to} 
-            className="flex flex-col items-center min-w-[80px] p-3 bg-white border border-gray-300 rounded-xl shadow-sm"
-          >
-            <div className={`text-2xl md:text-3xl ${item.color} mb-1`}>
-              {item.icon}
+    <div>
+      {/* Feature grid */}
+      <div className="grid grid-cols-4 p-2">
+        {menus.map((m, i) => (
+          <div key={i} className="flex flex-col items-center text-center p-1">
+            <div className="w-[55px] h-[55px] flex items-center justify-center rounded-[13px] bg-[#f0f1f2]">
+              <i className={`${m.icon} text-[22px] text-[#4f90c6]`} />
             </div>
-            <span className="text-xs md:text-sm text-center text-gray-700">
-              {item.label}
-            </span>
-          </Link>
+            <p className="text-xs mt-1 mb-2 text-[#44515f]">{m.label}</p>
+          </div>
         ))}
       </div>
     </div>
-  );
+  )
 }
+
+export default FeatureGrid
