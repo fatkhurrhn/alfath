@@ -1,5 +1,6 @@
 // src/pages/Home.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const menus = [
@@ -10,11 +11,7 @@ export default function Home() {
     { label: "Qibla", icon: "ri-compass-3-line" },
     { label: "Tasbih", icon: "ri-heart-2-line" },
     { label: "Zakat", icon: "ri-money-dollar-circle-line" },
-    { label: "Hijri", icon: "ri-calendar-line" },
-    { label: "Community", icon: "ri-team-line" },
-    { label: "Mosque", icon: "ri-building-4-line" },
-    { label: "Kitab", icon: "ri-book-mark-line" },
-    { label: "Donate", icon: "ri-hand-coin-line" },
+    { label: "More", icon: "ri-apps-line" },
   ];
 
   const prayers = [
@@ -28,7 +25,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-[#44515f]">
       {/* Topbar Date & Location */}
-      <div className="flex justify-between items-center px-4 py-2 border-b text-sm"
+      <div className="flex justify-between items-center px-4 py-2 text-sm"
         style={{ backgroundColor: "#fcfeff" }}>
         <span className="text-[#355485] font-medium">28 Agustus 2025</span>
         <span className="font-semibold text-[#4f90c6]">Kota Depok</span>
@@ -37,22 +34,30 @@ export default function Home() {
       {/* Header (Now Prayer) */}
       <div className="flex justify-between items-center px-4 py-3 border-b"
         style={{ backgroundColor: "#fcfeff" }}>
-        <div>
-          <p className="font-semibold flex items-center gap-2 text-[#355485]">
-            <i className="ri-notification-3-line text-[#4f90c6]"></i>
+        <div className="space-y-[-4px]">
+          <div className="w-[30px] h-[30px] flex items-center mb-2 justify-center rounded-[5px] bg-[#355485]">
+            <i className="ri-notification-3-line text-white text-md"></i>
+          </div>
+
+          <p className="font-normal pt-1 text-[#355485]">
             Now : Ashar
           </p>
-          <p className="font-semibold text-[#44515f]">
-            16:14 PM (Start time)
+
+          <p className="font-semibold text-[25px] text-[#44515f]">
+            16:14 <span className="text-[10px]">AM (start time)</span>
           </p>
-          <p className="text-sm" style={{ color: "#6d9bbc" }}>
-            1 hour 19.45 min left
+
+          <p className="text-sm text-[#6d9bbc]">
+            1 hour 19<span className="text-[10px]">.45</span> min left
           </p>
+
+          <p className="text-[13px]">"Hamasah"</p>
         </div>
+
         <img
           src="/img/masjid.jpg"
           alt="Masjid"
-          className="w-24 h-24 object-contain"
+          className="w-[150px] h-[150px] object-contain"
         />
       </div>
 
@@ -60,50 +65,59 @@ export default function Home() {
       <div className="flex justify-around py-3 border-b"
         style={{ backgroundColor: "#fcfeff" }}>
         {prayers.map((p, i) => (
-          <div key={i} className="text-center">
+          <div key={i} className="text-center flex flex-col items-center">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#355485] mb-0.5"></span>
             <p className="text-sm font-medium text-[#355485]">{p.name}</p>
             <p className="text-xs text-[#6d9bbc]">{p.time}</p>
           </div>
+
         ))}
       </div>
 
       {/* Menu grid */}
-      <div className="grid grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-4 p-2">
         {menus.map((m, i) => (
           <div
             key={i}
-            className="flex flex-col items-center text-center p-2 rounded-lg shadow-sm hover:shadow-md"
-            style={{ backgroundColor: "#fcfeff", border: "1px solid #cbdde9" }}
+            className="flex flex-col items-center text-center p-1"
           >
-            <i className={`${m.icon} text-2xl`} style={{ color: "#4f90c6" }} />
-            <p className="text-xs mt-2 text-[#44515f]">{m.label}</p>
+            {/* Icon dengan bg */}
+            <div className="w-[55px] h-[55px] flex items-center justify-center rounded-[13px] bg-[#f0f1f2]">
+              <i className={`${m.icon} text-[22px] text-[#4f90c6]`} />
+            </div>
+
+            {/* Label di luar bg */}
+            <p className="text-xs mt-1 mb-2 text-[#44515f]">{m.label}</p>
           </div>
         ))}
       </div>
 
-      {/* Prayer tracker */}
-      <div className="p-4 mt-2 shadow-sm"
+
+      {/* Quran Reminder */}
+      <div className="p-4 shadow-sm"
         style={{ backgroundColor: "#fcfeff" }}>
-        <h2 className="font-semibold mb-2 text-[#355485]">Prayer Tracker</h2>
-        <div className="flex gap-2 flex-wrap">
-          {prayers.map((p, i) => (
-            <button
-              key={i}
-              className="px-3 py-1 rounded-full text-sm flex items-center gap-1 border"
-              style={{
-                borderColor: "#a6b0b6",
-                backgroundColor: "#f0f1f2",
-                color: "#44515f",
-              }}
+        <div className="bg-[#355485] rounded-xl p-5 text-white shadow-md">
+          <h2 className="text-lg font-semibold mb-1">Ingat Baca Qur'an</h2>
+          <p className="text-sm opacity-90 mb-4">
+            Luangkan waktumu sebentar untuk membaca Al-Qur'an hari ini.
+          </p>
+          <div className="flex items-center space-x-3">
+            <Link
+              to="/quran"
+              className="px-4 py-2 bg-white text-[#355485] font-medium text-sm rounded-lg shadow hover:bg-[#f0f1f2] transition"
             >
-              <i className="ri-alert-line text-red-500"></i> {p.name}
+              Baca Sekarang
+            </Link>
+            <button className="px-4 py-2 border border-white/70 text-white font-medium text-sm rounded-lg hover:bg-white/10 transition">
+              Nanti
             </button>
-          ))}
+          </div>
         </div>
       </div>
 
+
       {/* Daily Ayah */}
-      <div className="mt-3 p-4 shadow-sm"
+      <div className="p-4 shadow-sm"
         style={{ backgroundColor: "#fcfeff" }}>
         <h2 className="font-semibold text-[#355485]">Daily Ayah</h2>
         <p className="text-sm text-[#6d9bbc]">Ayah - 69 : 28</p>
