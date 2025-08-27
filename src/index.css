@@ -206,3 +206,21 @@
   .animate-pulse {
     animation: pulse 2s infinite;
   }
+
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #ffffff;
+    /* samain sama bg app */
+  }
+
+  /* untuk iOS safe area */
+  body {
+    background-color: #ffffff;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+

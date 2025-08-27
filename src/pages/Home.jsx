@@ -67,9 +67,9 @@ export default function Home() {
     }
 
   return (
-    <div className="min-h-screen bg-white text-[#44515f]">
+    <div className="min-h-screen h-screen bg-white text-[#44515f]">
       {/* Topbar Date & Location */}
-      <div className="flex justify-between items-center px-4 py-2 text-sm"
+      <div className="flex justify-between pt-4 items-center px-4 py-2 text-sm"
         style={{ backgroundColor: "#fcfeff" }}>
         <span className="text-[#355485] font-medium">28 Agustus 2025</span>
         <span className="font-semibold text-[#4f90c6]">Kota Depok</span>
