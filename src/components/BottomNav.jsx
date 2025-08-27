@@ -28,7 +28,6 @@ const BottomNav = () => {
 
   const activePath = getActivePath(normalizedPathname);
 
-  // Menu tambahan untuk More
   const moreMenus = [
     { path: "/jadwal-sholat", label: "Jadwal Sholat", icon: "ri-calendar-todo-line" },
     { path: "/sholawat", label: "Sholawat", icon: "ri-music-2-line" },
@@ -45,7 +44,7 @@ const BottomNav = () => {
   return (
     <>
       {/* Bottom Nav */}
-      <div className="fixed max-w-xl mx-auto bottom-0 left-0 right-0 z-50 bg-white shadow-lg border border-gray-200">
+      <div className="fixed max-w-xl mx-auto bottom-0 left-0 right-0 z-50 bg-[#fcfeff] shadow-[0_-2px_5px_rgba(0,0,0,0.05)]">
         <div className="grid grid-cols-5 h-14">
           {navItems.map((item) => {
             const isActive = item.path === activePath;
@@ -58,10 +57,16 @@ const BottomNav = () => {
                   className="flex flex-col items-center justify-center text-[11px] w-full"
                 >
                   <i
-                    className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-gray-600" : "text-gray-500"
+                    className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-[#355485]" : "text-[#6d9bbc]"
                       }`}
                   ></i>
-                  <span className={isActive ? "text-gray-600 font-medium" : "text-gray-600"}>
+                  <span
+                    className={
+                      isActive
+                        ? "text-[#355485] font-medium"
+                        : "text-[#44515f]"
+                    }
+                  >
                     {item.label}
                   </span>
                 </button>
@@ -75,10 +80,16 @@ const BottomNav = () => {
                 className="flex flex-col items-center justify-center text-[11px]"
               >
                 <i
-                  className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-gray-600" : "text-gray-500"
+                  className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-[#355485]" : "text-[#6d9bbc]"
                     }`}
                 ></i>
-                <span className={isActive ? "text-gray-600 font-medium" : "text-gray-600"}>
+                <span
+                  className={
+                    isActive
+                      ? "text-[#355485] font-medium"
+                      : "text-[#44515f]"
+                  }
+                >
                   {item.label}
                 </span>
               </Link>
@@ -97,12 +108,12 @@ const BottomNav = () => {
           ></div>
 
           {/* Bottom sheet */}
-          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl shadow-lg max-h-[70%] overflow-y-auto transition-transform transform animate-slide-up">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-lg font-semibold text-gray-700">More Menu</h3>
+          <div className="absolute bottom-0 left-0 right-0 bg-[#fcfeff] rounded-t-2xl shadow-lg max-h-[70%] overflow-y-auto transition-transform transform animate-slide-up">
+            <div className="flex justify-between items-center p-4 border-b border-[#cbdde9]">
+              <h3 className="text-lg font-semibold text-[#355485]">More Menu</h3>
               <button
                 onClick={() => setIsMoreOpen(false)}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-[#6d9bbc] hover:text-[#44515f]"
               >
                 <i className="ri-close-line text-2xl"></i>
               </button>
@@ -115,8 +126,8 @@ const BottomNav = () => {
                   onClick={() => setIsMoreOpen(false)}
                   className="flex flex-col items-center text-center"
                 >
-                  <i className={`${menu.icon} text-3xl text-gray-500 mb-2`}></i>
-                  <span className="text-[13px] text-gray-700">{menu.label}</span>
+                  <i className={`${menu.icon} text-3xl text-[#4f90c6] mb-2`}></i>
+                  <span className="text-[13px] text-[#44515f]">{menu.label}</span>
                 </Link>
               ))}
             </div>

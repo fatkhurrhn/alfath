@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 export default function Templat() {
   return (
     <div className="min-h-screen pb-2 bg-gray-50">
-      {/* Header - di luar container biar full width dan nempel atas */}
       <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
         <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-4">
           <Link

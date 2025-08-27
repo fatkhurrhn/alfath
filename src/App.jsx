@@ -38,6 +38,8 @@ import SurahSambungAyat from "./pages/alquran/game/sambungayat/Surah67";
 import DetailVideo from "./pages/DetailVideo";
 import VideoList from "./pages/VideoList";
 import StoryThur from "./pages/StoryThur";
+import NewsListe from "./pages/news/NewsList";
+import NewsDetail from "./pages/news/NewsDetail";
 
 function App() {
   return (
@@ -49,6 +51,8 @@ function App() {
 
         <Route path="/" element={<Home />} />
         <Route path="/video" element={<VideoList />} />
+        <Route path="/news" element={<NewsListe />} />
+        <Route path="/news/:id" element={<NewsDetail />} />
         <Route path="/detail/video/:id" element={<DetailVideo />} />
         <Route path="/dzikir" element={<Dzikir />} />
         <Route path="/dzikir/almasurat" element={<Almasurat />} />
