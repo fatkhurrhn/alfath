@@ -12,7 +12,13 @@ function VidMotivasi() {
                 const response = await fetch("/data/vidmotivasi.json");
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-                setVideos(data);
+
+                // Urutkan dari ID terbesar ke terkecil dan ambil 5 video pertama
+                const sortedVideos = data
+                    .sort((a, b) => b.id - a.id)
+                    .slice(0, 5);
+
+                setVideos(sortedVideos);
             } catch (error) {
                 console.error("Error fetching video data:", error);
                 setError("Gagal memuat data video. Pastikan file JSON tersedia.");
@@ -101,7 +107,7 @@ function VidMotivasi() {
                                 {video.title}
                             </h3>
                             <div className="flex items-center justify-between mt-1 text-[11px] text-[#6d9bbc]">
-                                <span>{video.views.toLocaleString()}x rb • {video.upload_date}</span>
+                                <span>{video.views.toLocaleString()} rb x ditonton • {video.upload_date}</span>
                             </div>
                         </div>
                     </Link>

@@ -8,6 +8,7 @@ import QuranReminder from "../components/home/QuranReminder";
 import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
 import VidMotivasi from "../components/home/VidMotivasi";
+import InstallBanner from "../components/home/InstallBanner";
 
 export default function Home() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -29,6 +30,7 @@ export default function Home() {
       <HeaderDisplay/>
       <PrayersSection/>
       <FeatureGrid/>
+      <InstallBanner/>
       <VidMotivasi/>
       <NewsSection/>
       <QuranReminder/>

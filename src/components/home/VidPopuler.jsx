@@ -7,7 +7,7 @@ function VidMotivasi() {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await fetch("/data/vidmotivasi.json");
+                const response = await fetch("/data/vidmotivasi-2.json");
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 
