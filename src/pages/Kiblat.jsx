@@ -6,10 +6,11 @@ export default function Kiblat() {
     const [deviceOrientation, setDeviceOrientation] = useState(0);
     const [locationGranted, setLocationGranted] = useState(false);
     const [showPermissionModal, setShowPermissionModal] = useState(true);
+    const [coords, setCoords] = useState(null);
 
-    // Hitung arah kiblat pakai rumus geodesi (lat, lng user → Ka’bah)
+    // Hitung arah kiblat pakai rumus geodesi
     const calculateQibla = (lat, lng) => {
-        const kaabaLat = 21.4225 * (Math.PI / 180); // Ka'bah Mekkah
+        const kaabaLat = 21.4225 * (Math.PI / 180);
         const kaabaLng = 39.8262 * (Math.PI / 180);
         const userLat = lat * (Math.PI / 180);
         const userLng = lng * (Math.PI / 180);
@@ -33,6 +34,7 @@ export default function Kiblat() {
                     const { latitude, longitude } = pos.coords;
                     const qibla = calculateQibla(latitude, longitude);
                     setQiblaDirection(qibla);
+                    setCoords({ lat: latitude, lng: longitude });
                     setLocationGranted(true);
                     setShowPermissionModal(false);
                 },
@@ -52,7 +54,7 @@ export default function Kiblat() {
     useEffect(() => {
         const handleOrientation = (event) => {
             if (event.alpha !== null) {
-                setDeviceOrientation(event.alpha); // 0-360 derajat
+                setDeviceOrientation(event.alpha);
             }
         };
         window.addEventListener("deviceorientationabsolute", handleOrientation, true);
@@ -81,17 +83,15 @@ export default function Kiblat() {
                     >
                         <i className="ri-arrow-left-line"></i> Kiblat
                     </Link>
-                    <button className="text-[#355485]">
-                        <i className="ri-settings-5-line text-xl"></i>
-                    </button>
                 </div>
             </div>
 
             {/* Isi konten */}
             <div className="max-w-xl mx-auto px-3 border-x border-gray-200 pt-[70px] flex flex-col items-center">
-                <h2 className="text-lg font-semibold text-[#355485] mb-6">
-                    Arah Kiblat
-                </h2>
+                <h2 className="text-xl font-bold text-[#355485] mb-2">Arah Kiblat</h2>
+                <p className="text-sm text-[#6d9bbc] mb-6 text-center">
+                    Hadapkan perangkat Anda ke arah garis hijau untuk menghadap Ka&apos;bah
+                </p>
 
                 {/* Kompas */}
                 <div className="relative w-72 h-72 rounded-full border-[6px] border-gray-300 flex items-center justify-center shadow-lg bg-white">
@@ -109,14 +109,35 @@ export default function Kiblat() {
                         ></div>
                     )}
 
-                    <span className="text-sm text-gray-500 absolute bottom-6">
+                    <span className="text-xs text-gray-500 absolute bottom-6">
                         {qiblaDirection !== null
-                            ? `Qibla: ${Math.round(qiblaDirection)}°`
+                            ? `Arah Kiblat: ${Math.round(qiblaDirection)}° dari Utara`
                             : "Menunggu lokasi..."}
                     </span>
                 </div>
 
-                {/* Info */}
+                {/* Info tambahan */}
+                {coords && (
+                    <div className="mt-6 w-full space-y-2">
+                        <div className="bg-white border rounded-lg p-3 shadow-sm">
+                            <p className="text-sm text-gray-600">
+                                📍 Lokasi Anda:{" "}
+                                <span className="font-medium text-[#355485]">
+                                    {coords.lat.toFixed(4)}, {coords.lng.toFixed(4)}
+                                </span>
+                            </p>
+                        </div>
+                        <div className="bg-white border rounded-lg p-3 shadow-sm">
+                            <p className="text-sm text-gray-600">
+                                🧭 Orientasi Device:{" "}
+                                <span className="font-medium text-[#355485]">
+                                    {Math.round(deviceOrientation)}°
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                )}
+
                 {!locationGranted && (
                     <p className="text-center text-sm text-red-500 mt-4">
                         Lokasi diperlukan untuk menentukan arah kiblat.
