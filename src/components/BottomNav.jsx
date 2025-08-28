@@ -9,7 +9,8 @@ const BottomNav = () => {
     { path: "/dzikir", icon: "ri-heart-pulse-line", activeIcon: "ri-heart-pulse-fill", label: "Dzikir" },
     { path: "/quran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
     { path: "/kalender", icon: "ri-calendar-line", activeIcon: "ri-calendar-fill", label: "Kalender" },
-    { path: "/profile", icon: "ri-user-heart-line", activeIcon: "ri-user-heart-fill", label: "Saya" },
+    { path: "/profile", icon: "ri-settings-2-line", activeIcon: "ri-settings-2-fill", label: "Setting" },
+    // { path: "/profile", icon: "ri-user-heart-line", activeIcon: "ri-user-heart-fill", label: "Saya" },
   ];
 
   const MAIN_PREFIXES = navItems.map((i) => i.path).filter((p) => p !== "/");

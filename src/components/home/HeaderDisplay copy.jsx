@@ -65,11 +65,11 @@ function HeaderDisplay() {
         if (!jadwal) return;
 
         const prayerTimes = [
-            { name: "Subuh", time: jadwal.subuh },
-            { name: "Dzuhur", time: jadwal.dzuhur },
-            { name: "Ashar", time: jadwal.ashar },
+            { name: "Fajr", time: jadwal.subuh },
+            { name: "Dhuhr", time: jadwal.dzuhur },
+            { name: "Asr", time: jadwal.ashar },
             { name: "Maghrib", time: jadwal.maghrib },
-            { name: "Isya", time: jadwal.isya },
+            { name: "Isha", time: jadwal.isya },
         ];
 
         const getTimeDiff = (time) => {
@@ -161,12 +161,13 @@ function HeaderDisplay() {
                                 hour: "2-digit",
                                 minute: "2-digit",
                                 hour12: true,
-                            }).split(" ")[0]
+                            }).split(" ")[0]   // 👉 ambil hanya jam & menit
                         }
                         <span className="text-[10px]">
                             {" "}{new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }).split(" ")[1]} (start time)
                         </span>
                     </p>
+
 
                     {/* countdown waktu sholat berikutnya */}
                     <p className="text-sm text-[#6d9bbc]">
@@ -179,6 +180,7 @@ function HeaderDisplay() {
                     </p>
 
                     <p className="text-[13px]">"Hamasah"</p>
+
                 </div>
 
                 <img src="/img/masjid.jpg" alt="Masjid" className="w-[150px] h-[150px] object-contain" />
@@ -189,11 +191,11 @@ function HeaderDisplay() {
                 <div className="flex justify-around py-3 px-2 border-b bg-[#fcfeff]">
                     {jadwal ? (
                         [
-                            { name: "Subuh", time: jadwal.subuh },
-                            { name: "Dzuhur", time: jadwal.dzuhur },
-                            { name: "Ashar", time: jadwal.ashar },
+                            { name: "Fajr", time: jadwal.subuh },
+                            { name: "Dhuhr", time: jadwal.dzuhur },
+                            { name: "Asr", time: jadwal.ashar },
                             { name: "Maghrib", time: jadwal.maghrib },
-                            { name: "Isya", time: jadwal.isya },
+                            { name: "Isha", time: jadwal.isya },
                         ].map((p, i) => (
                             <div key={i} className="text-center flex flex-col items-center">
                                 <span className={`w-1.5 h-1.5 rounded-full mb-0.5 ${nextPrayer === p.name ? "bg-[#355485]" : "bg-gray-300"}`}></span>

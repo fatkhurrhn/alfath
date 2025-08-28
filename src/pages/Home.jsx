@@ -28,7 +28,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white text-[#44515f] pb-10">
       <HeaderDisplay/>
-      <PrayersSection/>
       <FeatureGrid/>
       <InstallBanner/>
       <VidMotivasi/>

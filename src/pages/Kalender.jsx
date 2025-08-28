@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import HybridCalendar from '../components/HybridCalendar'
 import { Link } from 'react-router-dom';
+import BottomNav from '../components/BottomNav';
 
 export default function Home() {
     useEffect(() => {
@@ -34,6 +35,7 @@ export default function Home() {
                     <HybridCalendar />
                 </div>
             </div>
+            <BottomNav/>
         </div>
     )
 }
