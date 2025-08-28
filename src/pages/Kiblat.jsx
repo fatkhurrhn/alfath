@@ -2,69 +2,73 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Kiblat() {
-    const [heading, setHeading] = useState(0);
-    const [qiblaDirection, setQiblaDirection] = useState(293.5); // default arah kiblat Jakarta
-    const [location, setLocation] = useState(null);
+    const [qiblaDirection, setQiblaDirection] = useState(null);
+    const [deviceOrientation, setDeviceOrientation] = useState(0);
+    const [locationGranted, setLocationGranted] = useState(false);
+    const [showPermissionModal, setShowPermissionModal] = useState(true);
 
-    // koordinat Ka'bah
-    const kaaba = { lat: 21.4225, lng: 39.8262 };
-
-    // 🔹 Hitung bearing (arah dari lokasi user ke Ka'bah)
+    // Hitung arah kiblat pakai rumus geodesi (lat, lng user → Ka’bah)
     const calculateQibla = (lat, lng) => {
-        const φ1 = (lat * Math.PI) / 180;
-        const φ2 = (kaaba.lat * Math.PI) / 180;
-        const Δλ = ((kaaba.lng - lng) * Math.PI) / 180;
+        const kaabaLat = 21.4225 * (Math.PI / 180); // Ka'bah Mekkah
+        const kaabaLng = 39.8262 * (Math.PI / 180);
+        const userLat = lat * (Math.PI / 180);
+        const userLng = lng * (Math.PI / 180);
 
-        const y = Math.sin(Δλ) * Math.cos(φ2);
+        const longDiff = kaabaLng - userLng;
+        const y = Math.sin(longDiff);
         const x =
-            Math.cos(φ1) * Math.sin(φ2) -
-            Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
-        const θ = Math.atan2(y, x);
-        const bearing = ((θ * 180) / Math.PI + 360) % 360;
+            Math.cos(userLat) * Math.tan(kaabaLat) -
+            Math.sin(userLat) * Math.cos(longDiff);
 
-        setQiblaDirection(bearing);
+        let bearing = (Math.atan2(y, x) * 180) / Math.PI;
+        bearing = (bearing + 360) % 360;
+        return bearing;
     };
 
-    // 📍 Ambil lokasi user
-    useEffect(() => {
+    // Minta lokasi
+    const requestLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
                     const { latitude, longitude } = pos.coords;
-                    setLocation({ lat: latitude, lng: longitude });
-                    calculateQibla(latitude, longitude);
+                    const qibla = calculateQibla(latitude, longitude);
+                    setQiblaDirection(qibla);
+                    setLocationGranted(true);
+                    setShowPermissionModal(false);
                 },
                 (err) => {
-                    console.warn("Gagal ambil lokasi:", err.message);
+                    console.error("Location error:", err);
+                    setLocationGranted(false);
+                    setShowPermissionModal(false);
                 }
             );
         } else {
-            console.warn("Geolocation tidak didukung browser ini.");
+            alert("Browser tidak mendukung geolokasi.");
+            setShowPermissionModal(false);
         }
-    }, []);
+    };
 
-    // 📱 Sensor orientasi HP
+    // Baca orientasi device
     useEffect(() => {
         const handleOrientation = (event) => {
-            let alpha = event.alpha;
-            if (typeof alpha === "number") {
-                setHeading(alpha);
+            if (event.alpha !== null) {
+                setDeviceOrientation(event.alpha); // 0-360 derajat
             }
         };
-
-        if (window.DeviceOrientationEvent) {
-            window.addEventListener("deviceorientation", handleOrientation, true);
-        } else {
-            alert("Device orientation tidak didukung di perangkat ini");
-        }
+        window.addEventListener("deviceorientationabsolute", handleOrientation, true);
+        window.addEventListener("deviceorientation", handleOrientation, true);
 
         return () => {
+            window.removeEventListener("deviceorientationabsolute", handleOrientation);
             window.removeEventListener("deviceorientation", handleOrientation);
         };
     }, []);
 
-    // Hitung selisih arah kiblat
-    const diff = Math.round(((qiblaDirection - heading + 360) % 360));
+    // Sudut relatif kiblat
+    const getRotation = () => {
+        if (qiblaDirection === null) return 0;
+        return qiblaDirection - deviceOrientation;
+    };
 
     return (
         <div className="min-h-screen pb-2 bg-gray-50">
@@ -84,66 +88,72 @@ export default function Kiblat() {
             </div>
 
             {/* Isi konten */}
-            <div className="max-w-xl mx-auto px-3 border-x border-gray-200 pt-[80px] text-center">
-                <h2 className="text-lg font-semibold text-[#355485] mb-2">
-                    Kompas Arah Kiblat
+            <div className="max-w-xl mx-auto px-3 border-x border-gray-200 pt-[70px] flex flex-col items-center">
+                <h2 className="text-lg font-semibold text-[#355485] mb-6">
+                    Arah Kiblat
                 </h2>
-                <p className="text-sm text-gray-500 mb-6">
-                    Putar HP hingga panah <span className="text-green-600">hijau</span>{" "}
-                    sejajar untuk arah sholat
-                </p>
 
                 {/* Kompas */}
-                <div className="relative mx-auto w-72 h-72 rounded-full border-[8px] border-gray-300 shadow-lg flex items-center justify-center bg-gradient-to-b from-white to-gray-100">
-                    {/* Putaran kompas */}
+                <div className="relative w-72 h-72 rounded-full border-[6px] border-gray-300 flex items-center justify-center shadow-lg bg-white">
+                    {/* Jarum Utara */}
                     <div
-                        className="absolute inset-0 rounded-full flex items-center justify-center transition-transform duration-200"
-                        style={{ transform: `rotate(${-heading}deg)` }}
-                    >
-                        {/* Utara */}
-                        <div className="absolute top-3 left-1/2 -translate-x-1/2 text-red-600 font-bold">
-                            N
-                        </div>
-                        {/* Panah kompas (biru) */}
-                        <div className="w-0 h-0 border-l-[18px] border-r-[18px] border-b-[70px] border-transparent border-b-blue-500"></div>
-                    </div>
-
-                    {/* Panah arah kiblat */}
-                    <div
-                        className={`absolute w-0 h-0 border-l-[14px] border-r-[14px] border-b-[60px] mx-auto transition-all duration-300 ${diff < 5 ? "border-b-green-500" : "border-b-yellow-500"
-                            }`}
-                        style={{
-                            transform: `rotate(${qiblaDirection - heading}deg)`,
-                        }}
+                        className="absolute w-1 h-28 bg-red-500 top-8 origin-bottom"
+                        style={{ transform: `rotate(${-deviceOrientation}deg)` }}
                     ></div>
+
+                    {/* Jarum Kiblat */}
+                    {qiblaDirection !== null && (
+                        <div
+                            className="absolute w-1.5 h-32 bg-green-600 rounded-full top-4 origin-bottom"
+                            style={{ transform: `rotate(${getRotation()}deg)` }}
+                        ></div>
+                    )}
+
+                    <span className="text-sm text-gray-500 absolute bottom-6">
+                        {qiblaDirection !== null
+                            ? `Qibla: ${Math.round(qiblaDirection)}°`
+                            : "Menunggu lokasi..."}
+                    </span>
                 </div>
 
-                {/* Info arah */}
-                <div className="mt-6 space-y-1">
-                    {location ? (
-                        <p className="text-sm text-gray-700">
-                            Lokasi:{" "}
-                            <span className="font-semibold">
-                                {location.lat.toFixed(4)}, {location.lng.toFixed(4)}
-                            </span>
-                        </p>
-                    ) : (
-                        <p className="text-sm text-gray-400">📍 Mengambil lokasi...</p>
-                    )}
-                    <p className="text-sm text-gray-700">
-                        Arah kiblat:{" "}
-                        <span className="font-semibold">{qiblaDirection.toFixed(2)}°</span>
+                {/* Info */}
+                {!locationGranted && (
+                    <p className="text-center text-sm text-red-500 mt-4">
+                        Lokasi diperlukan untuk menentukan arah kiblat.
                     </p>
-                    <p className="text-sm text-gray-500">
-                        Selisih: {diff}° →{" "}
-                        {diff < 5 ? (
-                            <span className="text-green-600 font-semibold">✅ Pas ke kiblat</span>
-                        ) : (
-                            "↔ Geser sedikit"
-                        )}
-                    </p>
-                </div>
+                )}
             </div>
+
+            {/* Modal izin lokasi */}
+            {showPermissionModal && (
+                <>
+                    <div className="fixed inset-0 bg-black/50 z-40"></div>
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-xl p-6 w-80 shadow-lg text-center">
+                            <h3 className="text-lg font-semibold mb-2 text-gray-800">
+                                Izin Lokasi
+                            </h3>
+                            <p className="text-sm text-gray-600 mb-5">
+                                Aplikasi membutuhkan akses lokasi untuk menentukan arah kiblat.
+                            </p>
+                            <div className="flex justify-center gap-3">
+                                <button
+                                    onClick={requestLocation}
+                                    className="px-4 py-2 bg-[#355485] text-white rounded-lg hover:bg-[#2a436c]"
+                                >
+                                    Izinkan
+                                </button>
+                                <button
+                                    onClick={() => setShowPermissionModal(false)}
+                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
+                                >
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 }
