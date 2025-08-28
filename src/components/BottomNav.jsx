@@ -80,7 +80,7 @@ const BottomNav = () => {
                 className="flex flex-col items-center justify-center text-[11px]"
               >
                 <i
-                  className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-[#355485]" : "text-[#6d9bbc]"
+                  className={`${isActive ? item.activeIcon : item.icon} text-[22px] ${isActive ? "text-[#355485]" : "text-[#355485]"
                     }`}
                 ></i>
                 <span

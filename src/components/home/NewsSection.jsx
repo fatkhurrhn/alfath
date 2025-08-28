@@ -8,7 +8,7 @@ function NewsSection() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch("https://api-berita-indonesia.vercel.app/republika/islam/");
+        const res = await fetch("/data/news.json");
         const data = await res.json();
         if (data.success && data.data?.posts) {
           setNews(data.data.posts.slice(0, 3)); // ambil cuma 5 berita
@@ -49,7 +49,7 @@ function NewsSection() {
               {/* Kiri: tag + title + date */}
               <div className="flex-1 px-1">
                 <span className="inline-block px-2 py-0.5 bg-[#cbdde9] text-[#355485] text-[11px] font-medium rounded mb-2">
-                  Republika
+                  {item.tag}
                 </span>
                 <h3 className="text-sm font-semibold text-gray-800 leading-snug mb-1 line-clamp-2 mr-2">
                   {item.title}
