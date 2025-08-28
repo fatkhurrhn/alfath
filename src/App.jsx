@@ -40,6 +40,7 @@ import VideoList from "./pages/VideoList";
 import StoryThur from "./pages/StoryThur";
 import NewsListe from "./pages/news/NewsList";
 import NewsDetail from "./pages/news/NewsDetail";
+import Kiblat from "./pages/Kiblat";
 
 function App() {
   return (
@@ -60,10 +61,12 @@ function App() {
         <Route path="/dzikir/almasurat/petang" element={<DzikirPetangSugro />} />
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
         <Route path="/donate" element={<Donate />} />
+        <Route path="/kiblat" element={<Kiblat />} />
         <Route path="/tes" element={<Tes />} />
         <Route path="/quran/games/tebak-ayat" element={<TebakAyat />} />
         <Route path="/kalender" element={<Kalender />} />
         <Route path="/profile/storythur" element={<StoryThur />} />
+
         <Route path="/quran" element={<HomeQuran />} />
         <Route path="/quran/:tab?" element={<HomeQuran />} />
         <Route path="/quran/juz/:id" element={<DetailPerJuz />} />
