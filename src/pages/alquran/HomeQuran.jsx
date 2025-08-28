@@ -5,6 +5,7 @@ import SearchBar from "../../components/quran/SearchBar";
 import SurahList from "../../components/quran/SurahList";
 import JuzList from "../../components/quran/JuzList";
 import BookmarkList from "../../components/quran/Bookmark"; // ganti komponen bookmark
+import BottomNav from "../../components/BottomNav";
 
 export default function HomeQuran() {
   const [surahList, setSurahList] = useState([]);
@@ -141,7 +142,7 @@ export default function HomeQuran() {
   };
 
   return (
-    <div className="min-h-screen pb-20 bg-[#fcfeff]">
+    <div className="min-h-screen pb-2 bg-[#fcfeff]">
       <div className="max-w-xl mx-auto px-3 border-x border-gray-200">
         {/* Header */}
         <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-4">
@@ -182,6 +183,7 @@ export default function HomeQuran() {
           {renderContent()}
         </div>
       </div>
+      <BottomNav/>
     </div>
   );
 }

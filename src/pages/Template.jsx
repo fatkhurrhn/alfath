@@ -8,11 +8,11 @@ export default function Templat() {
         <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-4">
           <Link
             to="/"
-            className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]"
+            className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"
           >
             <i className="ri-arrow-left-line"></i> Template
           </Link>
-          <button className="text-gray-600 hover:text-gray-800">
+          <button className="text-[#355485]">
             <i className="ri-settings-5-line text-xl"></i>
           </button>
         </div>

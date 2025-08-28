@@ -40,7 +40,7 @@ const JuzList = ({ juzList, isJuzLoading, searchQuery }) => {
   }
 
   return (
-    <div className="bg-[#fcfeff] rounded-xl shadow-sm divide-y divide-[#f0f1f2]">
+    <div className="bg-[#fcfeff] rounded-xl mb-[60px] shadow-sm divide-y divide-[#f0f1f2]">
       {filteredJuz.map(juz => (
         <div
           key={juz.number}

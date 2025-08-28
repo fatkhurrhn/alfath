@@ -26,7 +26,7 @@ export default function DzikirPage() {
       desc: "Subhanallah, Alhamdulillah, Allahu Akbar 33x",
       icon: "ri-sun-line",
       color: "text-yellow-300",
-      to: "/dzikir/pagi-sugro",
+      to: "/dzikir/almasurat/pagi",
       bg: "bg-gradient-to-r from-[#355485] to-[#4f90c6]",
     };
   } else if (hour >= 16 && hour < 20) {
@@ -35,13 +35,13 @@ export default function DzikirPage() {
       desc: "Dzikir menjelang malam, penuh berkah",
       icon: "ri-moon-line",
       color: "text-indigo-300",
-      to: "/dzikir/sore-sugro",
+      to: "/dzikir/almasurat/petang",
       bg: "bg-gradient-to-r from-[#4f90c6] to-[#6d9bbc]",
     };
   }
 
   return (
-    <div className="min-h-screen pb-20 bg-[#fcfeff]">
+    <div className="min-h-screen pb-[60px] bg-[#fcfeff]">
       <div className="max-w-xl mx-auto px-3 border-x border-gray-200">
         {/* HEADER */}
         <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-4">
@@ -59,9 +59,16 @@ export default function DzikirPage() {
           </div>
         </div>
 
-        {/* === KONTEN === */}
-        <div className="pt-[70px] space-y-8">
-          {/* === REKOMENDASI === */}
+        <div className="pt-[70px] space-y-3">
+          <section className="my-4 px-3">
+            <p className="font-mushaf text-xl text-[#355485] text-center leading-relaxed">
+              مَثَلُ الَّذِي يَذْكُرُ رَبَّهُ وَالَّذِي لاَ يَذْكُرُهُ مَثَلُ الحَيِّ وَالمَيِّتِ
+            </p>
+            <p className="mt-3 text-[14px] text-[#355485] text-center">
+              “Perumpamaan orang yang berdzikir (mengingat) Rabbnya dan yang tidak bagaikan orang yang hidup dan orang yang mati.”
+            </p>
+          </section>
+          <hr />
           <section className="px-2">
             <h2 className="text-lg font-semibold text-[#355485] mb-3">
               ✨ Rekomendasi Waktu Ini
@@ -154,28 +161,11 @@ export default function DzikirPage() {
             </div>
           </section>
 
-          {/* === KEUTAMAAN DZIKIR === */}
           <section className="px-4">
-            <div className="bg-[#355485] rounded-xl p-5 text-white shadow-md">
-              <h2 className="text-lg font-semibold mb-2">🌙 Keutamaan Dzikir</h2>
-              <p className="text-sm opacity-90 leading-relaxed">
-                Rasulullah ﷺ bersabda: <br />
-                <span className="italic">
-                  “Perumpamaan orang yang berdzikir kepada Allah dengan yang
-                  tidak berdzikir, bagaikan orang hidup dan orang mati.”
-                </span>{" "}
-                (HR. Bukhari)
-              </p>
-            </div>
-          </section>
-
-          {/* === DONATE === */}
-          <section className="px-4">
-            <Donate />
           </section>
         </div>
       </div>
-      <BottomNav />
+      <BottomNav/>
     </div>
   );
 }

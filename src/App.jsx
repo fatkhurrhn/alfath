@@ -5,7 +5,7 @@ import DzikirPagiSugro from "./pages/dzikir/almasurat/PagiSugro";
 import DzikirPetangSugro from "./pages/dzikir/almasurat/PetangSugro";
 import JadwalSholat from "./pages/JadwalSholat";
 import NotFound from "./pages/NotFound";
-import Almasurat from "./pages/dzikir/almasurat/Almasurat";
+import Almasurat from "./pages/dzikir/Almasurat";
 import Donate from "./pages/Donate";
 import AutoToTop from "./components/AutoToTop";
 import Tes from "./pages/Tes";
@@ -17,24 +17,24 @@ import DetailPerJuz from "./pages/alquran/DetailPerJuz";
 import QuranPage from './components/QuranPage';
 import Tess from './components/Home';
 import HomeQuran from "./pages/alquran/HomeQuran";
-import TebakAyat from "./pages/alquran/game/TebakAyat";
-import Games from "./pages/alquran/Games";
-import History from "./pages/History";
+import TebakAyat from "./pages/game/TebakAyat";
+import Games from "./pages/game/GameHome";
+import History from "./pages/game/History";
 
-import Juz30 from "./pages/alquran/game/sambungayat/Juz30";
-import Juz1 from "./pages/alquran/game/sambungayat/Juz1";
-import Juz29 from "./pages/alquran/game/sambungayat/Juz29";
-import Juz28 from "./pages/alquran/game/sambungayat/Juz28";
-import Juz27 from "./pages/alquran/game/sambungayat/Juz27";
-import Juz2 from "./pages/alquran/game/sambungayat/Juz2";
-import Juz3 from "./pages/alquran/game/sambungayat/Juz3";
-import Juz5 from "./pages/alquran/game/sambungayat/Juz5";
-import Juz4 from "./pages/alquran/game/sambungayat/Juz4";
-import Juz26 from "./pages/alquran/game/sambungayat/Juz26";
-import Juz25 from "./pages/alquran/game/sambungayat/Juz25";
+import Juz30 from "./pages/game/sambungayat/Juz30";
+import Juz1 from "./pages/game/sambungayat/Juz1";
+import Juz29 from "./pages/game/sambungayat/Juz29";
+import Juz28 from "./pages/game/sambungayat/Juz28";
+import Juz27 from "./pages/game/sambungayat/Juz27";
+import Juz2 from "./pages/game/sambungayat/Juz2";
+import Juz3 from "./pages/game/sambungayat/Juz3";
+import Juz5 from "./pages/game/sambungayat/Juz5";
+import Juz4 from "./pages/game/sambungayat/Juz4";
+import Juz26 from "./pages/game/sambungayat/Juz26";
+import Juz25 from "./pages/game/sambungayat/Juz25";
 
-// import Surah67 from "./pages/alquran/game/sambungayat/Surah67";
-import SurahSambungAyat from "./pages/alquran/game/sambungayat/Surah67";
+import SAS67 from "./pages/game/sambungayat/Surah67";
+
 import DetailVideo from "./pages/DetailVideo";
 import VideoList from "./pages/VideoList";
 import StoryThur from "./pages/StoryThur";
@@ -85,7 +85,7 @@ function App() {
         <Route path="/game/sambung-ayat/juz/29" element={<Juz29 />} />
         <Route path="/game/sambung-ayat/juz/30" element={<Juz30 />} />
 
-        <Route path="/game/sambung-ayat/surah/:surahNumber" element={<SurahSambungAyat />} />
+        <Route path="/game/sambung-ayat/surah/:surahNumber" element={<SAS67 />} />
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/not-found" replace />} />

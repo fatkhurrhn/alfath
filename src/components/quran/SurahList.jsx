@@ -13,7 +13,7 @@ const MiniPlayer = ({
     if (!surahData || !sheikh) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 left-4 bg-[#fcfeff] rounded-xl shadow-lg border border-[#cbdde9] p-3 z-50">
+        <div className="fixed bottom-4 right-4 mb-[50px] left-4 bg-[#fcfeff] rounded-xl shadow-lg border border-[#cbdde9] p-3 z-50">
             <div className="flex items-center justify-between">
                 <div className="flex items-center">
                     <button
@@ -205,7 +205,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
     return (
         <>
             {/* List Surah */}
-            <div className="bg-[#fcfeff] rounded-xl shadow-sm divide-y divide-[#f0f1f2]">
+            <div className="bg-[#fcfeff] rounded-xl mb-[130px] shadow-sm divide-y divide-[#f0f1f2]">
                 {filteredSurahs.map((surah, index) => (
                     <div key={index} className="block hover:bg-[#f0f1f2] transition-colors duration-200">
                         <div className="flex items-center px-2 py-3">
@@ -236,7 +236,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
 
             {/* Sidebar Player */}
             {isSidebarOpen && (
-                <div className="fixed inset-0 z-50 overflow-hidden">
+                <div className="fixed inset-0 z-50 mb-[45px] overflow-hidden">
                     <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
                     <div className="absolute bottom-0 inset-x-0 bg-[#fcfeff] rounded-t-2xl shadow-lg p-4 max-h-[80vh] overflow-y-auto">

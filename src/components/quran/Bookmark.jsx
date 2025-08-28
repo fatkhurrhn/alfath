@@ -43,7 +43,7 @@ function Bookmark() {
 
     return (
         <div className="min-h-screen bg-[#fcfeff]">
-            <div className="max-w-xl mx-auto px-2 py-3">
+            <div className="max-w-xl mx-auto px-2 py-3 mb-[60px">
                 {/* Empty state */}
                 {bookmarks.length === 0 ? (
                     <div className="text-center py-14">
