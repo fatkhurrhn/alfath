@@ -43,44 +43,51 @@ const generateQuoteImage = async (quote, author, category) => {
     ctx.textAlign = "center";
 
     // Author di atas
-    ctx.font = "bold 40px Arial";
-    ctx.fillText(`— ${author} —`, canvas.width / 2, 100);
+    ctx.font = "bold 42px Arial";
+    ctx.fillText(`— ${author} —`, canvas.width / 2, 120);
 
-    // Quote di tengah (wrap)
-    ctx.font = "bold 60px Georgia";
-    wrapText(ctx, `"${quote}"`, canvas.width / 2, canvas.height / 2, 900, 70);
+    // Quote di tengah (wrap + center vertical)
+    ctx.font = "bold 58px Georgia";
+    const wrapped = wrapText(ctx, `"${quote}"`, 900);
+    const textHeight = wrapped.length * 70;
+    const startY = canvas.height / 2 - textHeight / 2;
 
-    // Category di bawah
-    ctx.font = "italic 35px Arial";
-    ctx.fillText(`#${category}`, canvas.width / 2, canvas.height - 180);
+    wrapped.forEach((line, i) => {
+        ctx.fillText(line, canvas.width / 2, startY + i * 70);
+    });
+
+    // Category (atas watermark)
+    ctx.font = "italic 38px Arial";
+    ctx.fillText(`#${category}`, canvas.width / 2, canvas.height - 140);
 
     // Watermark bawah
-    ctx.font = "28px Arial";
+    ctx.font = "30px Arial";
     ctx.fillStyle = "#777";
-    ctx.fillText("selengkapnya ... http://alfathh.vercel.app/", canvas.width / 2, canvas.height - 60);
+    ctx.fillText("selengkapnya ... http://alfathh.vercel.app/", canvas.width / 2, canvas.height - 70);
 
     return canvas.toDataURL("image/png");
 };
 
-// helper wrapText
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+// helper wrapText → return array line
+function wrapText(ctx, text, maxWidth) {
     const words = text.split(" ");
     let line = "";
-    let yy = y;
+    const lines = [];
     for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + " ";
         const metrics = ctx.measureText(testLine);
         const testWidth = metrics.width;
         if (testWidth > maxWidth && n > 0) {
-            ctx.fillText(line, x, yy);
+            lines.push(line);
             line = words[n] + " ";
-            yy += lineHeight;
         } else {
             line = testLine;
         }
     }
-    ctx.fillText(line, x, yy);
+    lines.push(line);
+    return lines;
 }
+
 
 /* ---------- Main Component ---------- */
 export default function QuotesList() {
