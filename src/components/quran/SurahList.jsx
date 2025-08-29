@@ -225,7 +225,7 @@ const SurahList = ({ surahList, isLoading, searchQuery }) => {
                                         {surah.name.translation.id} • {surah.numberOfVerses} Ayat
                                     </p>
                                 </div>
-                                <p className="font-mushaf text-xl text-[#44515f] text-right">
+                                <p className="font-mushaf text-xl text-[#355485] text-right">
                                     {surah.name.short}
                                 </p>
                             </Link>

@@ -72,34 +72,32 @@ function HeaderDisplay() {
             { name: "Isya", time: jadwal.isya },
         ];
 
-        const getTimeDiff = (time) => {
-            const [h, m] = time.split(":").map(Number);
-            const target = new Date();
-            target.setHours(h, m, 0, 0);
-            let diff = target - new Date();
-
-            // kalau sudah lewat semua → next hari subuh
-            if (diff < 0) {
-                const tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + 1);
-                tomorrow.setHours(h, m, 0, 0);
-                diff = tomorrow - new Date();
-            }
-
-            return diff;
+        const parseTime = (timeStr) => {
+            const [h, m] = timeStr.split(":").map(Number);
+            const t = new Date();
+            t.setHours(h, m, 0, 0);
+            return t;
         };
 
         const tick = () => {
-            let next = null;
-            for (let p of prayerTimes) {
-                if (getTimeDiff(p.time) > 0) {
-                    next = p;
-                    break;
-                }
-            }
-            if (!next) next = prayerTimes[0];
+            const now = new Date();
 
-            const diff = getTimeDiff(next.time);
+            // cari waktu sholat berikutnya
+            let next = prayerTimes.find((p) => parseTime(p.time) > now);
+
+            // kalau sudah lewat semua → ambil Subuh besok
+            if (!next) {
+                const [h, m] = jadwal.subuh.split(":").map(Number);
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                tomorrow.setHours(h, m, 0, 0);
+
+                next = { name: "Subuh", time: jadwal.subuh, date: tomorrow };
+            } else {
+                next = { ...next, date: parseTime(next.time) };
+            }
+
+            const diff = next.date - now;
             const hours = Math.floor(diff / 1000 / 3600);
             const minutes = Math.floor((diff / 1000 % 3600) / 60);
             const seconds = Math.floor(diff / 1000 % 60);
@@ -108,7 +106,7 @@ function HeaderDisplay() {
             setTimeLeft({
                 hours,
                 minutes: String(minutes).padStart(2, "0"),
-                seconds: String(seconds).padStart(2, "0")
+                seconds: String(seconds).padStart(2, "0"),
             });
         };
 
@@ -116,6 +114,7 @@ function HeaderDisplay() {
         const interval = setInterval(tick, 1000);
         return () => clearInterval(interval);
     }, [jadwal]);
+
 
 
     // pilih kota
@@ -154,19 +153,16 @@ function HeaderDisplay() {
                     {/* next prayer */}
                     <p className="font-normal pt-1 text-[#355485]">Next : {nextPrayer || "-"}</p>
 
-                    {/* waktu sekarang (jam:menit + AM/PM) */}
+                    {/* waktu sekarang (jam:menit format 24 jam) */}
                     <p className="font-semibold text-[25px] text-[#44515f]">
-                        {
-                            new Date().toLocaleTimeString("en-US", {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                                hour12: true,
-                            }).split(" ")[0]
-                        }
-                        <span className="text-[10px]">
-                            {" "}{new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true }).split(" ")[1]} (start time)
-                        </span>
+                        {new Date().toLocaleTimeString("id-ID", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: false,
+                        })}
+                        <span className="text-[10px]"> (start time)</span>
                     </p>
+
 
                     {/* countdown waktu sholat berikutnya */}
                     <p className="text-sm text-[#6d9bbc]">
