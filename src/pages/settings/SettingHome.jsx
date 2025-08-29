@@ -1,58 +1,9 @@
 // src/pages/settings/SettingHome.jsx
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { auth, googleProvider } from "../../firebase";
 import BottomNav from "../../components/BottomNav";
-import {
-    signInWithPopup,
-    signOut,
-    onAuthStateChanged,
-    setPersistence,
-    browserLocalPersistence,
-} from "firebase/auth";
 
 export default function SettingHome() {
-    const [user, setUser] = useState(null);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (u) => {
-            if (u) {
-                setUser(u);
-                localStorage.setItem("user", JSON.stringify(u));
-            } else {
-                setUser(null);
-                localStorage.removeItem("user");
-            }
-        });
-        return () => unsubscribe();
-    }, []);
-
-    const handleLogin = async () => {
-        try {
-            await setPersistence(auth, browserLocalPersistence);
-            const result = await signInWithPopup(auth, googleProvider);
-            setUser(result.user);
-            localStorage.setItem("user", JSON.stringify(result.user));
-        } catch (err) {
-            console.error("Login error:", err);
-        }
-    };
-
-    const handleLogout = async () => {
-        try {
-            await signOut(auth);
-            setUser(null);
-            localStorage.removeItem("user");
-        } catch (err) {
-            console.error("Logout error:", err);
-        }
-    };
-
-    // handle fallback image
-    const handleImgError = (e) => {
-        e.target.src =
-            "https://cdn-icons-png.freepik.com/512/7718/7718888.png";
-    };
+    
 
     return (
         <div className="min-h-screen bg-gray-50 pb-20">
@@ -75,38 +26,13 @@ export default function SettingHome() {
                 {/* Profile Section */}
                 <div className="flex flex-col items-center mb-6 text-center">
                     <img
-                        src={
-                            user?.photoURL ||
-                            "https://cdn-icons-png.freepik.com/512/7718/7718888.png"
-                        }
+                        src="/img/logo-x.png"
                         alt="User avatar"
-                        onError={handleImgError}
-                        className="w-20 h-20 rounded-full border border-gray-200 object-cover"
+                        className="w-[120px] h-[120px] object-cover"
                     />
-                    <h2 className="mt-3 text-lg font-semibold text-gray-800">
-                        {user?.displayName || "Belum login"}
-                    </h2>
                     <p className="text-sm text-gray-500">
-                        {user?.email || "Silakan login untuk melanjutkan"}
+                        hadir sebagai teman harian muslim dengan Al-Qur’an, doa, dzikir, jadwal sholat, serta motivasi Islami yang menenangkan hati
                     </p>
-
-                    <div className="mt-3">
-                        {user ? (
-                            <button
-                                onClick={handleLogout}
-                                className="px-4 py-2 text-sm rounded-lg bg-red-500 text-white hover:bg-red-600 transition"
-                            >
-                                Logout
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleLogin}
-                                className="px-4 py-2 text-sm rounded-lg bg-[#355485] text-white hover:bg-[#2a436c] transition"
-                            >
-                                Login dengan Google
-                            </button>
-                        )}
-                    </div>
                 </div>
 
                 {/* Quick Actions */}
