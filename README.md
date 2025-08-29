@@ -1,6 +1,6 @@
-# [🕌 Ihsanly – Muslim Daily 🕌](https://ihsanly.vercel.app/)
+# [🕌 AlFath – Muslim Daily 🕌](https://alfathh.vercel.app/)
 
-Ihsanly – Muslim Daily adalah aplikasi Islami berbasis web yang dibuat dengan React + Vite + Tailwind. Aplikasi ini hadir sebagai teman harian muslim dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.
+AlFath – Muslim Daily adalah aplikasi Islami berbasis web yang dibuat dengan React + Vite + Tailwind. Aplikasi ini hadir sebagai teman harian muslim dengan berbagai fitur untuk meningkatkan ibadah dan motivasi setiap hari.
 
 ## ✨ Fitur Utama
 - 📖 **Al-Qur’an** – Baca Quran harian dengan API.
