@@ -6,7 +6,8 @@ function FeatureGrid() {
 
   // Menu utama
   const menus = [
-    { label: "Prayer Time", icon: "ri-time-line", link: "/jadwal-sholat" },
+    // { label: "Prayer Time", icon: "ri-time-line", link: "/jadwal-sholat" },
+    { label: "Quotes", icon: "ri-chat-quote-line", link: "/quotes" },
     { label: "Al-Quran", icon: "ri-book-2-line", link: "/quran" },
     { label: "Game", icon: "ri-gamepad-line", link: "/game" },
     { label: "Dua", icon: "ri-hand-heart-line", link: "/dzikir" },

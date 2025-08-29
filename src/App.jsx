@@ -41,6 +41,7 @@ import StoryThur from "./pages/StoryThur";
 import NewsListe from "./pages/news/NewsList";
 import NewsDetail from "./pages/news/NewsDetail";
 import Kiblat from "./pages/Kiblat";
+import QuotesList from "./pages/QuotesList";
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
         <Route path="/tes" element={<Tes />} />
         <Route path="/quran/games/tebak-ayat" element={<TebakAyat />} />
         <Route path="/kalender" element={<Kalender />} />
+        <Route path="/quotes" element={<QuotesList />} />
         <Route path="/profile/storythur" element={<StoryThur />} />
 
         <Route path="/quran" element={<HomeQuran />} />

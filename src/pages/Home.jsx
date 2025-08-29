@@ -3,7 +3,6 @@ import LandingPage from "../components/LandingPage"; // buat desktop
 import BottomNav from "../components/BottomNav";
 import { Link } from "react-router-dom";
 import NewsSection from "../components/home/NewsSection";
-import PrayersSection from "../components/home/PrayersSection";
 import QuranReminder from "../components/home/QuranReminder";
 import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
