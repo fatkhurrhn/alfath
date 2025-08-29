@@ -7,21 +7,21 @@ function FeatureGrid() {
   // Menu utama
   const menus = [
     // { label: "Prayer Time", icon: "ri-time-line", link: "/jadwal-sholat" },
-    { label: "Quotes", icon: "ri-chat-quote-line", link: "/quotes" },
     { label: "Al-Quran", icon: "ri-book-2-line", link: "/quran" },
     { label: "Game", icon: "ri-gamepad-line", link: "/game" },
-    { label: "Dua", icon: "ri-hand-heart-line", link: "/dzikir" },
-    { label: "Qibla", icon: "ri-compass-3-line", link: "/kiblat" },
+    { label: "Edukasi", icon: "ri-book-shelf-line", link: "/edukasi" },
+    { label: "Dzikir", icon: "ri-heart-pulse-line", link: "/dzikir" },
+    { label: "Calender", icon: "ri-calendar-line", link: "/kalender" },
     { label: "Tasbih", icon: "ri-heart-2-line", link: "/tasbih" },
-    { label: "Zakat", icon: "ri-money-dollar-circle-line", link: "/zakat" },
+    { label: "Prayer Time", icon: "ri-time-line", link: "/jadwal-sholat" },
     { label: "More", icon: "ri-apps-line", action: () => setShowMore(true) },
   ];
-
+  
   // Menu tambahan di modal
   const moreMenus = [
+    { label: "Qibla", icon: "ri-compass-3-line", link: "/kiblat" },
     { label: "Hadits", icon: "ri-book-open-line", link: "/hadits" },
     { label: "Asmaul Husna", icon: "ri-star-smile-line", link: "/asmaul-husna" },
-    { label: "Kalender Hijriah", icon: "ri-calendar-line", link: "/kalender-hijriah" },
     { label: "Doa Harian", icon: "ri-hand-heart-line", link: "/doa-harian" },
     { label: "Puasa Sunnah", icon: "ri-moon-clear-line", link: "/puasa-sunnah" },
     { label: "Kajian", icon: "ri-mic-2-line", link: "/kajian" },
@@ -41,7 +41,7 @@ function FeatureGrid() {
               className="flex flex-col items-center text-center p-1 hover:opacity-80 transition"
             >
               <div className="w-[55px] h-[55px] flex items-center justify-center rounded-[13px] bg-[#f0f1f2]">
-                <i className={`${m.icon} text-[22px] text-[#4f90c6]`} />
+                <i className={`${m.icon} text-[22px] text-[#355485]`} />
               </div>
               <p className="text-xs mt-1 mb-2 text-[#44515f]">{m.label}</p>
             </button>
@@ -52,7 +52,7 @@ function FeatureGrid() {
               className="flex flex-col items-center text-center p-1 hover:opacity-80 transition"
             >
               <div className="w-[55px] h-[55px] flex items-center justify-center rounded-[13px] bg-[#f0f1f2]">
-                <i className={`${m.icon} text-[22px] text-[#4f90c6]`} />
+                  <i className={`${m.icon} text-[22px] text-[#355485]`} />
               </div>
               <p className="text-xs mt-1 mb-2 text-[#44515f]">{m.label}</p>
             </Link>
@@ -85,7 +85,7 @@ function FeatureGrid() {
                   className="flex flex-col items-center text-center hover:opacity-80 transition"
                 >
                   <div className="w-[55px] h-[55px] flex items-center justify-center rounded-[13px] bg-[#f0f1f2]">
-                    <i className={`${m.icon} text-[22px] text-[#4f90c6]`} />
+                    <i className={`${m.icon} text-[22px] text-[#355485]`} />
                   </div>
                   <p className="text-xs mt-1 mb-2 text-[#44515f]">{m.label}</p>
                 </Link>

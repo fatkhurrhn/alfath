@@ -4,7 +4,6 @@ import Dzikir from "./pages/dzikir/Dzikir";
 import DzikirPagiSugro from "./pages/dzikir/almasurat/PagiSugro";
 import DzikirPetangSugro from "./pages/dzikir/almasurat/PetangSugro";
 import JadwalSholat from "./pages/JadwalSholat";
-import NotFound from "./pages/NotFound";
 import Almasurat from "./pages/dzikir/Almasurat";
 import Donate from "./pages/Donate";
 import AutoToTop from "./components/AutoToTop";
@@ -35,43 +34,53 @@ import Juz25 from "./pages/game/sambungayat/Juz25";
 
 import SAS67 from "./pages/game/sambungayat/Surah67";
 
-import DetailVideo from "./pages/DetailVideo";
-import VideoList from "./pages/VideoList";
-import StoryThur from "./pages/StoryThur";
+import DetailVideo from "./pages/vidmotivasi/DetailVideo";
+import VideoList from "./pages/vidmotivasi/VideoList";
+import StoryThur from "./pages/vidmotivasi/StoryThur";
 import NewsListe from "./pages/news/NewsList";
 import NewsDetail from "./pages/news/NewsDetail";
 import Kiblat from "./pages/Kiblat";
-import QuotesList from "./pages/QuotesList";
-import QuotesAdd from "./pages/QuotesAdd";
+import QuotesList from "./pages/quotes/QuotesList";
+import QuotesAdd from "./pages/quotes/QuotesAdd";
+import EdukasiHome from "./pages/edukasi/EdukasiHome";
+import ComingSoon from "./pages/maintenance/ComingSoon";
+import SettingHome from "./pages/settings/SettingHome";
 
 function App() {
   return (
     <Router>
       <AutoToTop />
       <Routes>
-        <Route path="/tess" element={<Tess />} />
-        <Route path="/page/:pageNumber" element={<QuranPage />} />
-
         <Route path="/" element={<Home />} />
-        <Route path="/video" element={<VideoList />} />
+        <Route path="/tes" element={<Tes />} />
+        <Route path="/tess" element={<Tess />} />
+
+        <Route path="/donate" element={<Donate />} />
+        <Route path="/kiblat" element={<Kiblat />} />
+        <Route path="/kalender" element={<Kalender />} />
+        <Route path="/jadwal-sholat" element={<JadwalSholat />} />
+
+        <Route path="/edukasi" element={<EdukasiHome />} />
+
+        <Route path="/settings" element={<SettingHome />} />
+
         <Route path="/news" element={<NewsListe />} />
         <Route path="/news/:id" element={<NewsDetail />} />
-        <Route path="/detail/video/:id" element={<DetailVideo />} />
+
         <Route path="/dzikir" element={<Dzikir />} />
         <Route path="/dzikir/almasurat" element={<Almasurat />} />
         <Route path="/dzikir/almasurat/pagi" element={<DzikirPagiSugro />} />
         <Route path="/dzikir/almasurat/petang" element={<DzikirPetangSugro />} />
-        <Route path="/jadwal-sholat" element={<JadwalSholat />} />
-        <Route path="/donate" element={<Donate />} />
-        <Route path="/kiblat" element={<Kiblat />} />
-        <Route path="/tes" element={<Tes />} />
-        <Route path="/quran/games/tebak-ayat" element={<TebakAyat />} />
-        <Route path="/kalender" element={<Kalender />} />
+
         <Route path="/quotes" element={<QuotesList />} />
         <Route path="/quotes/add" element={<QuotesAdd />} />
+
+        <Route path="/video" element={<VideoList />} />
+        <Route path="/detail/video/:id" element={<DetailVideo />} />
         <Route path="/profile/storythur" element={<StoryThur />} />
 
         <Route path="/quran" element={<HomeQuran />} />
+        <Route path="/page/:pageNumber" element={<QuranPage />} />
         <Route path="/quran/:tab?" element={<HomeQuran />} />
         <Route path="/quran/juz/:id" element={<DetailPerJuz />} />
         <Route path="/quran/surah/:id" element={<DetailPerSurah />} />
@@ -80,6 +89,9 @@ function App() {
         {/* Route Games */}
         <Route path="/game" element={<Games />} />
         <Route path="/history" element={<History />} />
+
+        <Route path="/game/tebak-ayat" element={<TebakAyat />} />
+
         <Route path="/game/sambung-ayat/juz/1" element={<Juz1 />} />
         <Route path="/game/sambung-ayat/juz/2" element={<Juz2 />} />
         <Route path="/game/sambung-ayat/juz/3" element={<Juz3 />} />
@@ -93,9 +105,10 @@ function App() {
         <Route path="/game/sambung-ayat/juz/30" element={<Juz30 />} />
 
         <Route path="/game/sambung-ayat/surah/:surahNumber" element={<SAS67 />} />
+
         {/* Catch-all untuk halaman yang tidak ada */}
-        <Route path="/not-found" element={<NotFound />} />
-        <Route path="*" element={<Navigate to="/not-found" replace />} />
+        <Route path="/comingsoon" element={<ComingSoon />} />
+        <Route path="*" element={<Navigate to="/comingsoon" replace />} />
       </Routes>
     </Router>
   );

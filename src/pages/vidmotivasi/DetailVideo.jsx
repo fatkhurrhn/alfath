@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import VidMotivasi from '../components/home/VidMotivasi';
+import VidMotivasi from '../../components/home/VidMotivasi';
 
 export default function DetailVideo() {
     const [liked, setLiked] = useState(false);
@@ -409,11 +409,11 @@ export default function DetailVideo() {
                         {/* Like & Dislike */}
                         <div className="inline-flex items-center bg-gray-100 rounded-full overflow-hidden flex-shrink-0">
                             <button onClick={toggleLike} className="inline-flex items-center gap-2 px-3 py-2 hover:bg-gray-200 text-sm">
-                                <i className={liked ? "ri-thumb-up-fill text-black text-base" : "ri-thumb-up-line text-base"}/>
+                                <i className={liked ? "ri-thumb-up-fill text-black text-base" : "ri-thumb-up-line text-base"} />
                             </button>
                             <span className="w-px h-6 bg-gray-300" />
                             <button onClick={toggleDislike} className="inline-flex items-center gap-2 px-3 py-2 hover:bg-gray-200 text-sm">
-                                <i className={disliked ? "ri-thumb-down-fill text-black text-base" : "ri-thumb-down-line text-base"}/>
+                                <i className={disliked ? "ri-thumb-down-fill text-black text-base" : "ri-thumb-down-line text-base"} />
                             </button>
                         </div>
 
@@ -442,7 +442,7 @@ export default function DetailVideo() {
                             <i className="ri-bookmark-line text-base" />
                             <span>Simpan</span>
                         </button>
-                        
+
                         {/* Komentar */}
                         <button
                             onClick={() => document.getElementById("komentar")?.scrollIntoView({ behavior: "smooth" })}

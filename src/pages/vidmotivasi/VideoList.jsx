@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import VidMotivasi from '../components/home/VidPopuler';
+import VidMotivasi from '../../components/home/VidPopuler';
 
 export default function VideoList() {
     const [videos, setVideos] = useState([]);
@@ -25,7 +25,7 @@ export default function VideoList() {
                 setFilteredVideos(sortedVideos);
             } catch (error) {
                 console.error('Error fetching video data:', error);
-            } 
+            }
         };
 
         fetchVideos();
@@ -188,7 +188,7 @@ export default function VideoList() {
             {/* Sidebar Filter */}
             <FilterSidebar />
 
-            <VidMotivasi/>
+            <VidMotivasi />
 
             {/* Konten video dalam bentuk grid seperti YouTube */}
             <div className="flex justify-between items-center pt-3 px-4">

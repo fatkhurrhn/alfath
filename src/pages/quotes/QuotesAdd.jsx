@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { myQuotesCollection } from '../firebase';
+import { myQuotesCollection } from '../../firebase';
 import { addDoc, serverTimestamp } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 
@@ -70,7 +70,7 @@ const QuotesAdd = () => {
                 </div>
             )}
 
-            
+
             <div className="max-w-md w-full p-4">
                 {/* Logo */}
                 <Link to="/quotes">
