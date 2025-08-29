@@ -163,7 +163,7 @@ export default function StoryThur() {
                             href="https://instagram.com/storythur"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="block mt-4 w-full text-center bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-medium"
+                            className="block mt-4 w-full text-center bg-[#1f3963]  text-white py-2 rounded-lg font-medium"
                         >
                             Subscribe
                         </a>
@@ -173,19 +173,19 @@ export default function StoryThur() {
                     {/* Navigation Tabs */}
                     <div className="flex justify-between border-b border-gray-200 mt-2">
                         <button
-                            className={`pb-2 font-medium px-1 ${activeTab === 'terbaru' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-600'}`}
+                            className={`pb-2 font-medium px-1 ${activeTab === 'terbaru' ? 'text-[#1f3963] border-b-2 border-[#1f3963]' : 'text-gray-600'}`}
                             onClick={() => handleTabChange('terbaru')}
                         >
                             Terbaru
                         </button>
                         <button
-                            className={`pb-2 font-medium px-1 ${activeTab === 'populer' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-600'}`}
+                            className={`pb-2 font-medium px-1 ${activeTab === 'populer' ? 'text-[#1f3963] border-b-2 border-[#1f3963]' : 'text-gray-600'}`}
                             onClick={() => handleTabChange('populer')}
                         >
                             Populer
                         </button>
                         <button
-                            className={`pb-2 font-medium px-1 ${activeTab === 'terlama' ? 'text-red-600 border-b-2 border-red-600' : 'text-gray-600'}`}
+                            className={`pb-2 font-medium px-1 ${activeTab === 'terlama' ? 'text-[#1f3963] border-b-2 border-[#1f3963]' : 'text-gray-600'}`}
                             onClick={() => handleTabChange('terlama')}
                         >
                             Terlama

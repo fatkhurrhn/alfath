@@ -8,7 +8,7 @@ const BottomNav = () => {
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
     { path: "/quotes", icon: "ri-chat-quote-line", activeIcon: "ri-chat-quote-fill", label: "Quotes" },
     { path: "/quran", icon: "ri-book-open-line", activeIcon: "ri-book-open-fill", label: "ALQuran" },
-    { path: "/edukasi", icon: "ri-book-shelf-line", activeIcon: "ri-book-shelf-fill", label: "Edukasi" },
+    { path: "/library", icon: "ri-book-shelf-line", activeIcon: "ri-book-shelf-fill", label: "Library" },
     // { path: "/kalender", icon: "ri-calendar-line", activeIcon: "ri-calendar-fill", label: "Kalender" },
     { path: "/settings", icon: "ri-settings-2-line", activeIcon: "ri-settings-2-fill", label: "Setting" },
     // { path: "/profile", icon: "ri-user-heart-line", activeIcon: "ri-user-heart-fill", label: "Saya" },

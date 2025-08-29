@@ -3,29 +3,29 @@ import { Link } from "react-router-dom";
 
 function VidMotivasi() {
     const [videos, setVideos] = useState([]);
-    
+
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await fetch("/data/vidmotivasi-2.json");
+                const response = await fetch("/data/vidmotivasi.json");
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
-                
+
                 // Mengubah string views menjadi angka untuk sorting
                 const processedVideos = data.map(video => ({
                     ...video,
                     // Mengubah format "12,3" menjadi 12.3 (float)
                     numericViews: parseFloat(video.views.replace(',', '.'))
                 }));
-                
+
                 // Mengurutkan berdasarkan views terbanyak (descending)
                 const sortedVideos = processedVideos.sort((a, b) => b.numericViews - a.numericViews);
-                
+
                 // Mengambil hanya 6 video dengan views terbanyak
                 setVideos(sortedVideos.slice(0, 6));
             } catch (error) {
                 console.error("Error fetching video data:", error);
-            } 
+            }
         };
 
         fetchVideos();
@@ -36,7 +36,7 @@ function VidMotivasi() {
             <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-[#355485]">Video Populer</h2>
             </div>
-            
+
             {/* List video (scroll horizontal) */}
             <div className="flex space-x-2 overflow-x-auto no-scrollbar pb-2">
                 {videos.map((video) => (
@@ -60,15 +60,20 @@ function VidMotivasi() {
                                 </div>
                             </div>
 
-                            {/* Views dengan gradient */}
-                            <div className="absolute bottom-0 left-0 w-full px-2 py-1 bg-gradient-to-t from-black/70 to-transparent rounded-b-lg">
-                                <span className="text-xs text-white font-medium">
-                                    {video.numericViews >= 10 
-                                        ? video.numericViews.toFixed(1).replace('.', ',') 
-                                        : video.numericViews.toFixed(1).replace('.', ',')
-                                    } rb ditonton
-                                </span>
+                            <div className="absolute bottom-0 left-0 w-full px-3 py-2 bg-gradient-to-t from-black/90 to-transparent rounded-b-lg">
+                                <div className="flex flex-col">
+                                    {/* Title */}
+                                    <span className="text-white leading-tight text-sm font-semibold line-clamp-2">
+                                        {video.title}
+                                    </span>
+
+                                    {/* Views */}
+                                    <span className="text-xs text-gray-200 mt-1 font-medium">
+                                        {video.numericViews.toFixed(1).replace('.', ',')} rb ditonton
+                                    </span>
+                                </div>
                             </div>
+
                         </div>
                     </Link>
                 ))}
