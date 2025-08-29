@@ -145,7 +145,7 @@ export default function HomeQuran() {
     <div className="min-h-screen pb-2 bg-[#fcfeff]">
       <div className="max-w-xl mx-auto px-3 border-x border-gray-200">
         {/* Header */}
-        <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-4">
+        <div className="fixed top-0 left-1/2 z-50 w-full max-w-xl -translate-x-1/2 border-b border-gray-200 bg-white px-3 py-3">
           <div className="flex items-center justify-between">
             <Link
               to="/"
