@@ -26,6 +26,62 @@ const getCategoryLabel = (cat) => {
     }
 };
 
+/* ---------- Generate Image Quote ---------- */
+const generateQuoteImage = async (quote, author, category) => {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // ukuran square
+    canvas.width = 1080;
+    canvas.height = 1080;
+
+    // background putih
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#333";
+    ctx.textAlign = "center";
+
+    // Author di atas
+    ctx.font = "bold 40px Arial";
+    ctx.fillText(`— ${author} —`, canvas.width / 2, 100);
+
+    // Quote di tengah (wrap)
+    ctx.font = "bold 60px Georgia";
+    wrapText(ctx, `"${quote}"`, canvas.width / 2, canvas.height / 2, 900, 70);
+
+    // Category di bawah
+    ctx.font = "italic 35px Arial";
+    ctx.fillText(`#${category}`, canvas.width / 2, canvas.height - 180);
+
+    // Watermark bawah
+    ctx.font = "28px Arial";
+    ctx.fillStyle = "#777";
+    ctx.fillText("selengkapnya ... http://alfathh.vercel.app/", canvas.width / 2, canvas.height - 60);
+
+    return canvas.toDataURL("image/png");
+};
+
+// helper wrapText
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(" ");
+    let line = "";
+    let yy = y;
+    for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + " ";
+        const metrics = ctx.measureText(testLine);
+        const testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+            ctx.fillText(line, x, yy);
+            line = words[n] + " ";
+            yy += lineHeight;
+        } else {
+            line = testLine;
+        }
+    }
+    ctx.fillText(line, x, yy);
+}
+
 /* ---------- Main Component ---------- */
 export default function QuotesList() {
     const [quotes, setQuotes] = useState([]);
@@ -34,10 +90,9 @@ export default function QuotesList() {
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("all");
 
-    const [quoteStates, setQuoteStates] = useState({});
-    const [shareQuote, setShareQuote] = useState(null); // 👉 state buat bottom sheet
+    const [quoteStates, setQuoteStates] = useState({}); // state per-quote
 
-    // fetch quotes dari firestore
+    // fetch quotes
     useEffect(() => {
         const fetchQuotes = async () => {
             try {
@@ -89,7 +144,6 @@ export default function QuotesList() {
             ...prev,
             [id]: { ...prev[id], isLiking: true, isLiked: true, likesCount: prev[id].likesCount + 1 }
         }));
-
         try {
             const ref = doc(myQuotesCollection, id);
             await updateDoc(ref, { likes: increment(1) });
@@ -122,30 +176,26 @@ export default function QuotesList() {
         }, 1500);
     };
 
-    // share handler
-    const handleShare = (quote) => {
-        setShareQuote(quote);
-    };
+    // share handler → generate image
+    const handleShare = async (q) => {
+        const dataUrl = await generateQuoteImage(q.text, q.author, getCategoryLabel(q.category));
 
-    const shareTo = (platform) => {
-        if (!shareQuote) return;
-        const text = `"${shareQuote.text}" — ${shareQuote.author} #${getCategoryLabel(shareQuote.category)}`;
+        const res = await fetch(dataUrl);
+        const blob = await res.blob();
+        const file = new File([blob], "quote.png", { type: "image/png" });
 
-        if (platform === "whatsapp") {
-            const url = /Android|iPhone/i.test(navigator.userAgent)
-                ? `https://wa.me/?text=${encodeURIComponent(text)}`
-                : `https://web.whatsapp.com/send?text=${encodeURIComponent(text)}`;
-            window.open(url, "_blank");
+        if (navigator.share && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: "Quote Islami",
+                text: `"${q.text}" — ${q.author}`,
+            });
+        } else {
+            const link = document.createElement("a");
+            link.href = dataUrl;
+            link.download = "quote.png";
+            link.click();
         }
-
-        if (platform === "telegram") {
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(text)}`, "_blank");
-        }
-        if (platform === "instagram") {
-            navigator.clipboard.writeText(text);
-            alert("Teks disalin ke clipboard. Paste manual di Instagram!");
-        }
-        setShareQuote(null);
     };
 
     const getDisplayMessage = () => {
@@ -164,58 +214,120 @@ export default function QuotesList() {
             <div className="max-w-4xl mx-auto px-4 pt-4 pb-10">
 
                 {/* Search & Filter */}
-                {/* ... (biarin sama seperti punyamu) */}
+                <div className="p-2 mb-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                        <div className="relative">
+                            <input
+                                type="text"
+                                placeholder="Cari quote atau author..."
+                                className="w-full p-3 pl-10 rounded-lg border border-gray-300 bg-white"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                            <i className="ri-search-line absolute left-3 top-3.5 text-gray-400"></i>
+                            {searchTerm && (
+                                <button
+                                    onClick={() => setSearchTerm("")}
+                                    className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                                >
+                                    <i className="ri-close-line"></i>
+                                </button>
+                            )}
+                        </div>
+
+                        <select
+                            className="w-full p-3 rounded-lg border border-gray-300 bg-white"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="all">Semua Kategori</option>
+                            <option value="motivation">Motivasi</option>
+                            <option value="life">Reminder</option>
+                            <option value="love">Cinta</option>
+                            <option value="funny">Lucu</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <div className="text-sm text-gray-500 mb-2">{getDisplayMessage()}</div>
+                </div>
 
                 {/* Quotes */}
-                {!loading && (
+                {loading ? (
+                    <div className="bg-white rounded-lg shadow-sm p-8 text-center animate-pulse">
+                        <div className="h-6 bg-gray-200 rounded w-1/2 mx-auto mb-4"></div>
+                        <div className="h-4 bg-gray-200 rounded w-3/4 mx-auto"></div>
+                    </div>
+                ) : (
                     <div className="overflow-hidden">
                         {filteredQuotes.length > 0 ? (
                             filteredQuotes.map((q) => {
                                 const state = quoteStates[q.id] || {};
                                 return (
-                                    <div key={q.id} className="relative flex gap-4 px-1 border-b mb-3 border-gray-200 hover:bg-gray-50">
+                                    <div
+                                        key={q.id}
+                                        className="relative flex gap-4 px-1 border-b mb-3 border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors"
+                                    >
                                         {/* Avatar */}
-                                        <div className="flex-shrink-0">
-                                            <img src="https://cdn-icons-png.freepik.com/512/7718/7718888.png" className="w-11 h-11 rounded-full" />
+                                        <div className="flex-shrink-0 mr-[-4px]">
+                                            <img
+                                                src="https://cdn-icons-png.freepik.com/512/7718/7718888.png"
+                                                alt="Profile"
+                                                className="w-11 h-11 rounded-full object-cover"
+                                            />
                                         </div>
 
-                                        {/* Main */}
+                                        {/* Content */}
                                         <div className="flex-1">
-                                            {/* Header */}
-                                            <div className="flex justify-between">
+                                            <div className="flex justify-between items-start">
                                                 <div>
-                                                    <p className="text-[14px] font-semibold">{highlightText(q.author, searchTerm)}</p>
-                                                    <span className="text-[12px] text-gray-500">#{getCategoryLabel(q.category)}</span>
+                                                    <p className="text-[14px] font-semibold text-gray-800 leading-tight mb-[-5px]">
+                                                        {highlightText(q.author, searchTerm)}
+                                                    </p>
+                                                    <span className="text-[12px] text-gray-500">
+                                                        #{getCategoryLabel(q.category)}
+                                                    </span>
                                                 </div>
                                                 <button className="text-gray-400 hover:text-gray-600">
                                                     <i className="ri-more-line text-[18px]"></i>
                                                 </button>
                                             </div>
 
-                                            {/* Quote */}
                                             <p
-                                                className="text-gray-800 text-[15px] leading-relaxed cursor-pointer"
+                                                className="text-gray-800 mr-1 text-[15px] leading-relaxed cursor-pointer"
                                                 onClick={() => handleCopy(q.id, q.text, q.author)}
                                             >
                                                 "{highlightText(q.text, searchTerm)}"
                                             </p>
 
-                                            {/* Actions */}
                                             <div className="flex items-center justify-between mt-1 mb-2">
                                                 <div className="flex items-center gap-2 text-gray-500 text-[14px]">
-                                                    {/* like */}
-                                                    <button onClick={() => handleLike(q.id)} className="hover:text-red-500 flex items-center gap-1">
-                                                        <i className={`ri-heart-${state.isLiked ? "fill text-red-500" : "line"}`}></i>
+                                                    {/* Like */}
+                                                    <button
+                                                        onClick={() => handleLike(q.id)}
+                                                        disabled={state.isLiking}
+                                                        className="flex items-center gap-1 group hover:text-red-500"
+                                                    >
+                                                        <i
+                                                            className={`ri-heart-${state.isLiked ? "fill" : "line"} ${state.isLiked ? "text-red-500" : ""
+                                                                }`}
+                                                        ></i>
                                                         <span className="text-xs">{state.likesCount}</span>
                                                     </button>
 
-                                                    {/* copy */}
-                                                    <button onClick={() => handleCopy(q.id, q.text, q.author)} className="hover:text-gray-700">
+                                                    {/* Copy */}
+                                                    <button
+                                                        onClick={() => handleCopy(q.id, q.text, q.author)}
+                                                        className="hover:text-gray-700"
+                                                    >
                                                         <i className="ri-clipboard-line"></i>
                                                     </button>
 
-                                                    {/* share */}
-                                                    <button onClick={() => handleShare(q)} className="hover:text-gray-700">
+                                                    {/* Share → generate image */}
+                                                    <button
+                                                        onClick={() => handleShare(q)}
+                                                        className="hover:text-gray-700"
+                                                    >
                                                         <i className="ri-share-line"></i>
                                                     </button>
                                                 </div>
@@ -236,30 +348,6 @@ export default function QuotesList() {
                     </div>
                 )}
             </div>
-
-            {/* Bottom Sheet Share */}
-            {shareQuote && (
-                <>
-                    <div className="fixed inset-0 bg-black bg-opacity-40 z-40" onClick={() => setShareQuote(null)} />
-                    <div className="fixed bottom-0 left-0 right-0 bg-white z-50 rounded-t-2xl shadow-xl p-5 max-w-xl mx-auto">
-                        <h3 className="font-semibold text-gray-800 mb-4">Bagikan ke</h3>
-                        <div className="grid grid-cols-3 gap-4 text-center">
-                            <button onClick={() => shareTo("whatsapp")} className="flex flex-col items-center">
-                                <i className="ri-whatsapp-line text-green-500 text-2xl"></i>
-                                <span className="text-xs mt-1">WhatsApp</span>
-                            </button>
-                            <button onClick={() => shareTo("telegram")} className="flex flex-col items-center">
-                                <i className="ri-telegram-line text-sky-500 text-2xl"></i>
-                                <span className="text-xs mt-1">Telegram</span>
-                            </button>
-                            <button onClick={() => shareTo("instagram")} className="flex flex-col items-center">
-                                <i className="ri-instagram-line text-pink-500 text-2xl"></i>
-                                <span className="text-xs mt-1">Instagram</span>
-                            </button>
-                        </div>
-                    </div>
-                </>
-            )}
         </div>
     );
 }
