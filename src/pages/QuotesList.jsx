@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { myQuotesCollection } from "../firebase";
 import { getDocs, query, orderBy, doc, updateDoc, increment } from "firebase/firestore";
 import { Link } from "react-router-dom";
+import AddQuote from "../components/AddQuote";
 
 /* ---------- Helpers ---------- */
 const highlightText = (text, highlight) => {
@@ -226,6 +227,7 @@ export default function QuotesList() {
 
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800">
+            <AddQuote/>
             <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
                 <div className="flex items-center justify-between px-3 py-3">
                     {/* Left: Back Link */}
