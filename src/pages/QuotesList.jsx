@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { myQuotesCollection } from "../firebase";
 import { getDocs, query, orderBy, doc, updateDoc, increment } from "firebase/firestore";
+import { Link } from "react-router-dom";
 
 /* ---------- Helpers ---------- */
 const highlightText = (text, highlight) => {
@@ -63,7 +64,7 @@ const generateQuoteImage = async (quote, author, category) => {
     // Watermark bawah
     ctx.font = "30px Arial";
     ctx.fillStyle = "#777";
-    ctx.fillText("selengkapnya ... http://alfathh.vercel.app/", canvas.width / 2, canvas.height - 70);
+    ctx.fillText("selengkapnya ... http://alfathh.vercel.app/ ", canvas.width / 2, canvas.height - 70);
 
     return canvas.toDataURL("image/png");
 };
@@ -88,7 +89,6 @@ function wrapText(ctx, text, maxWidth) {
     return lines;
 }
 
-
 /* ---------- Main Component ---------- */
 export default function QuotesList() {
     const [quotes, setQuotes] = useState([]);
@@ -98,6 +98,8 @@ export default function QuotesList() {
     const [selectedCategory, setSelectedCategory] = useState("all");
 
     const [quoteStates, setQuoteStates] = useState({}); // state per-quote
+    const [showSearch, setShowSearch] = useState(false); // state untuk menampilkan input search
+    const [showFilterSheet, setShowFilterSheet] = useState(false); // state untuk menampilkan bottom sheet filter
 
     // fetch quotes
     useEffect(() => {
@@ -216,46 +218,131 @@ export default function QuotesList() {
         return `Total ${quotes.length} quotes tersedia`;
     };
 
+    // Handler untuk memilih kategori dari bottom sheet
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+        setShowFilterSheet(false); // Tutup bottom sheet setelah memilih
+    };
+
     return (
         <div className="bg-gray-50 min-h-screen text-gray-800">
-            <div className="max-w-4xl mx-auto px-4 pt-4 pb-10">
+            <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
+                <div className="flex items-center justify-between px-3 py-3">
+                    {/* Left: Back Link */}
+                    <Link
+                        to="/"
+                        className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"
+                    >
+                        <i className="ri-arrow-left-line"></i> Quotes
+                    </Link>
 
-                {/* Search & Filter */}
-                <div className="p-2 mb-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                    {/* Right: Search + Equalizer */}
+                    <div className="flex items-center gap-4">
+                        <button
+                            className="text-[#355485]"
+                            onClick={() => setShowSearch(!showSearch)}
+                        >
+                            <i className="ri-search-2-line text-xl"></i>
+                        </button>
+                        <button
+                            className="text-[#355485]"
+                            onClick={() => setShowFilterSheet(true)}
+                        >
+                            <i className="ri-equalizer-line text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Input Search yang muncul ketika tombol search diklik */}
+                {showSearch && (
+                    <div className="px-3 pb-2">
                         <div className="relative">
                             <input
                                 type="text"
                                 placeholder="Cari quote atau author..."
-                                className="w-full p-3 pl-10 rounded-lg border border-gray-300 bg-white"
+                                className="w-full p-2 pl-4 rounded-lg border border-gray-300 bg-white"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />
-                            <i className="ri-search-line absolute left-3 top-3.5 text-gray-400"></i>
                             {searchTerm && (
                                 <button
                                     onClick={() => setSearchTerm("")}
-                                    className="absolute right-3 top-3.5 text-gray-400 hover:text-gray-600"
+                                    className="absolute right-3 top-2 text-gray-400 hover:text-gray-600"
                                 >
                                     <i className="ri-close-line"></i>
                                 </button>
                             )}
                         </div>
-
-                        <select
-                            className="w-full p-3 rounded-lg border border-gray-300 bg-white"
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
-                        >
-                            <option value="all">Semua Kategori</option>
-                            <option value="motivation">Motivasi</option>
-                            <option value="life">Reminder</option>
-                            <option value="love">Cinta</option>
-                            <option value="funny">Lucu</option>
-                            <option value="other">Lainnya</option>
-                        </select>
                     </div>
+                )}
+            </div>
 
+            {/* Bottom Sheet untuk Filter Kategori */}
+            {showFilterSheet && (
+                <div className="fixed inset-0 z-50 flex items-end justify-center">
+                    {/* Overlay */}
+                    <div
+                        className="absolute inset-0 bg-black bg-opacity-50"
+                        onClick={() => setShowFilterSheet(false)}
+                    ></div>
+
+                    {/* Sheet Content */}
+                    <div className="relative bg-white rounded-t-2xl w-full max-w-md p-5 max-h-[70vh] overflow-y-auto">
+                        <div className="flex justify-between items-center mb-6">
+                            <h2 className="text-lg font-semibold">Filter by Category</h2>
+                            <button
+                                onClick={() => setShowFilterSheet(false)}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                <i className="ri-close-line text-xl"></i>
+                            </button>
+                        </div>
+
+                        <div className="grid gap-3">
+                            <button
+                                onClick={() => handleCategorySelect("all")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "all" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Semua Kategori
+                            </button>
+                            <button
+                                onClick={() => handleCategorySelect("motivation")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "motivation" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Motivasi
+                            </button>
+                            <button
+                                onClick={() => handleCategorySelect("life")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "life" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Reminder
+                            </button>
+                            <button
+                                onClick={() => handleCategorySelect("love")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "love" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Cinta
+                            </button>
+                            <button
+                                onClick={() => handleCategorySelect("funny")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "funny" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Lucu
+                            </button>
+                            <button
+                                onClick={() => handleCategorySelect("other")}
+                                className={`p-4 rounded-lg text-left ${selectedCategory === "other" ? "bg-[#355485] text-white" : "bg-gray-100"}`}
+                            >
+                                Lainnya
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <div className="max-w-4xl mx-auto px-4 pt-[60px] pb-10">
+                {/* Info Jumlah Quotes */}
+                <div className="px-1 mt-3 mb-2">
                     <div className="text-sm text-gray-500 mb-2">{getDisplayMessage()}</div>
                 </div>
 
@@ -273,12 +360,12 @@ export default function QuotesList() {
                                 return (
                                     <div
                                         key={q.id}
-                                        className="relative flex gap-4 px-1 border-b mb-3 border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors"
+                                        className="relative flex gap-4 px-1 mt-4 border-b mb-3 border-gray-200 last:border-b-0 hover:bg-gray-50 transition-colors"
                                     >
                                         {/* Avatar */}
                                         <div className="flex-shrink-0 mr-[-4px]">
                                             <img
-                                                src="https://cdn-icons-png.freepik.com/512/7718/7718888.png"
+                                                src="https://cdn-icons-png.freepik.com/512/7718/7718888.png "
                                                 alt="Profile"
                                                 className="w-11 h-11 rounded-full object-cover"
                                             />
