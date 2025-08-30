@@ -12,9 +12,11 @@ export default function Templat() {
           >
             <i className="ri-arrow-left-line"></i> Template
           </Link>
-          <button className="text-[#355485]">
-            <i className="ri-settings-5-line text-xl"></i>
-          </button>
+          <Link to="settings">
+            <button className="text-[#355485]">
+              <i className="ri-settings-5-line text-xl"></i>
+            </button>
+          </Link>
         </div>
       </div>
 

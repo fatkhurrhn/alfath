@@ -49,15 +49,15 @@ function DoaSection() {
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-[#355485]">Aminkan Doa Saudaramu</h2>
-                <Link to="/doa">
-                    <i className="ri-arrow-right-s-line text-xl text-[#6d9bbc]"></i>
+                <Link to="/doa/add">
+                    <i className="ri-add-line text-xl font-semibold text-[#355485]"></i>
                 </Link>
             </div>
 
             {/* Scroll Horizontal */}
-            <div className="flex gap-4 overflow-x-auto pb-3">
+            <div className="flex gap-4 overflow-x-auto pb-1 no-scrollbar">
                 {doaList.length > 0 ? (
-                    doaList.slice(0, 5).map((doa, idx) => {
+                    doaList.slice(0, 3).map((doa, idx) => {
                         const isLong = doa.doa && doa.doa.length > 120; // cek panjang doa
 
                         return (
