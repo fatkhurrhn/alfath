@@ -7,11 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Dependencies & build
 node_modules
 dist
 dist-ssr
-build
 *.local
 
 # Editor directories and files
@@ -25,5 +23,6 @@ build
 *.sln
 *.sw?
 
-# Ignore whole source folder
-src/
+# Ignore file login
+src/pages/settings/Login.jsx
+src/pages/settings/ListMenu.jsx
