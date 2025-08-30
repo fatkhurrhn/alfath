@@ -39,7 +39,7 @@ export default function InstallBanner() {
                     {/* Icon + Text */}
                     <div className="flex items-center gap-3">
                         <div>
-                            <p className="font-bold text-base">Install Ihsanly</p>
+                            <p className="font-bold text-base">Install AlFath</p>
                             {!isInstalled ? (
                                 <p className="text-sm text-white/90">
                                     Rasakan pengalaman lebih cepat dengan aplikasi
