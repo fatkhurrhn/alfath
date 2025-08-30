@@ -24,16 +24,18 @@ export default function SettingHome() {
 
             <div className="max-w-xl mx-auto px-4 pt-[70px]">
                 {/* Profile Section */}
-                <div className="flex flex-col items-center mb-6 text-center">
-                    <img
-                        src="/img/logo-x.png"
-                        alt="User avatar"
-                        className="w-[120px] h-[120px] object-cover"
-                    />
-                    <p className="text-sm text-gray-500">
-                        hadir sebagai teman harian muslim dengan Al-Qur’an, doa, dzikir, jadwal sholat, serta motivasi Islami yang menenangkan hati
-                    </p>
-                </div>
+                <Link to="/login">
+                    <div className="flex flex-col items-center mb-6 text-center">
+                        <img
+                            src="/img/logo-x.png"
+                            alt="User avatar"
+                            className="w-[120px] h-[120px] object-cover"
+                        />
+                        <p className="text-sm text-gray-500">
+                            hadir sebagai teman harian muslim dengan Al-Qur’an, doa, dzikir, jadwal sholat, serta motivasi Islami yang menenangkan hati
+                        </p>
+                    </div>
+                </Link>
 
                 {/* Quick Actions */}
                 <div className="grid grid-cols-4 gap-4 mb-6">

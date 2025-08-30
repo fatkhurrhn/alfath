@@ -50,6 +50,8 @@ import DoaList from "./pages/doa/DoaList";
 import AddDoa from "./pages/doa/AddDoa";
 import DetailDoa from "./pages/doa/DetailDoa";
 import ControlDoa from "./pages/doa/ControlDoa";
+import Login from "./pages/settings/Login";
+import ListMenu from "./pages/settings/ListMenu";
 
 function App() {
   return (
@@ -59,6 +61,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/tes" element={<Tes />} />
         <Route path="/tess" element={<Tess />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/listmenu" element={<ListMenu />} />
 
         <Route path="/donate" element={<Donate />} />
         <Route path="/kiblat" element={<Kiblat />} />
