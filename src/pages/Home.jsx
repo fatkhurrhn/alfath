@@ -1,3 +1,4 @@
+// src/pages/Home.jsx
 import React, { useEffect, useState } from "react";
 import LandingPage from "../components/LandingPage";
 import BottomNav from "../components/BottomNav";
@@ -7,46 +8,32 @@ import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
 import VidMotivasi from "../components/home/VidMotivasi";
 
-/* Splash Screen Component */
-const SplashScreen = () => (
-  <div className="min-h-screen flex items-center justify-center bg-white animate-fadeIn">
-    <div className="flex flex-col items-center">
-      <img
-        src="/logo-splash.png"
-        alt="AlFath Logo"
-        className="w-32 h-32 mb-0 animate-pulse"
-      />
-      <h1 className="text-2xl font-bold mt-1.5 text-gray-800 animate-fadeInUp">
-        AlFath
-      </h1>
-      <p className="text-gray-600 animate-fadeIn delay-300">Muslim Daily</p>
-    </div>
-  </div>
-);
-
 export default function Home() {
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [fadeOut, setFadeOut] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
-  /* Splash logic */
+  // 🔹 Splash pertama kali buka
   useEffect(() => {
     const alreadyShown = sessionStorage.getItem("splashShown");
 
     if (!alreadyShown) {
       setShowSplash(true);
       const timer = setTimeout(() => {
-        setShowSplash(false);
-        sessionStorage.setItem("splashShown", "true");
-      }, 2500);
+        setFadeOut(true);
+        setTimeout(() => {
+          setShowSplash(false);
+          sessionStorage.setItem("splashShown", "true");
+        }, 800); // waktu fade-out
+      }, 2000);
+
       return () => clearTimeout(timer);
-    } else {
-      setShowSplash(false);
     }
   }, []);
 
-  /* PWA install detect */
+  // 🔹 Deteksi install PWA
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
@@ -60,9 +47,11 @@ export default function Home() {
 
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
-      setIsInstalled(true);
-      setTransitioning(true);
-      setTimeout(() => setTransitioning(false), 800); // smooth delay
+      setTransitioning(true); // trigger animasi keluar LandingPage
+      setTimeout(() => {
+        setIsInstalled(true);
+        setTransitioning(false); // reset
+      }, 700); // sesuai durasi animasi
     });
 
     return () => {
@@ -75,26 +64,54 @@ export default function Home() {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     console.log("User install choice:", outcome);
+
+    if (outcome === "accepted") {
+      setTransitioning(true);
+      setTimeout(() => {
+        setIsInstalled(true);
+        setTransitioning(false);
+      }, 700);
+    }
+
     setDeferredPrompt(null);
   };
 
-  /* 🔑 Logic utama */
-  if (showSplash) return <SplashScreen />;
-
-  if (!isInstalled) {
+  /* 
+    🔑 Logic:
+    - Kalau splash aktif → tampilkan splash custom
+    - Kalau belum diinstall (browser biasa) → LandingPage
+    - Kalau sudah diinstall (PWA mode) → tampilkan App utama
+  */
+  if (showSplash) {
     return (
       <div
-        className={`transition-all duration-700 transform ${transitioning ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"
+        className={`fixed inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-700 ${fadeOut ? "opacity-0" : "opacity-100"
           }`}
       >
-        <LandingPage />
+        <img
+          src="/logo-splash.png"
+          alt="AlFath Logo"
+          className="w-28 h-28 animate-pulse"
+        />
       </div>
     );
   }
 
+  if (!isInstalled) {
+    return (
+      <div
+        className={`transition-opacity duration-700 ${transitioning ? "opacity-0" : "opacity-100"
+          }`}
+      >
+        <LandingPage onInstall={handleInstall} />
+      </div>
+    );
+  }
+
+  // 🔹 App utama (kalau sudah install)
   return (
     <div
-      className={`min-h-screen bg-white text-[#44515f] pb-10 transition-all duration-700 transform ${transitioning ? "opacity-0 translate-y-10" : "opacity-100 translate-y-0"
+      className={`min-h-screen bg-white text-[#44515f] pb-10 transition-opacity duration-700 ${transitioning ? "opacity-0" : "opacity-100"
         }`}
     >
       <HeaderDisplay />
@@ -102,7 +119,7 @@ export default function Home() {
 
       {/* Install Info Card */}
       <div className="px-4">
-        <div className="mb-2 rounded-2xl bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white">
+        <div className="mb-2 rounded-2xl bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white shadow">
           <div className="flex items-center justify-between">
             <div>
               <p className="font-bold text-base">Install AlFath</p>
@@ -116,6 +133,7 @@ export default function Home() {
                 </p>
               )}
             </div>
+
             {!isInstalled ? (
               <button
                 onClick={handleInstall}
