@@ -1,6 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function LandingPage() {
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    // deteksi apakah app udah mode standalone (udah install)
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone;
+    setIsInstalled(isStandalone);
+
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => setIsInstalled(true));
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    console.log("User install choice:", outcome);
+    setDeferredPrompt(null);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Navigation */}
@@ -29,14 +60,41 @@ export default function LandingPage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Ihsanly - Muslim Daily</h1>
             <p className="text-xl mb-8 text-[#cbdde9]">Aplikasi panduan muslim sehari-hari untuk hidup lebih berkah dan ihsan</p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-              <button className="bg-white text-[#355485] px-6 py-3 rounded-lg font-semibold flex items-center justify-center">
-                <i className="ri-google-play-fill text-2xl mr-2"></i>
-                Google Play
-              </button>
-              <button className="bg-[#44515f] text-white px-6 py-3 rounded-lg font-semibold flex items-center justify-center">
-                <i className="ri-apple-fill text-2xl mr-2"></i>
-                App Store
-              </button>
+              <div className="px-3 pt-2 shadow-sm bg-[#fcfeff]">
+                <div className="mb-2 rounded-2xl bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white">
+                  <div className="flex items-center justify-between">
+                    {/* Icon + Text */}
+                    <div className="flex items-center gap-3">
+                      <div>
+                        <p className="font-bold text-base">Install Ihsanly</p>
+                        {!isInstalled ? (
+                          <p className="text-sm text-white/90">
+                            Rasakan pengalaman lebih cepat dengan aplikasi
+                          </p>
+                        ) : (
+                          <p className="text-sm text-white/90">
+                            Aplikasi sudah terpasang, nikmati kemudahan akses 🎉
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Button */}
+                    {!isInstalled ? (
+                      <button
+                        onClick={handleInstall}
+                        className="ml-4 px-4 py-2 rounded-lg bg-white text-[#355485] font-semibold text-sm shadow hover:bg-gray-100 transition"
+                      >
+                        Install
+                      </button>
+                    ) : (
+                      <span className="ml-4 px-4 py-2 rounded-lg bg-white/20 text-white font-medium text-sm shadow">
+                        Terpasang
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="md:w-1/2 flex justify-center">
