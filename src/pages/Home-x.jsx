@@ -27,7 +27,7 @@ export default function Home() {
         setTimeout(() => {
           setShowSplash(false);
           sessionStorage.setItem("splashShown", "true");
-        }, 400); // waktu fade-out
+        }, 300); // waktu fade-out
       }, 1000);
 
       return () => clearTimeout(timer);

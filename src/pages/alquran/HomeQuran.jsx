@@ -155,11 +155,13 @@ export default function HomeQuran() {
               Al-Qur'an
             </Link>
             <div className="flex items-center gap-3">
+              <Link to="/quran/perhalaman">
+                <button className="text-[#355485]">
+                  <i className="ri-book-open-line text-xl"></i>
+                </button>
+              </Link>
               <button className="text-[#355485]">
                 <i className="ri-filter-line text-xl"></i>
-              </button>
-              <button className="text-[#355485]">
-                <i className="ri-settings-5-line text-xl"></i>
               </button>
             </div>
           </div>

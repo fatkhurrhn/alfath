@@ -52,6 +52,8 @@ import DetailDoa from "./pages/doa/DetailDoa";
 import ControlDoa from "./pages/doa/ControlDoa";
 import Login from "./pages/settings/Login";
 import ListMenu from "./pages/settings/ListMenu";
+import PerHalamanList from "./pages/alquran/PerHalamanList";
+import DetailHalamanPerJuz from "./pages/alquran/DetailHalamanPerJuz";
 
 function App() {
   return (
@@ -96,6 +98,8 @@ function App() {
         <Route path="/profile/storythur" element={<StoryThur />} />
 
         <Route path="/quran" element={<HomeQuran />} />
+        <Route path="/quran/perhalaman" element={<PerHalamanList />} />
+        <Route path="/quran/perhalaman/juz/:id" element={<DetailHalamanPerJuz />} />
         <Route path="/page/:pageNumber" element={<QuranPage />} />
         <Route path="/quran/:tab?" element={<HomeQuran />} />
         <Route path="/quran/juz/:id" element={<DetailPerJuz />} />
