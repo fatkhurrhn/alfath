@@ -12,7 +12,7 @@ function FeatureGrid() {
     { label: "Edukasi", icon: "ri-book-shelf-line", link: "/edukasi" },
     { label: "Dzikir", icon: "ri-heart-pulse-line", link: "/dzikir" },
     { label: "Calender", icon: "ri-calendar-line", link: "/kalender" },
-    { label: "Tasbih", icon: "ri-heart-2-line", link: "/tasbih" },
+    { label: "Tasbih", icon: "ri-heart-2-line", link: "/doa/add" },
     { label: "Prayer Time", icon: "ri-time-line", link: "/jadwal-sholat" },
     { label: "More", icon: "ri-apps-line", action: () => setShowMore(true) },
   ];

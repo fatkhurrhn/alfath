@@ -47,6 +47,9 @@ import ComingSoon from "./pages/maintenance/ComingSoon";
 import SettingHome from "./pages/settings/SettingHome";
 import SelfDevHome from "./pages/selfdev/SelfDevHome";
 import DoaList from "./pages/doa/DoaList";
+import AddDoa from "./pages/doa/AddDoa";
+import DetailDoa from "./pages/doa/DetailDoa";
+import ControlDoa from "./pages/doa/ControlDoa";
 
 function App() {
   return (
@@ -65,6 +68,9 @@ function App() {
         <Route path="/selfdev" element={<SelfDevHome />} />
 
         <Route path="/doa" element={<DoaList />} />
+        <Route path="/doa/admin" element={<ControlDoa />} />
+        <Route path="/doa/add" element={<AddDoa />} />
+        <Route path="/doa/detail/:id" element={<DetailDoa />} />
         
         <Route path="/edukasi" element={<EdukasiHome />} />
 
