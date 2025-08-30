@@ -71,7 +71,7 @@ export default function DetailHalamanPerJuz() {
 
             {/* PDF Viewer */}
             <div
-                className="flex-1 flex justify-center items-center pt-[55px] pb-[60px]"
+                className="flex-1 flex justify-center items-center pt-[5px] pb-[60px]"
                 // CLICK navigation
                 onClick={(e) => {
                     const x = e.clientX;
@@ -95,7 +95,7 @@ export default function DetailHalamanPerJuz() {
                 <Document file={`/quran-pdf/juz${id}.PDF`} onLoadSuccess={onDocumentLoadSuccess}>
                     <Page
                         pageNumber={pageNumber}
-                        width={windowWidth * scale * 0.9}
+                        width={windowWidth * scale * 1.2}
                         renderAnnotationLayer={false}
                         renderTextLayer={false}
                     />
