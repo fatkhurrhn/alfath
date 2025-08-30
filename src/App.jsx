@@ -3,12 +3,12 @@ import Home from "./pages/Home";
 import Dzikir from "./pages/dzikir/Dzikir";
 import DzikirPagiSugro from "./pages/dzikir/almasurat/PagiSugro";
 import DzikirPetangSugro from "./pages/dzikir/almasurat/PetangSugro";
-import JadwalSholat from "./pages/JadwalSholat";
+import JadwalSholat from "./pages/islamic/JadwalSholat";
 import Almasurat from "./pages/dzikir/Almasurat";
 import Donate from "./pages/Donate";
 import AutoToTop from "./components/AutoToTop";
 import Tes from "./pages/Tes";
-import Kalender from "./pages/Kalender";
+import Kalender from "./pages/islamic/Kalender";
 import DetailPerSurah from "./pages/alquran/DetailPerSurah";
 import DetailPerJuz from "./pages/alquran/DetailPerJuz";
 
@@ -39,12 +39,14 @@ import VideoList from "./pages/vidmotivasi/VideoList";
 import StoryThur from "./pages/vidmotivasi/StoryThur";
 import NewsListe from "./pages/news/NewsList";
 import NewsDetail from "./pages/news/NewsDetail";
-import Kiblat from "./pages/Kiblat";
+import Kiblat from "./pages/islamic/Kiblat";
 import QuotesList from "./pages/quotes/QuotesList";
 import QuotesAdd from "./pages/quotes/QuotesAdd";
 import EdukasiHome from "./pages/edukasi/EdukasiHome";
 import ComingSoon from "./pages/maintenance/ComingSoon";
 import SettingHome from "./pages/settings/SettingHome";
+import SelfDevHome from "./pages/selfdev/SelfDevHome";
+import DoaList from "./pages/doa/DoaList";
 
 function App() {
   return (
@@ -60,6 +62,10 @@ function App() {
         <Route path="/kalender" element={<Kalender />} />
         <Route path="/jadwal-sholat" element={<JadwalSholat />} />
 
+        <Route path="/selfdev" element={<SelfDevHome />} />
+
+        <Route path="/doa" element={<DoaList />} />
+        
         <Route path="/edukasi" element={<EdukasiHome />} />
 
         <Route path="/settings" element={<SettingHome />} />

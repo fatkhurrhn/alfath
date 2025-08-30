@@ -7,6 +7,7 @@ import QuranReminder from "../components/home/QuranReminder";
 import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
 import VidMotivasi from "../components/home/VidMotivasi";
+import DoaSection from "../components/home/DoaSection";
 
 export default function Home() {
   const [showSplash, setShowSplash] = useState(false);
@@ -26,8 +27,8 @@ export default function Home() {
         setTimeout(() => {
           setShowSplash(false);
           sessionStorage.setItem("splashShown", "true");
-        }, 600); // waktu fade-out
-      }, 2000);
+        }, 400); // waktu fade-out
+      }, 1000);
 
       return () => clearTimeout(timer);
     }
@@ -150,6 +151,7 @@ export default function Home() {
         </div>
       </div>
 
+      <DoaSection />
       <VidMotivasi />
       <NewsSection />
       <QuranReminder />
