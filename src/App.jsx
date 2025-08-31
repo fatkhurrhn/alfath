@@ -54,6 +54,9 @@ import Login from "./pages/settings/Login";
 import ListMenu from "./pages/settings/ListMenu";
 import PerHalamanList from "./pages/alquran/PerHalamanList";
 import DetailHalamanPerJuz from "./pages/alquran/DetailHalamanPerJuz";
+import LibraryHome from "./pages/library/LibraryHome";
+import MentahanAudio from "./pages/library/MentahanAudio";
+import ManageAudio from "./pages/library/ManageAudio";
 
 function App() {
   return (
@@ -79,6 +82,10 @@ function App() {
         <Route path="/doa/detail/:id" element={<DetailDoa />} />
         
         <Route path="/edukasi" element={<EdukasiHome />} />
+
+        <Route path="/library" element={<LibraryHome />} />
+        <Route path="/library/audio" element={<MentahanAudio />} />
+        <Route path="/library/audio/admin" element={<ManageAudio />} />
 
         <Route path="/settings" element={<SettingHome />} />
 

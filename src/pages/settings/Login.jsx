@@ -11,7 +11,7 @@ export default function Login() {
         e.preventDefault();
         if (username === "alfath" && password === "alfath0909") {
             setError("");
-            navigate("/doa/admin");
+            navigate("/listmenu");
         } else {
             setError("Username atau password salah!");
         }
