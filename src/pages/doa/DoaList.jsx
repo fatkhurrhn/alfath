@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase";
 import { collection, onSnapshot, updateDoc, doc, increment } from "firebase/firestore";
+import BottomNav from "../../components/BottomNav";
 
 /* ---------- Helpers ---------- */
 const timeAgo = (date) => {
@@ -35,6 +36,28 @@ export default function DoaList() {
     const [searchTerm, setSearchTerm] = useState("");
     const [liked, setLiked] = useState({});
     const [sortAsc, setSortAsc] = useState(false); // default terbaru
+
+    const [showHeader, setShowHeader] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+
+            if (currentScrollY > lastScrollY) {
+                // Scroll ke bawah -> sembunyikan header
+                setShowHeader(false);
+            } else {
+                // Scroll ke atas -> tampilkan header
+                setShowHeader(true);
+            }
+
+            setLastScrollY(currentScrollY);
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
 
     useEffect(() => {
         const unsub = onSnapshot(collection(db, "doa"), (snapshot) => {
@@ -75,18 +98,18 @@ export default function DoaList() {
 
     return (
         <div className="min-h-screen pb-16 relative">
+            <BottomNav />
             {/* Header */}
-            <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
-                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-2">
-                    <Link
-                        to="/"
-                        className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"
-                    >
+            <div className={`fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200 transition-transform duration-300 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
+                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-3">
+                    <Link to="/" className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]">
                         <i className="ri-arrow-left-line"></i> Do'a
                     </Link>
-                    <button className="text-[#355485]">
-                        <i className="ri-settings-5-line text-xl"></i>
-                    </button>
+                    <Link to="/settings">
+                        <button className="text-[#355485]">
+                            <i className="ri-settings-5-line text-xl"></i>
+                        </button>
+                    </Link>
                 </div>
             </div>
 
@@ -192,7 +215,7 @@ export default function DoaList() {
             {/* Floating Action Button */}
             <Link
                 to="/doa/add"
-                className="fixed bottom-6 right-6 bg-[#355485] hover:bg-[#2a3b5c] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition"
+                className="fixed bottom-[70px] right-6 bg-[#355485] hover:bg-[#2a3b5c] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg transition"
             >
                 <i className="ri-add-line text-2xl"></i>
             </Link>
