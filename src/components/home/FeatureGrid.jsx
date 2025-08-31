@@ -7,7 +7,7 @@ function FeatureGrid() {
   // Fitur utama (sering dipakai)
   const mainMenus = [
     { label: "Al-Quran", icon: "ri-book-2-line", link: "/quran" },
-    { label: "Game", icon: "ri-gamepad-line", link: "/tes" },
+    { label: "Game", icon: "ri-gamepad-line", link: "/game/rekam-ayat" },
     { label: "SelvDef", icon: "ri-service-line", link: "/selfdev" },
     { label: "Jadwal Sholat", icon: "ri-time-line", link: "/jadwal-sholat" },
     { label: "Tasbih", icon: "ri-heart-2-line", link: "/tasbih" },

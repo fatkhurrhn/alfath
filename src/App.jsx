@@ -57,6 +57,8 @@ import DetailHalamanPerJuz from "./pages/alquran/DetailHalamanPerJuz";
 import LibraryHome from "./pages/library/LibraryHome";
 import MentahanAudio from "./pages/library/MentahanAudio";
 import ManageAudio from "./pages/library/ManageAudio";
+import ListSurah from "./pages/game/rekamayat/ListSurah";
+import DetailSurah from "./pages/game/rekamayat/DetailSurah";
 
 function App() {
   return (
@@ -115,6 +117,8 @@ function App() {
 
         {/* Route Games */}
         <Route path="/game" element={<Games />} />
+        <Route path="/game/rekam-ayat" element={<ListSurah />} />
+        <Route path="/game/rekam-ayat/surah/:id" element={<DetailSurah />} />
         <Route path="/history" element={<History />} />
 
         <Route path="/game/tebak-ayat" element={<TebakAyat />} />
