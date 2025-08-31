@@ -49,7 +49,7 @@ export default function AddDoa() {
         <div className="min-h-screen bg-gray-50 pb-4">
             {/* Header */}
             <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
-                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-4">
+                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-3">
                     <Link
                         to="/doa"
                         className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"

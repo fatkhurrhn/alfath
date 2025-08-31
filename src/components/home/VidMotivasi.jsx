@@ -70,7 +70,7 @@ function VidMotivasi() {
     }
 
     return (
-        <div className="px-4">
+        <div className="px-4 -mt-7">
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-[#355485]">Video Motivasi</h2>

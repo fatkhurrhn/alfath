@@ -77,7 +77,7 @@ export default function DoaList() {
         <div className="min-h-screen pb-16 relative">
             {/* Header */}
             <div className="fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200">
-                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-3">
+                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-2">
                     <Link
                         to="/"
                         className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"

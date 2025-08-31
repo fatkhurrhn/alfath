@@ -6,12 +6,10 @@ const BottomNav = () => {
 
   const navItems = [
     { path: "/", icon: "ri-home-4-line", activeIcon: "ri-home-4-fill", label: "Home" },
-    { path: "/selfdev", icon: "ri-service-line", activeIcon: "ri-service-fill", label: "SelfDev" },
     { path: "/quotes", icon: "ri-chat-quote-line", activeIcon: "ri-chat-quote-fill", label: "Quotes" },
+    { path: "/doa", icon: "ri-hand-heart-line", activeIcon: "ri-hand-heart-fill", label: "Do'a" },
     { path: "/library", icon: "ri-book-shelf-line", activeIcon: "ri-book-shelf-fill", label: "Library" },
-    // { path: "/kalender", icon: "ri-calendar-line", activeIcon: "ri-calendar-fill", label: "Kalender" },
     { path: "/settings", icon: "ri-settings-2-line", activeIcon: "ri-settings-2-fill", label: "Setting" },
-    // { path: "/profile", icon: "ri-user-heart-line", activeIcon: "ri-user-heart-fill", label: "Saya" },
   ];
 
   const MAIN_PREFIXES = navItems.map((i) => i.path).filter((p) => p !== "/");

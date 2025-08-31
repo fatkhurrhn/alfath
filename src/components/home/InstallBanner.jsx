@@ -34,7 +34,7 @@ export default function InstallBanner() {
 
     return (
         <div className="px-4 pt-2">
-            <div className="mb-4 rounded-2xl bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white">
+            <div className="mb-4 rounded-[13px] bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white">
                 <div className="flex items-center justify-between">
                     {/* Icon + Text */}
                     <div className="flex items-center gap-3">

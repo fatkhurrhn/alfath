@@ -1,6 +1,6 @@
 {
   "id": "/",
-  "name": "AlFath – Muslim Daily",
+  "name": "AlFath – Muslim Daily Life Companion",
   "short_name": "AlFath",
   "start_url": "/",
   "scope": "/",
@@ -11,8 +11,14 @@
   "orientation": "portrait",
   "lang": "id",
   "dir": "ltr",
-  "description": "AlFath – Muslim Daily hadir untuk menemani perjalanan spiritualmu setiap hari. Satu aplikasi untuk menenangkan hati, meningkatkan ibadah, dan menemukan motivasi Islami.",
-  "categories": ["education", "books", "utilities", "lifestyle"],
+  "description": "AlFath – Muslim Daily Life Companion hadir untuk menemani keseharianmu sebagai muslim. Dari Quran, doa, dzikir, jadwal sholat, hingga habit tracker Islami, catatan keuangan, dan motivasi harian. Satu aplikasi untuk ibadah, produktivitas, dan gaya hidup Islami modern.",
+  "categories": [
+    "education",
+    "religion",
+    "productivity",
+    "lifestyle",
+    "utilities"
+  ],
   "icons": [
     {
       "src": "/icons/icon-192.png",

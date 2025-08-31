@@ -92,7 +92,7 @@ export default function DetailHalamanPerJuz() {
                     else if (touchEndX - touchStartX > 50) goPrevPage();
                 }}
             >
-                <Document file={`/quran-pdf/juz${id}.PDF`} onLoadSuccess={onDocumentLoadSuccess}>
+                <Document file={`https://quran-perhalaman.vercel.app/juz${id}.PDF`} onLoadSuccess={onDocumentLoadSuccess}>
                     <Page
                         pageNumber={pageNumber}
                         width={windowWidth * scale * 1.2}

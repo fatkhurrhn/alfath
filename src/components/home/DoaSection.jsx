@@ -45,7 +45,7 @@ function DoaSection() {
     };
 
     return (
-        <div className="px-4 pt-2">
+        <div className="px-4 -pt-2">
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
                 <h2 className="font-semibold text-[#355485]">Aminkan Doa Saudaramu</h2>
@@ -66,7 +66,7 @@ function DoaSection() {
                                 className="min-w-[280px] max-w-[280px] flex-shrink-0"
                             >
                                 {/* Card Doa */}
-                                <div className="rounded-2xl border border-[#d7e3ec] bg-gradient-to-br from-[#f9fbfc] to-[#eef4f8] shadow-sm p-4 text-[#355485]">
+                                <div className="rounded-[13px] border border-[#d7e3ec] bg-gray-100 shadow-sm p-4 text-[#355485]">
                                     <div className="flex items-center mb-2">
                                         <img
                                             src="https://cdn-icons-png.freepik.com/512/7718/7718888.png"

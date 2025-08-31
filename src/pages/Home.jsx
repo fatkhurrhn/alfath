@@ -8,6 +8,7 @@ import HeaderDisplay from "../components/home/HeaderDisplay";
 import FeatureGrid from "../components/home/FeatureGrid";
 import VidMotivasi from "../components/home/VidMotivasi";
 import InstallBanner from "../components/home/InstallBanner";
+import DoaSection from "../components/home/DoaSection";
 
 export default function Home() {
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
@@ -29,6 +30,7 @@ export default function Home() {
       <HeaderDisplay />
       <FeatureGrid />
       <InstallBanner />
+      <DoaSection/>
       <VidMotivasi />
       <NewsSection />
       <QuranReminder />
