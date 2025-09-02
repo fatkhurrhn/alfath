@@ -12,11 +12,12 @@ import DoaSection from "../components/home/DoaSection";
 export default function Home() {
   const [showSplash, setShowSplash] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [isInstalled, setIsInstalled] = useState(false);
+  const [isStandalone, setIsStandalone] = useState(false); // hanya untuk mode PWA
+  const [isInstalled, setIsInstalled] = useState(false); // status udah install atau belum
   const [fadeOut, setFadeOut] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
 
-  // 🔹 Splash pertama kali buka
+  // 🔹 Splash screen pertama kali buka (per sesi)
   useEffect(() => {
     const alreadyShown = sessionStorage.getItem("splashShown");
 
@@ -27,32 +28,34 @@ export default function Home() {
         setTimeout(() => {
           setShowSplash(false);
           sessionStorage.setItem("splashShown", "true");
-        }, 300); // waktu fade-out
+        }, 300);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
   }, []);
 
-  // 🔹 Deteksi install PWA
+  // 🔹 Deteksi install & mode PWA
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
     };
 
-    const isStandalone =
+    // cek apakah sedang dibuka di mode standalone (PWA)
+    const standalone =
       window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone;
-    setIsInstalled(isStandalone);
+    setIsStandalone(standalone);
+
+    // cek apakah app udah pernah diinstall (dari localStorage)
+    const installedFlag = localStorage.getItem("appInstalled");
+    if (installedFlag) setIsInstalled(true);
 
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
-      setTransitioning(true); // trigger animasi keluar LandingPage
-      setTimeout(() => {
-        setIsInstalled(true);
-        setTransitioning(false); // reset
-      }, 700); // sesuai durasi animasi
+      localStorage.setItem("appInstalled", "true");
+      setIsInstalled(true);
     });
 
     return () => {
@@ -67,11 +70,8 @@ export default function Home() {
     console.log("User install choice:", outcome);
 
     if (outcome === "accepted") {
-      setTransitioning(true);
-      setTimeout(() => {
-        setIsInstalled(true);
-        setTransitioning(false);
-      }, 700);
+      localStorage.setItem("appInstalled", "true");
+      setIsInstalled(true);
     }
 
     setDeferredPrompt(null);
@@ -79,9 +79,9 @@ export default function Home() {
 
   /* 
     🔑 Logic:
-    - Kalau splash aktif → tampilkan splash custom
-    - Kalau belum diinstall (browser biasa) → LandingPage
-    - Kalau sudah diinstall (PWA mode) → tampilkan App utama
+    - Splash → tampil dulu
+    - Kalau PWA (standalone) → App utama
+    - Kalau bukan PWA → LandingPage (walaupun sudah install tetap LandingPage)
   */
   if (showSplash) {
     return (
@@ -98,18 +98,19 @@ export default function Home() {
     );
   }
 
-  if (!isInstalled) {
+  // kalau bukan standalone (browser biasa) → tetap LandingPage
+  if (!isStandalone) {
     return (
       <div
         className={`transition-opacity duration-700 ${transitioning ? "opacity-0" : "opacity-100"
           }`}
       >
-        <LandingPage onInstall={handleInstall} />
+        <LandingPage onInstall={handleInstall} isInstalled={isInstalled} />
       </div>
     );
   }
 
-  // 🔹 App utama (kalau sudah install)
+  // 🔹 App utama (PWA mode)
   return (
     <div
       className={`min-h-screen bg-white text-[#44515f] pb-10 transition-opacity duration-700 ${transitioning ? "opacity-0" : "opacity-100"
@@ -117,39 +118,6 @@ export default function Home() {
     >
       <HeaderDisplay />
       <FeatureGrid />
-
-      {/* Install Info Card */}
-      <div className="px-4">
-        <div className="mb-2 rounded-2xl bg-gradient-to-r from-[#355485] to-[#4f90c6] p-4 text-white shadow">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-bold text-base">Install AlFath</p>
-              {!isInstalled ? (
-                <p className="text-sm text-white/90">
-                  Rasakan pengalaman lebih cepat dengan aplikasi
-                </p>
-              ) : (
-                <p className="text-sm text-white/90">
-                  Aplikasi sudah terpasang, nikmati kemudahan akses 🎉
-                </p>
-              )}
-            </div>
-
-            {!isInstalled ? (
-              <button
-                onClick={handleInstall}
-                className="ml-4 px-4 py-2 rounded-lg bg-white text-[#355485] font-semibold text-sm shadow hover:bg-gray-100 transition"
-              >
-                Install
-              </button>
-            ) : (
-              <span className="ml-4 px-4 py-2 rounded-lg bg-white/20 text-white font-medium text-sm shadow">
-                Terpasang
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
 
       <DoaSection />
       <VidMotivasi />
