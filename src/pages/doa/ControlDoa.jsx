@@ -20,8 +20,10 @@ const timeAgo = (date) => {
 export default function ControlDoa() {
     const [doaList, setDoaList] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [selectedDoa, setSelectedDoa] = useState(null); // untuk modal konfirmasi
+    const [selectedDoa, setSelectedDoa] = useState(null);
     const [deleting, setDeleting] = useState(false);
+    const [showHeader, setShowHeader] = useState(true);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
     useEffect(() => {
         const unsub = onSnapshot(collection(db, "doa"), (snapshot) => {
@@ -36,9 +38,22 @@ export default function ControlDoa() {
         return () => unsub();
     }, []);
 
-    const confirmDelete = (doa) => {
-        setSelectedDoa(doa);
-    };
+    // Scroll behavior untuk header
+    useEffect(() => {
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY) {
+                setShowHeader(false);
+            } else {
+                setShowHeader(true);
+            }
+            setLastScrollY(currentScrollY);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, [lastScrollY]);
+
+    const confirmDelete = (doa) => setSelectedDoa(doa);
 
     const handleDelete = async () => {
         if (!selectedDoa) return;
@@ -54,62 +69,71 @@ export default function ControlDoa() {
     };
 
     return (
-        <div className="min-h-screen pb-16 bg-gray-50">
-            {/* Container */}
-            <div className="max-w-xl mx-auto px-4 border-x border-gray-200 pt-6">
-                <Link to="/doa">
-                    <h2 className="font-bold text-xl text-center text-[#355485] mb-4">
-                        Control Doa
-                    </h2>
-                </Link>
-                <hr />
+        <div className="min-h-screen bg-gray-50 pb-16">
+            {/* Header */}
+            <div
+                className={`fixed top-0 left-0 w-full z-50 bg-white border-b border-gray-200 transition-transform duration-300 ${showHeader ? "translate-y-0" : "-translate-y-full"
+                    }`}
+            >
+                <div className="max-w-xl mx-auto flex items-center justify-between px-3 py-3">
+                    <Link
+                        to="/listmenu"
+                        className="flex items-center font-semibold gap-2 text-[#355485] text-[15px]"
+                    >
+                        <i className="ri-arrow-left-line"></i> Control Doa
+                    </Link>
+                    <Link to="/settings">
+                        <button className="text-[#355485]">
+                            <i className="ri-settings-5-line text-xl"></i>
+                        </button>
+                    </Link>
+                </div>
+            </div>
 
-                {/* Loading */}
+            {/* Konten */}
+            <div className="max-w-xl mx-auto px-4 border-x border-gray-200 pt-[70px]">
                 {loading ? (
-                    <div className="flex flex-col items-center justify-center py-10 text-gray-500">
-                        <i className="ri-loader-2-line text-2xl animate-spin mb-2"></i>
+                    <div className="flex flex-col items-center justify-center py-12 text-gray-500">
+                        <i className="ri-loader-2-line text-3xl animate-spin mb-2"></i>
                         <p className="text-sm">Memuat semua doa...</p>
                     </div>
                 ) : doaList.length > 0 ? (
-                    <div className="divide-y divide-gray-200">
+                    <div className="flex flex-col gap-4 pb-6">
                         {doaList.map((doa) => (
                             <div
                                 key={doa.id}
-                                className="flex justify-between items-start py-4 px-3"
+                                className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 relative"
                             >
-                                <div>
-                                    <p className="font-semibold text-gray-800">
-                                        {doa.nama || "Anonim"}
-                                    </p>
-                                    <p className="text-xs text-gray-500 mb-1">
-                                        {timeAgo(doa.createdAt)}
-                                    </p>
-                                    <p className="text-sm text-justify text-gray-700">{doa.doa}</p>
-                                </div>
                                 <button
                                     onClick={() => confirmDelete(doa)}
-                                    className="text-red-500 hover:text-red-700 ml-3"
+                                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500"
                                 >
                                     <i className="ri-delete-bin-5-line text-lg"></i>
                                 </button>
+                                <p className="font-semibold text-gray-800">
+                                    {doa.nama || "Anonim"}
+                                </p>
+                                <p className="text-xs text-gray-500 mb-2">
+                                    {timeAgo(doa.createdAt)}
+                                </p>
+                                <p className="text-sm text-gray-700 leading-relaxed text-justify">
+                                    {doa.doa}
+                                </p>
                             </div>
                         ))}
                     </div>
                 ) : (
-                    <p className="text-center text-gray-400 py-10">Belum ada doa</p>
+                    <p className="text-center text-gray-400 py-12">Belum ada doa</p>
                 )}
             </div>
 
             {/* Modal Konfirmasi */}
             {selectedDoa && (
                 <>
-                    {/* Backdrop */}
                     <div
                         className="fixed inset-0 bg-black/50 z-40"
                         onClick={() => setSelectedDoa(null)}
                     />
-
-                    {/* Modal box */}
                     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
                         <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 animate-fadeIn">
                             <h3 className="text-lg font-semibold text-gray-800 mb-2">

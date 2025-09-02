@@ -191,12 +191,16 @@ export default function ManageAudio() {
     };
 
     return (
-        <div className="min-h-screen">
-            <div className="max-w-full mx-auto">
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-wrap items-end gap-4 mb-4">
+        <div className="min-h-screen bg-gray-50">
+            <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4">
+                {/* Form */}
+                <Link to="/listmenu">
+                <h1 className='text-2xl font-bold text-[#355485] text-center'>List Menu</h1>
+                </Link>
+                <form onSubmit={handleSubmit} className="mb-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {/* Title */}
-                        <div className="w-[200px]">
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Title <span className="text-red-500">*</span>
                             </label>
@@ -212,7 +216,7 @@ export default function ManageAudio() {
                         </div>
 
                         {/* Category */}
-                        <div className="w-[160px]">
+                        <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Category <span className="text-red-500">*</span>
                             </label>
@@ -232,15 +236,25 @@ export default function ManageAudio() {
                                     <option value="india">India</option>
                                 </select>
                                 <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-500">
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                    <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M19 9l-7 7-7-7"
+                                        />
                                     </svg>
                                 </div>
                             </div>
                         </div>
 
                         {/* Audio URL */}
-                        <div className="flex-1 min-w-[200px]">
+                        <div className="sm:col-span-2 lg:col-span-1">
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Audio URL <span className="text-red-500">*</span>
                             </label>
@@ -255,8 +269,8 @@ export default function ManageAudio() {
                             />
                         </div>
 
-                        {/* Submit/Cancel Buttons */}
-                        <div className="flex gap-2 w-[260px]">
+                        {/* Buttons */}
+                        <div className="flex gap-2 sm:col-span-2 lg:col-span-1">
                             {editingId && (
                                 <button
                                     type="button"
@@ -269,69 +283,92 @@ export default function ManageAudio() {
                             <button
                                 type="submit"
                                 disabled={isSubmitting}
-                                className={`w-full h-[42px] text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors ${editingId ? 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500' : 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500'
+                                className={`w-full h-[42px] text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-70 transition-colors ${editingId
+                                        ? "bg-gray-600 hover:bg-gray-700 focus:ring-gray-500"
+                                        : "bg-gray-600 hover:bg-gray-700 focus:ring-gray-500"
                                     }`}
                             >
                                 {isSubmitting ? (
                                     <span className="flex items-center justify-center">
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        <svg
+                                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <circle
+                                                className="opacity-25"
+                                                cx="12"
+                                                cy="12"
+                                                r="10"
+                                                stroke="currentColor"
+                                                strokeWidth="4"
+                                            ></circle>
+                                            <path
+                                                className="opacity-75"
+                                                fill="currentColor"
+                                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                            ></path>
                                         </svg>
-                                        {editingId ? 'Updating...' : 'Adding...'}
+                                        {editingId ? "Updating..." : "Adding..."}
                                     </span>
+                                ) : editingId ? (
+                                    "Update Audio"
                                 ) : (
-                                    editingId ? 'Update Audio' : 'Add Audio'
+                                    "Add Audio"
                                 )}
                             </button>
                         </div>
                     </div>
-
                 </form>
 
                 {/* Audio List */}
-                <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold text-gray-800">List Audio Library</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
+                    <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+                        List Audio Library
+                    </h2>
                     {renderCategoryCounts()}
                 </div>
 
                 {filteredAudios.length > 0 ? (
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full divide-y divide-gray-200">
+                    <div className="overflow-x-auto border border-gray-200 rounded-lg">
+                        <table className="min-w-full divide-y divide-gray-200 text-sm">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                         Title
                                     </th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                         Category
                                     </th>
-                                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 py-3 text-left font-medium text-gray-500 uppercase tracking-wider">
                                         Date Added
                                     </th>
-                                    <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-4 py-3 text-right font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredAudios.map(audio => (
+                                {filteredAudios.map((audio) => (
                                     <tr key={audio.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900 truncate max-w-xs">
+                                        <td className="px-4 py-3 whitespace-nowrap">
+                                            <div className="font-medium text-gray-900 truncate max-w-[150px] sm:max-w-xs">
                                                 {audio.title}
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                                        <td className="px-4 py-3 whitespace-nowrap">
+                                            <span className="px-2 py-1 inline-flex text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
                                                 {formatCategory(audio.category)}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {audio.createdAt?.toDate ? audio.createdAt.toDate().toLocaleDateString() : 'N/A'}
+                                        <td className="px-4 py-3 whitespace-nowrap text-gray-500">
+                                            {audio.createdAt?.toDate
+                                                ? audio.createdAt.toDate().toLocaleDateString()
+                                                : "N/A"}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <div className="flex justify-end space-x-4">
+                                        <td className="px-4 py-3 whitespace-nowrap text-right font-medium">
+                                            <div className="flex justify-end space-x-3">
                                                 <a
                                                     href={audio.audioUrl}
                                                     target="_blank"
@@ -368,11 +405,13 @@ export default function ManageAudio() {
                             <i className="ri-music-2-line text-4xl"></i>
                         </div>
                         <h3 className="text-lg font-medium text-gray-900 mb-1">
-                            {activeFilter === 'all'
-                                ? 'No audios found'
+                            {activeFilter === "all"
+                                ? "No audios found"
                                 : `No audios in ${formatCategory(activeFilter)} category`}
                         </h3>
-                        <p className="text-gray-500">Add your first audio using the form above</p>
+                        <p className="text-gray-500">
+                            Add your first audio using the form above
+                        </p>
                     </div>
                 )}
             </div>
