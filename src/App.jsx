@@ -20,20 +20,6 @@ import TebakAyat from "./pages/game/TebakAyat";
 import Games from "./pages/game/GameHome";
 import History from "./pages/game/History";
 
-import Juz30 from "./pages/game/sambungayat/Juz30";
-import Juz1 from "./pages/game/sambungayat/Juz1";
-import Juz29 from "./pages/game/sambungayat/Juz29";
-import Juz28 from "./pages/game/sambungayat/Juz28";
-import Juz27 from "./pages/game/sambungayat/Juz27";
-import Juz2 from "./pages/game/sambungayat/Juz2";
-import Juz3 from "./pages/game/sambungayat/Juz3";
-import Juz5 from "./pages/game/sambungayat/Juz5";
-import Juz4 from "./pages/game/sambungayat/Juz4";
-import Juz26 from "./pages/game/sambungayat/Juz26";
-import Juz25 from "./pages/game/sambungayat/Juz25";
-
-import SAS67 from "./pages/game/sambungayat/Surah67";
-
 import DetailVideo from "./pages/vidmotivasi/DetailVideo";
 import VideoList from "./pages/vidmotivasi/VideoList";
 import StoryThur from "./pages/vidmotivasi/StoryThur";
@@ -57,8 +43,11 @@ import DetailHalamanPerJuz from "./pages/alquran/DetailHalamanPerJuz";
 import LibraryHome from "./pages/library/LibraryHome";
 import MentahanAudio from "./pages/library/MentahanAudio";
 import ManageAudio from "./pages/library/ManageAudio";
-import ListSurah from "./pages/game/rekamayat/ListSurah";
 import DetailSurah from "./pages/game/rekamayat/DetailSurah";
+import MentahanVideo from "./pages/library/MentahanVideo";
+import DetailSurahSA from "./pages/game/sambungayat/DetailSurah";
+import DetailJuzSA from "./pages/game/sambungayat/DetailJuz";
+import TebakSurah from "./pages/game/TebakSurah";
 
 function App() {
   return (
@@ -87,6 +76,7 @@ function App() {
 
         <Route path="/library" element={<LibraryHome />} />
         <Route path="/library/audio" element={<MentahanAudio />} />
+        <Route path="/library/video" element={<MentahanVideo />} />
         <Route path="/library/audio/admin" element={<ManageAudio />} />
 
         <Route path="/settings" element={<SettingHome />} />
@@ -117,25 +107,14 @@ function App() {
 
         {/* Route Games */}
         <Route path="/game" element={<Games />} />
-        <Route path="/game/rekam-ayat" element={<ListSurah />} />
         <Route path="/game/rekam-ayat/surah/:id" element={<DetailSurah />} />
         <Route path="/history" element={<History />} />
 
         <Route path="/game/tebak-ayat" element={<TebakAyat />} />
+        <Route path="/game/tebak-surah" element={<TebakSurah />} />
 
-        <Route path="/game/sambung-ayat/juz/1" element={<Juz1 />} />
-        <Route path="/game/sambung-ayat/juz/2" element={<Juz2 />} />
-        <Route path="/game/sambung-ayat/juz/3" element={<Juz3 />} />
-        <Route path="/game/sambung-ayat/juz/4" element={<Juz4 />} />
-        <Route path="/game/sambung-ayat/juz/5" element={<Juz5 />} />
-        <Route path="/game/sambung-ayat/juz/25" element={<Juz25 />} />
-        <Route path="/game/sambung-ayat/juz/26" element={<Juz26 />} />
-        <Route path="/game/sambung-ayat/juz/27" element={<Juz27 />} />
-        <Route path="/game/sambung-ayat/juz/28" element={<Juz28 />} />
-        <Route path="/game/sambung-ayat/juz/29" element={<Juz29 />} />
-        <Route path="/game/sambung-ayat/juz/30" element={<Juz30 />} />
-
-        <Route path="/game/sambung-ayat/surah/:surahNumber" element={<SAS67 />} />
+        <Route path="/game/sambung-ayat/surah/:id" element={<DetailSurahSA />} />
+        <Route path="/game/sambung-ayat/juz/:id" element={<DetailJuzSA />} />
 
         {/* Catch-all untuk halaman yang tidak ada */}
         <Route path="/comingsoon" element={<ComingSoon />} />

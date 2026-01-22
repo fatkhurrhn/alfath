@@ -1,7 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
-export default function Juz29() {
+export default function DetailJuzSA() {
+  /* ---------- route param ---------- */
+  const { id } = useParams();          // id = 1..30
+  const juzNumber = Number(id);
+
   /* ---------- state ---------- */
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -10,6 +14,7 @@ export default function Juz29() {
   const [gameOver, setGameOver] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const audioRef = useRef(null);
 
@@ -26,52 +31,28 @@ export default function Juz29() {
   /* ---------- load ---------- */
   useEffect(() => {
     fetchQuestions();
-    return () => {
-      // cleanup audio saat unmount
-      audioRef.current?.pause();
-    };
-  }, []);
+    return () => audioRef.current?.pause();
+  }, [juzNumber]);
 
-  /* ---------- per-soal ---------- */
+  /* reset audio saat ganti soal */
   useEffect(() => {
-    if (questions.length && currentQuestion < questions.length) {
-      setTimeLeft(30);
-      setSelectedOption(null);
-
-      const audioUrl = questions[currentQuestion].question.audio;
-
-      // stop audio lama (kalau ada)
-      audioRef.current?.pause();
-
-      // buat audio baru & play
-      audioRef.current = new Audio(audioUrl);
-      audioRef.current.play().catch(() => { });
-
-      // cleanup saat pindah soal/unmount
-      return () => {
-        audioRef.current?.pause();
-      };
-    }
-  }, [currentQuestion, questions]);
-
+    audioRef.current?.pause();
+    setIsPlaying(false);
+  }, [currentQuestion]);
 
   /* ---------- countdown ---------- */
   useEffect(() => {
-    if (timeLeft === 0) {
-      handleTimeUp();
-      return;
-    }
-    if (!selectedOption && !gameOver) {
-      const t = setTimeout(() => setTimeLeft((v) => v - 1), 1000);
+    if (timeLeft === 0) { handleTimeUp(); return; }
+    if (!selectedOption && !gameOver && questions.length) {
+      const t = setTimeout(() => setTimeLeft(v => v - 1), 1000);
       return () => clearTimeout(t);
     }
-  }, [timeLeft, selectedOption, gameOver]);
+  }, [timeLeft, selectedOption, gameOver, questions]);
 
   /* ---------- fetch ---------- */
   const fetchQuestions = async () => {
     try {
-      // hapus spasi di ujung URL
-      const res = await fetch('https://api.myquran.com/v2/quran/ayat/juz/29');
+      const res = await fetch(`https://api.myquran.com/v2/quran/ayat/juz/${juzNumber}`);
       const json = await res.json();
       const all = json.data;
 
@@ -101,23 +82,20 @@ export default function Juz29() {
     }
   };
 
-  /* ---------- save to localStorage ---------- */
+  /* ---------- save history ---------- */
   const saveGameHistory = (finalScore) => {
-  const gameRecord = {
-    date: formatDateId(new Date()),
-    score: finalScore,
-    total: 100,
-    details: userAnswers,
-    game: "Sambung Ayat",   // ⬅️ nama game
-    // PENTING
-    juz: "Juz 29",          // ⬅️ nomor juz
-    juzNumber: 29, // ⬅️ penting untuk link ulangi
+    const gameRecord = {
+      date: formatDateId(new Date()),
+      score: finalScore,
+      total: 100,
+      details: userAnswers,
+      game: 'Sambung Ayat',
+      juz: `Juz ${juzNumber}`,
+      juzNumber,
+    };
+    const existing = JSON.parse(localStorage.getItem('gameHistory')) || [];
+    localStorage.setItem('gameHistory', JSON.stringify([gameRecord, ...existing].slice(0, 50)));
   };
-
-  const existingHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
-  const updatedHistory = [gameRecord, ...existingHistory];
-  localStorage.setItem('gameHistory', JSON.stringify(updatedHistory.slice(0, 50)));
-};
 
   /* ---------- logic ---------- */
   const handleAnswer = (option) => {
@@ -125,42 +103,34 @@ export default function Juz29() {
     setSelectedOption(option);
 
     const isCorrect = option.id === questions[currentQuestion].correct.id;
-    const poinPerSoal = Math.round(100 / questions.length);
+    const poin = Math.round(100 / questions.length);
+    if (isCorrect) setScore(s => s + poin);
 
-    // update skor untuk UI
-    if (isCorrect) setScore((s) => s + poinPerSoal);
-
-    setUserAnswers((prev) => [
-      ...prev,
-      { ...questions[currentQuestion], userAnswer: option, isCorrect }
-    ]);
+    setUserAnswers(prev => [...prev, { ...questions[currentQuestion], userAnswer: option, isCorrect }]);
 
     setTimeout(() => {
       if (currentQuestion + 1 < questions.length) {
-        setCurrentQuestion((q) => q + 1);
+        setCurrentQuestion(q => q + 1);
+        setTimeLeft(30);
+        setSelectedOption(null);
       } else {
-        // hitung finalScore dari skor saat ini + poin jika benar
-        const finalScore = isCorrect ? score + poinPerSoal : score;
+        saveGameHistory(isCorrect ? score + poin : score);
         setGameOver(true);
-        // simpan pakai finalScore agar tidak kena stale state
-        saveGameHistory(finalScore);
         audioRef.current?.pause();
       }
     }, 1200);
   };
 
   const handleTimeUp = () => {
-    setUserAnswers((prev) => [
-      ...prev,
-      { ...questions[currentQuestion], userAnswer: null, isCorrect: false }
-    ]);
+    setUserAnswers(prev => [...prev, { ...questions[currentQuestion], userAnswer: null, isCorrect: false }]);
     setTimeout(() => {
       if (currentQuestion + 1 < questions.length) {
-        setCurrentQuestion((q) => q + 1);
+        setCurrentQuestion(q => q + 1);
+        setTimeLeft(30);
+        setSelectedOption(null);
       } else {
-        const finalScore = score; // tidak bertambah
+        saveGameHistory(score);
         setGameOver(true);
-        saveGameHistory(finalScore);
         audioRef.current?.pause();
       }
     }, 500);
@@ -176,11 +146,27 @@ export default function Juz29() {
     fetchQuestions();
   };
 
+  /* toggle play / pause */
+  const toggleAudio = () => {
+    if (!audioRef.current) {
+      const src = questions?.[currentQuestion]?.question?.audio;
+      if (!src) return;
+      audioRef.current = new Audio(src);
+    }
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    } else {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
   /* ---------- UI ---------- */
   if (!questions.length) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <p className="text-gray-600">Memuat soal...</p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -194,39 +180,31 @@ export default function Juz29() {
             Skor Kamu: <span className="font-bold text-green-700">{score}</span>/100
           </p>
 
-          {/* Recap Timeline Style */}
           <div className="space-y-6 border-l-2 border-gray-200 pl-4">
             {userAnswers.map((item, idx) => (
               <div key={idx} className="relative">
-                {/* Bullet */}
                 <span
                   className={`absolute -left-[13px] top-2 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold ${item.isCorrect
-                    ? "bg-green-500 text-white"
-                    : !item.userAnswer
-                      ? "bg-yellow-500 text-white"
-                      : "bg-red-500 text-white"
+                      ? 'bg-green-500 text-white'
+                      : !item.userAnswer
+                        ? 'bg-yellow-500 text-white'
+                        : 'bg-red-500 text-white'
                     }`}
                 >
                   {idx + 1}
                 </span>
 
-                {/* Card */}
                 <div className="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
-                  {/* Pertanyaan */}
                   <p className="font-semibold text-center mb-2 font-mushaf text-gray-800 leading-loose">
-                    {item.question.arab} —{" "}
-                    <span className="font-semibold text-green-700">
-                      {item.correct.arab}
-                    </span>
+                    {item.question.arab} —{' '}
+                    <span className="font-semibold text-green-700">{item.correct.arab}</span>
                   </p>
-                  <hr className="p-2" />
-
-                  {/* Jawaban User */}
+                  <hr className="my-2" />
                   {item.userAnswer ? (
                     <div
                       className={`px-3 py-2 rounded-lg text-sm font-medium font-mushaf w-full flex flex-col items-center text-center ${item.isCorrect
-                        ? "bg-green-50 text-green-700 border border-green-200"
-                        : "bg-red-50 text-red-700 border border-red-200"
+                          ? 'bg-green-50 text-green-700 border border-green-200'
+                          : 'bg-red-50 text-red-700 border border-red-200'
                         }`}
                     >
                       {item.isCorrect ? (
@@ -248,8 +226,7 @@ export default function Juz29() {
             ))}
           </div>
 
-          {/* Floating Action Card */}
-          <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2">
+          <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
             <div className="flex items-center bg-white border border-gray-200 rounded-lg shadow-xl divide-x divide-gray-200 overflow-hidden">
               <button
                 onClick={restartGame}
@@ -275,19 +252,15 @@ export default function Juz29() {
   return (
     <div className="min-h-screen pb-2">
       <div className="max-w-xl mx-auto px-3 container border-x border-gray-200">
-        <div className="fixed max-w-xl border border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
+        <div className="fixed max-w-xl border-b border-gray-200 mx-auto top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-white px-3 py-4">
           <div className="flex items-center justify-between">
             <Link to="/game" className="flex items-center font-semibold gap-2 text-gray-800 text-[15px]">
-              <i className="ri-arrow-left-line"></i> Sambung Ayat Juz 30
+              <i className="ri-arrow-left-line"></i> Sambung Ayat Juz {juzNumber}
             </Link>
-            <button className="text-gray-600 hover:text-gray-600">
-              <i className="ri-settings-5-line text-xl"></i>
-            </button>
           </div>
         </div>
 
         <div className="pt-[70px]">
-          {/* Header progress */}
           <div className="flex items-center justify-between mb-4">
             <span className="text-sm font-medium text-gray-700">
               Soal <span className="font-semibold">{currentQuestion + 1}</span> / {questions.length}
@@ -297,55 +270,40 @@ export default function Juz29() {
             </span>
           </div>
 
-          {/* Card pertanyaan */}
           <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm relative">
-            <p
-              dir="rtl"
-              className="text-2xl font-mushaf leading-relaxed text-center text-gray-800"
-            >
+            <p dir="rtl" className="text-2xl font-mushaf leading-relaxed text-center text-gray-800">
               {q.question.arab}
             </p>
-
-            {/* Tombol play audio */}
             <button
-              onClick={() => audioRef.current?.play()}
-              className="absolute bottom-1 right-2 transition"
-              aria-label="Putar audio"
+              onClick={toggleAudio}
+              className="absolute bottom-2 right-3 transition"
+              aria-label={isPlaying ? 'Jeda audio' : 'Putar audio'}
             >
-              <i className="ri-volume-up-line text-md text-gray-700"></i>
+              <i
+                className={`text-lg ${isPlaying ? 'ri-volume-mute-line' : 'ri-volume-up-line'
+                  } text-gray-700`}
+              ></i>
             </button>
           </div>
 
-          {/* Opsi jawaban */}
           <div className="max-w-md mx-auto px-2">
-            <p className="text-center pb-3 font-medium text-gray-600">
-              Silakan pilih jawabanmu
-            </p>
+            <p className="text-center pb-3 font-medium text-gray-600">Silakan pilih jawabanmu</p>
             <div className="space-y-3">
               {q.options.map((opt, idx) => {
                 const isCorrect = opt.id === q.correct.id;
                 const answered = selectedOption !== null;
-
-                // Warna dasar zebra: selang-seling putih & abu muda
                 const zebraBase = idx % 2 === 0 ? 'bg-white' : 'bg-gray-100';
-
                 return (
                   <button
                     key={idx}
                     disabled={answered}
                     onClick={() => handleAnswer(opt)}
                     className={`w-full p-3 border rounded-lg text-right text-xl leading-relaxed font-mushaf transition
-            ${answered && isCorrect
-                        ? 'bg-green-50 border-green-500 text-green-700'
-                        : ''
-                      }
-            ${answered &&
-                        !isCorrect &&
-                        opt.id === selectedOption?.id
+            ${answered && isCorrect ? 'bg-green-50 border-green-500 text-green-700' : ''}
+            ${answered && !isCorrect && opt.id === selectedOption?.id
                         ? 'bg-red-50 border-red-500 text-red-700'
-                        : ''
-                      }
-            ${!answered ? `${zebraBase}` : ''}
+                        : ''}
+            ${!answered ? zebraBase : ''}
           `}
                   >
                     {opt.arab}
@@ -355,7 +313,6 @@ export default function Juz29() {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

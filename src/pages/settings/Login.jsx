@@ -9,7 +9,7 @@ export default function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        if (username === "alfath" && password === "alfath0909") {
+        if (username === "alfath" && password === "alfath") {
             setError("");
             navigate("/listmenu");
         } else {

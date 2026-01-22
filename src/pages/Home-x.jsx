@@ -10,29 +10,9 @@ import VidMotivasi from "../components/home/VidMotivasi";
 import DoaSection from "../components/home/DoaSection";
 
 export default function Home() {
-  const [showSplash, setShowSplash] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isInstalled, setIsInstalled] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
-
-  // 🔹 Splash pertama kali buka
-  useEffect(() => {
-    const alreadyShown = sessionStorage.getItem("splashShown");
-
-    if (!alreadyShown) {
-      setShowSplash(true);
-      const timer = setTimeout(() => {
-        setFadeOut(true);
-        setTimeout(() => {
-          setShowSplash(false);
-          sessionStorage.setItem("splashShown", "true");
-        }, 300); // waktu fade-out
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   // 🔹 Deteksi install PWA
   useEffect(() => {
@@ -48,11 +28,11 @@ export default function Home() {
 
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => {
-      setTransitioning(true); // trigger animasi keluar LandingPage
+      setTransitioning(true);
       setTimeout(() => {
         setIsInstalled(true);
-        setTransitioning(false); // reset
-      }, 700); // sesuai durasi animasi
+        setTransitioning(false);
+      }, 700);
     });
 
     return () => {
@@ -77,27 +57,10 @@ export default function Home() {
     setDeferredPrompt(null);
   };
 
-  /* 
-    🔑 Logic:
-    - Kalau splash aktif → tampilkan splash custom
-    - Kalau belum diinstall (browser biasa) → LandingPage
-    - Kalau sudah diinstall (PWA mode) → tampilkan App utama
+  /* 🔑 Logic:
+     - Kalau belum diinstall (browser biasa) → LandingPage
+     - Kalau sudah diinstall (PWA mode) → tampilkan App utama
   */
-  if (showSplash) {
-    return (
-      <div
-        className={`fixed inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-700 ${fadeOut ? "opacity-0" : "opacity-100"
-          }`}
-      >
-        <img
-          src="/logo-splash.png"
-          alt="AlFath Logo"
-          className="w-28 h-28 animate-pulse"
-        />
-      </div>
-    );
-  }
-
   if (!isInstalled) {
     return (
       <div

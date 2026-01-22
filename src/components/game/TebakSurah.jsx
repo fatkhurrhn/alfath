@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 function TebakSurah() {
     return (
         <div>
-            <Link to="/game/rekam-ayat"
+            <Link to="/game/tebak-surah"
                 className="flex flex-col items-center justify-center h-32 p-3 text-center transition bg-white border border-[#e5e9f0] rounded-xl shadow-sm hover:shadow-md">
                 <div className="flex items-center justify-center w-10 h-10 p-1 
                   bg-[#fcfeff] border border-[#e5e9f0] rounded-lg">
